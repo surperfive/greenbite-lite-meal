@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+import path from 'node:path';
+const file = 'file:///' + path.resolve('scripts/_bubble-tail-ab.html').replace(/\\/g, '/');
+const b = await chromium.launch({ channel: 'chrome' });
+const p = await b.newPage({ viewport: { width: 900, height: 1340 }, deviceScaleFactor: 2 });
+await p.goto(file, { waitUntil: 'load' });
+await p.waitForTimeout(400);
+await p.screenshot({ path: 'scripts/_shots/tail-ab.png', fullPage: true });
+console.log('h', await p.evaluate(() => document.body.scrollHeight));
+await b.close();

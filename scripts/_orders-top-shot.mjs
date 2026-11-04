@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+import fs from 'node:fs';
+import { BASE } from './_base.mjs';
+fs.mkdirSync('scripts/_shots', { recursive: true });
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 2 });
+await page.goto(BASE, { waitUntil: 'commit' });
+await page.waitForSelector('#nav-tab-home', { timeout: 20000 });
+await page.evaluate(() => document.fonts.ready);
+await page.waitForTimeout(2000);
+await page.click('#nav-tab-orders');
+await page.waitForTimeout(1500);
+await page.screenshot({ path: 'scripts/_shots/orders-top.png', clip: { x: 0, y: 0, width: 430, height: 200 } });
+console.log('ok');
+await browser.close();

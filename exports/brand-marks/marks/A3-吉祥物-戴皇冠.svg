@@ -1,0 +1,51 @@
+<svg viewBox="0 0 140 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Action dashes near crown -->
+  <line x1="16" y1="20" x2="11" y2="15" stroke="#000000" stroke-width="2.5" stroke-linecap="round" />
+  <line x1="26" y1="12" x2="25" y2="5" stroke="#000000" stroke-width="2.5" stroke-linecap="round" />
+  <line x1="38" y1="15" x2="43" y2="9" stroke="#000000" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Crown on top-left -->
+  <g transform="translate(24, 25) rotate(-22)">
+    <!-- Crown Base Band -->
+    <path d="M -14 6 L 14 6 L 12 11 L -12 11 Z" fill="#000000" stroke="#000000" stroke-width="1" />
+    <!-- Crown 3 Peaks -->
+    <path d="M -14 6 L -16 -6 L -6 1 L 0 -10 L 6 1 L 16 -6 L 14 6 Z" fill="#000000" stroke="#000000" stroke-width="1.5" stroke-linejoin="round" />
+    <!-- Tiny lime highlight line on base -->
+    <line x1="-10" y1="8.5" x2="10" y2="8.5" stroke="#C2F164" stroke-width="1.8" stroke-linecap="round" />
+  </g>
+
+  <!-- Main Mascot Circle (Center at 62, 70, radius 44) -->
+  <!-- Outer black stroke -->
+  <circle cx="62" cy="70" r="44" fill="#FFFFFF" stroke="#000000" stroke-width="3" />
+  <!-- Inner black disc -->
+  <circle cx="62" cy="70" r="39" fill="#000000" />
+
+  <!-- Left Ear -->
+  <g transform="translate(47, 59.5) rotate(-10)">
+    <path d="M -7 0 A 7 7 0 0 1 7 0 L 7 8 Q 7 9.5 5.5 9.5 L -5.5 9.5 Q -7 9.5 -7 8 Z" fill="#C2F164" />
+  </g>
+
+  <!-- Right Ear -->
+  <g transform="translate(77, 59.5) rotate(10)">
+    <path d="M -7 0 A 7 7 0 0 1 7 0 L 7 8 Q 7 9.5 5.5 9.5 L -5.5 9.5 Q -7 9.5 -7 8 Z" fill="#C2F164" />
+  </g>
+
+  <!-- Snout -->
+  <rect x="38.5" y="73" width="47" height="25" rx="12.5" fill="#18181B" />
+
+  <!-- Snout Dots -->
+  <circle cx="55" cy="85.5" r="3.8" fill="#C2F164" />
+  <circle cx="69" cy="85.5" r="3.8" fill="#C2F164" />
+
+  <!-- HELLO! Speech Bubble on top-right -->
+  <g transform="translate(100, 24)">
+    <!-- Bubble Pointer Tail -->
+    <path d="M -14 10 L -22 17 L -10 13 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2.5" stroke-linejoin="round" />
+    <!-- Bubble Body -->
+    <rect x="-24" y="-14" width="48" height="26" rx="13" fill="#FFFFFF" stroke="#000000" stroke-width="2.5" />
+    <!-- Mask to connect tail seamlessly -->
+    <path d="M -16 8 L -11 8 L -14 12 Z" fill="#FFFFFF" />
+    <!-- HELLO! Text -->
+    <text x="0" y="2.5" fill="#000000" font-size="10.5" font-weight="900" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" letter-spacing="0.5">HELLO!</text>
+  </g>
+</svg>

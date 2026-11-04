@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const BASE = 'http://127.0.0.1:5173/';
+const OUT = 'outputs/align2';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 });
+await page.goto(BASE, { waitUntil: 'networkidle' });
+await page.waitForTimeout(2800);
+await page.screenshot({ path: `${OUT}/strip2-menu.png`, clip: { x: 0, y: 90, width: 140, height: 240 } });
+await page.screenshot({ path: `${OUT}/card-top.png`, clip: { x: 236, y: 230, width: 150, height: 250 } });
+await page.click('#nav-tab-gacha', { force: true });
+await page.waitForTimeout(2600);
+await page.screenshot({ path: `${OUT}/card-gacha.png`, clip: { x: 20, y: 540, width: 350, height: 130 } });
+await browser.close();
+console.log('done');

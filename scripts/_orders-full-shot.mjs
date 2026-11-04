@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+import { BASE } from './_base.mjs';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 2 });
+await page.goto(BASE, { waitUntil: 'commit' });
+await page.waitForSelector('.brand-loader', { state: 'detached', timeout: 20000 }).catch(() => {});
+await page.waitForSelector('[data-dish-thumb="true"]', { timeout: 20000 });
+await page.click('#nav-tab-orders');
+await page.waitForTimeout(1400);
+await page.screenshot({ path: 'scripts/_shots/orders-full-noCount.png' });
+await browser.close();

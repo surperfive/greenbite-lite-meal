@@ -1,0 +1,22 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer white ring（2026-10-28 去掉原先那圈 1.6 单位黑描边：
+       白环本身已经能把黑脸和青柠底分开，再加黑线会让头像看着"套了个圈"。
+       半径保持 48.5 不变 —— 黑线是**居中描边**，去掉后外径只少 0.8 单位，
+       里面的白环厚度、黑脸尺寸、五官位置全部原样，不会裁到任何部分。） -->
+  <circle cx="50" cy="50" r="48.5" fill="#FFFFFF" />
+  <!-- Inner black disc -->
+  <circle cx="50" cy="50" r="44.2" fill="#000000" />
+  <!-- Left Ear: arched green ear tilted counter-clockwise -->
+  <g transform="translate(33.5, 38.5) rotate(-10)">
+    <path d="M -8 0 A 8 8 0 0 1 8 0 L 8 8.5 Q 8 10 6.5 10 L -6.5 10 Q -8 10 -8 8.5 Z" fill="#C2F164" />
+  </g>
+  <!-- Right Ear: arched green ear tilted clockwise -->
+  <g transform="translate(66.5, 38.5) rotate(10)">
+    <path d="M -8 0 A 8 8 0 0 1 8 0 L 8 8.5 Q 8 10 6.5 10 L -6.5 10 Q -8 10 -8 8.5 Z" fill="#C2F164" />
+  </g>
+  <!-- Snout / Muzzle: dark capsule pill -->
+  <rect x="23.7" y="53.2" width="52.6" height="28.6" rx="14.3" fill="#18181B" />
+  <!-- Two nostril/eye dots -->
+  <circle cx="41.8" cy="67.5" r="4.3" fill="#C2F164" />
+  <circle cx="58.2" cy="67.5" r="4.3" fill="#C2F164" />
+</svg>

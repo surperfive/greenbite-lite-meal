@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+import { BASE } from './_base.mjs';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 514, height: 1242 }, deviceScaleFactor: 1 });
+await page.goto(BASE, { waitUntil: 'commit' });
+await page.waitForSelector('.brand-loader', { state: 'detached', timeout: 20000 }).catch(() => {});
+await page.waitForSelector('[data-dish-thumb="true"]', { timeout: 20000 });
+await page.click('#nav-tab-gacha');
+await page.waitForTimeout(1200);
+await page.click('#btn-header-info');
+await page.waitForSelector('[role="dialog"]', { timeout: 4000 });
+await page.waitForTimeout(800);
+await page.screenshot({ path: 'scripts/_shots/modal-fix-tall.png' });
+await browser.close();

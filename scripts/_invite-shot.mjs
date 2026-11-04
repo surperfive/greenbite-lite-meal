@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+import { BASE } from './_base.mjs';
+const out = process.argv[2] || 'invite';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 3 });
+await page.goto(BASE, { waitUntil: 'commit' });
+await page.waitForSelector('.brand-loader', { state: 'detached', timeout: 20000 }).catch(() => {});
+await page.waitForSelector('[data-dish-thumb="true"]', { timeout: 20000 });
+await page.click('#nav-tab-me');
+await page.waitForTimeout(1500);
+const clip = await page.evaluate(() => {
+  const img = document.querySelector('img[src="/invite-banner.png"]');
+  if (!img) return null;
+  const r = img.parentElement.getBoundingClientRect();
+  return { x: Math.max(0, r.left - 6), y: Math.max(0, r.top - 10), width: r.width + 12, height: r.height + 20 };
+});
+console.log(JSON.stringify(clip));
+if (clip) await page.screenshot({ path: `scripts/_shots/me-${out}.png`, clip });
+await page.screenshot({ path: 'scripts/_shots/me-page-invite.png' });
+await browser.close();

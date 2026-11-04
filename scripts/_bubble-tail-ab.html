@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>气泡尾巴构造 A/B</title>
+<style>
+  html,body{margin:0;background:#F4F6F8}
+  svg{display:block}
+  .t{font-family:"PingFang SC","HarmonyOS Sans SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei","Heiti SC",system-ui,sans-serif;fill:#000}
+  .t-h{font-weight:900}.t-w{fill:#FFF}
+  .row{display:flex;align-items:center;gap:12px;padding:8px 12px}
+  .tag{width:230px;font:12px/1.5 ui-monospace,monospace;color:#222}
+</style>
+</head>
+<body>
+<script>
+const BODY = { x0: 634.5, y0: 22, x1: 786.5, y1: 69, rx: 16 };
+const BASE_L = 676, BASE_R = 696, TIP = [666, 82];
+
+/* 主体（不含尾巴），顺时针到右下角结束 */
+function bodyHead(b, tailR) {
+  return [
+    `M ${b.x0 + b.rx},${b.y0}`,
+    `H ${b.x1 - b.rx}`,
+    `A ${b.rx},${b.rx} 0 0 1 ${b.x1},${b.y0 + b.rx}`,
+    `V ${b.y1 - b.rx}`,
+    `A ${b.rx},${b.rx} 0 0 1 ${b.x1 - b.rx},${b.y1}`,
+    `H ${tailR}`,
+  ].join(' ');
+}
+function bodyTail(b, tailL) {
+  return [
+    `H ${b.x0 + b.rx}`,
+    `A ${b.rx},${b.rx} 0 0 1 ${b.x0},${b.y1 - b.rx}`,
+    `V ${b.y0 + b.rx}`,
+    `A ${b.rx},${b.rx} 0 0 1 ${b.x0 + b.rx},${b.y0}`,
+    'Z',
+  ].join(' ');
+}
+
+const TAILS = {
+  /* T1 纯三角：两边直线，两个锐利的凹角 */
+  T1: (y1) => `L ${TIP[0]},${TIP[1]} L ${BASE_L},${y1}`,
+  /* T2 右缘曲 + 左缘直（经典 swoosh）：右侧水平离开底边，左侧直线回 */
+  T2: (y1) => `C ${BASE_R - 8},${y1} ${TIP[0] + 12},${(y1 + TIP[1]) / 2} ${TIP[0]},${TIP[1]} L ${BASE_L},${y1}`,
+  /* T3 右缘曲 + 左缘小圆角内凹（overshoot 仅 3） */
+  T3: (y1) => `C ${BASE_R - 8},${y1} ${TIP[0] + 12},${(y1 + TIP[1]) / 2} ${TIP[0]},${TIP[1]} C ${TIP[0] + 2},${(TIP[1] + y1) / 2} ${BASE_L + 3},${y1} ${BASE_L},${y1}`,
+  /* T4 右缘曲 + 左缘直，但尖端用极小圆弧倒角（不扎眼） */
+  T4: (y1) => `C ${BASE_R - 8},${y1} ${TIP[0] + 13},${(y1 + TIP[1]) / 2} ${TIP[0] + 1.2},${TIP[1] - 0.8} A 1.6,1.6 0 0 0 ${TIP[0]},${TIP[1] + 1.2} L ${BASE_L},${y1}`,
+};
+
+function innerPath(kind) {
+  return bodyHead(BODY, BASE_R) + ' ' + TAILS[kind](BODY.y1) + ' ' + bodyTail(BODY, BASE_L);
+}
+/* 白底：整体外扩 6（圆角圆心不变 ⇒ 白边均匀）。尾巴按同一构造外扩。 */
+const O = { x0: 628.5, y0: 16, x1: 792.5, y1: 75, rx: 22 };
+const OBASE_L = 670, OBASE_R = 702, OTIP = [660, 88];
+function outerPath(kind) {
+  const y1 = O.y1;
+  const t = {
+    T1: `L ${OTIP[0]},${OTIP[1]} L ${OBASE_L},${y1}`,
+    T2: `C ${OBASE_R - 8},${y1} ${OTIP[0] + 12},${(y1 + OTIP[1]) / 2} ${OTIP[0]},${OTIP[1]} L ${OBASE_L},${y1}`,
+    T3: `C ${OBASE_R - 8},${y1} ${OTIP[0] + 12},${(y1 + OTIP[1]) / 2} ${OTIP[0]},${OTIP[1]} C ${OTIP[0] + 2},${(OTIP[1] + y1) / 2} ${OBASE_L + 3},${y1} ${OBASE_L},${y1}`,
+    T4: `C ${OBASE_R - 8},${y1} ${OTIP[0] + 13},${(y1 + OTIP[1]) / 2} ${OTIP[0] + 1.2},${OTIP[1] - 0.8} A 1.6,1.6 0 0 0 ${OTIP[0]},${OTIP[1] + 1.2} L ${OBASE_L},${y1}`,
+  }[kind];
+  return bodyHead(O, OBASE_R) + ' ' + t + ' ' + bodyTail(O, OBASE_L);
+}
+
+const NS = 'http://www.w3.org/2000/svg';
+for (const kind of ['T1', 'T2', 'T3', 'T4']) {
+  const row = document.createElement('div');
+  row.className = 'row';
+  const tag = document.createElement('div');
+  tag.className = 'tag';
+  tag.textContent = { T1: 'T1 纯三角', T2: 'T2 右缘曲+左缘直（swoosh）', T3: 'T3 左缘小内凹(overshoot 3)', T4: 'T4 左缘直+尖端小倒角' }[kind];
+  row.appendChild(tag);
+
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '615 4 195 96');
+  svg.setAttribute('width', '620');
+  svg.setAttribute('height', '305');
+  svg.dataset.k = kind;
+
+  const defs = document.createElementNS(NS, 'defs');
+  defs.innerHTML = `<linearGradient id="g${kind}" x1="0" y1="0" x2="0.25" y2="1">
+    <stop offset="0" stop-color="#FC5294"/><stop offset="1" stop-color="#FC5294"/></linearGradient>`;
+  svg.appendChild(defs);
+
+  const o = document.createElementNS(NS, 'path');
+  o.setAttribute('d', outerPath(kind));
+  o.setAttribute('fill', '#FFFFFF');
+  svg.appendChild(o);
+
+  const i = document.createElementNS(NS, 'path');
+  i.setAttribute('d', innerPath(kind));
+  i.setAttribute('fill', `url(#g${kind})`);
+  svg.appendChild(i);
+
+  const crown = document.createElementNS(NS, 'g');
+  crown.setAttribute('transform', 'translate(663.1,47.4) scale(0.66)');
+  crown.innerHTML = '<path d="M-16,10 L-16,-6 L-9,0 L0,-12 L9,0 L16,-6 L16,10 Z" fill="#FFF" stroke="#FFF" stroke-width="2" stroke-linejoin="round"/>';
+  svg.appendChild(crown);
+
+  const txt = document.createElementNS(NS, 'text');
+  txt.setAttribute('class', 't t-w t-h');
+  txt.setAttribute('x', '682.1'); txt.setAttribute('y', '56.3');
+  txt.setAttribute('font-size', '24');
+  txt.textContent = '9折限时';
+  svg.appendChild(txt);
+
+  row.appendChild(svg);
+  document.body.appendChild(row);
+}
+</script>
+</body>
+</html>

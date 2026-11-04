@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+import { BASE } from './_base.mjs';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 2 });
+await page.goto(BASE, { waitUntil: 'commit' });
+await page.waitForSelector('.brand-loader', { state: 'detached', timeout: 20000 }).catch(() => {});
+await page.waitForSelector('[data-dish-thumb="true"]', { timeout: 20000 });
+await page.waitForTimeout(500);
+await page.click('#nav-tab-orders');
+await page.waitForSelector('.brand-loader', { state: 'detached', timeout: 15000 }).catch(() => {});
+await page.waitForTimeout(900);
+const box = await page.evaluate(() => {
+  const d = [...document.querySelectorAll('div')].find(x => x.textContent.includes('牛油果鸡胸沙拉') && !x.textContent.includes('今天 12:15'));
+  const card = d.closest('div.rounded-2xl') || d.closest('div.rounded-\\[22px\\]') || d.parentElement.parentElement.parentElement.parentElement;
+  const r = card.getBoundingClientRect();
+  return { x: Math.max(0,r.x-4), y: Math.max(0,r.y-4), width: Math.min(430-r.x+4,r.width+8), height: Math.min(932-r.y+4,r.height+8) };
+});
+await page.screenshot({ path: 'scripts/_shots/orders-name-final.png', clip: box });
+await browser.close();
+console.log('ok');

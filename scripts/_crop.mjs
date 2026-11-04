@@ -1,0 +1,21 @@
+import { chromium } from 'playwright';
+import { readFileSync, mkdirSync } from 'node:fs';
+const [src, out, x, y, w, h, z] = process.argv.slice(2);
+const mime = src.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
+const b64 = `data:${mime};base64,${readFileSync(src).toString('base64')}`;
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 10, height: 10 } });
+const r = await page.evaluate(async ([src, x, y, w, h, z]) => {
+  const img = new Image(); img.src = src; await img.decode();
+  const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+  c.getContext('2d').drawImage(img, 0, 0);
+  const o = document.createElement('canvas'); o.width = w * z; o.height = h * z;
+  const g = o.getContext('2d'); g.imageSmoothingEnabled = false;
+  g.drawImage(c, x, y, w, h, 0, 0, w * z, h * z);
+  return o.toDataURL('image/png');
+}, [b64, +x, +y, +w, +h, +z]);
+mkdirSync('outputs/crop', { recursive: true });
+const { writeFileSync } = await import('node:fs');
+writeFileSync(out, Buffer.from(r.split(',')[1], 'base64'));
+console.log('输出', out);
+await browser.close();

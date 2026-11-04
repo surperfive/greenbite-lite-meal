@@ -1,0 +1,764 @@
+@import "tailwindcss" source(none);
+/* 显式限定扫描范围。
+   ⚠️ 不能让 Tailwind 自动探测：它会扫 scripts/ 下 578 个验证脚本，
+   那些脚本里的 CSS 选择器字符串（`div[class*="rounded-full"]` 之类）
+   会被当成类名候选，白生成一堆用不到的类。
+   @source 路径相对本文件（src/index.css）。 */
+@source "../index.html";
+@source "../src";
+
+@layer base {
+  :root {
+    /* ============================================================
+       品牌青柠色阶 —— 全项目唯一一套绿，由 #C7F665 推导。
+       新增 UI 一律从这里取色，不要再手写新的绿色 hex。
+       （例外：插画/3D 模型/抽卡光效自带配色，不参与统一）
+       ============================================================ */
+    --lime-50: #F2FCE0;   /* 极浅底纹 */
+    --lime-100: #E4F8BC;  /* 浅底纹 / 胶囊底 */
+    --lime-400: #C7F665;  /* 品牌主色：面 / 填充 / 描边 / 环 */
+    --lime-500: #B7EF4B;  /* hover / 按下 */
+    --lime-700: #54801A;  /* 白底上的强调、选中描边（对白 4.7:1） */
+    --lime-900: #26430B;  /* 深绿墨：青柠底上的文字与图标 */
+
+    /* 旧别名，保留兼容；新代码请直接用上面的 --lime-* */
+    --brand-hero: var(--lime-400);
+    --brand-primary: var(--lime-400);
+    --brand-primary-hover: var(--lime-500);
+    --brand-deep: var(--lime-900);
+    --brand-pill-bg: var(--lime-100);
+    --brand-pill-text: var(--lime-900);
+
+    --brand-black: #111827;
+    --brand-dark: #000000;
+    --brand-surface: #F8FAFC;
+    --brand-surface-subtle: #F1F5F9;
+    --brand-card-border: #E2E8F0;
+
+    /* ============================================================
+       品牌粉色阶 —— 由 #FDD3EA 推导，全项目唯一一套粉。
+       ⚠️ 数字价格与「小红点」刻意不纳入粉色阶（用户明确要求「除数字价格」）。
+          它们走**玫红**，直接写字面 hex，不设变量（与项目其它颜色一致：都写字面 hex，
+          方便 grep 定位）。适用范围：所有 ¥ 金额 + 底部导航/悬浮购物车的计数徽章。
+          ⚠️ 2026-10-27 用户「所有红色改成 #fc259b」：原正红 #E60012 全量替换。
+          🟥 **2026-10-28 晚定版：全站红 = `#FC5294`，只有这一个值**。
+              用户先要求「所有红色改成 #fc5294」，随后看到价格是深玫红直接问
+              「为什么是暗色」—— 说明要的是**这个色号本身**，不是"同色相更深的可读版本"。
+              于是撤掉上一版 UI 审计引入的双档（亮 #FC5294 做面 / 深 #B83C6C 做字），
+              文字、图标、角标底、徽章底、心形 fill/stroke 全部统一成 #FC5294。
+          ⚠️ **已知代价（用户明确接受）**：#FC5294 对白 3.10:1、对 #F4F6F8 底 2.86:1，
+              9~17px 的 ¥ 符号/金额**不满足 WCAG AA 4.5:1**（只够 18.66px 加粗以上）。
+              这是"色号优先于对比度"的取舍，不是漏改；想补可读性时优先加**字重/字号**，
+              不要再偷偷换深色 —— 那正是这次被退回的做法。
+          ⚠️ 计数徽章（底部导航、悬浮购物车）是**粉底白字**：白对 #FC5294 只有 3.10:1，
+              10px 数字严格说不过 AA。中间曾改成近黑字提对比，被用户否掉（「里面黑色都改成白色」）——
+              要的就是经典小红点那颗观感，**别再用黑字**。
+          ⚠️ #FC5294 和品牌粉 #EC4899 白底对比 3.10 vs 3.53 —— 并排能看出区别
+          （#FC5294 更暗、更偏珊瑚）。仍按"红改玫红、粉不动"执行；要合并改 --pink-400 即可。
+       ============================================================ */
+    --pink-50: #FDD3EA;   /* 极浅底纹 */
+    --pink-100: #FAB7D9;  /* 浅底纹 / 浅描边 */
+    --pink-400: #EC4899;  /* 主色：图标 / 强调 / 徽章 */
+    --pink-500: #DB2777;  /* hover / 按下 */
+    --pink-700: #BE185D;  /* 深强调 */
+    --pink-900: #831843;  /* 深粉墨 */
+
+    /* ============================================================
+       用色规范（2026-10-15 全项目配色统一后定稿）
+       ============================================================ */
+
+    /* ① 纯黑一律写 #000（或 Tailwind 的 bg-/text-/border-black）。
+          不要再出现 #000000 / #0A0A0A 这些变体 —— 已统一。
+          抽卡页手绘 SVG 的黑也是 #000，理由见 ProductDetailPage.tsx 的注释。 */
+
+    /* ② --brand-black 只在「加载屏」用（值是深灰蓝 #111827，不是纯黑）。
+          它和 ① 的纯黑是两套东西，别混用；加载屏是绿黑配色的整屏特例。 */
+
+    /* ③ 不参与配色统一的自带配色（动了就毁观感）：
+            · 插画 / 3D：FoodCloche3D、GiftMascotAnimation、FoodCutoutRenderer、
+                          HandshakeStitchIcon、CloudSkyBackground、utils/ingredientBackdrops
+            · 抽卡光效：GachaBurstReveal 的 gb-flow-* / gb-drift-*（青色系）
+            这些文件里的 hex 数量最大，但都是素材固有配色，不要"顺手统一"。 */
+
+    /* ④ 稀有度徽章配色（SSR 金 / SR 紫 / R 青柠），唯一权威来源是
+          GachaBurstReveal.tsx 的 RARITY_STYLE：
+              SSR #ffb400 · SR #b388ff · R #C7F665（皆 text-black）
+          GachaPage.tsx 的食材卡徽章、DROP_RATES 都必须与它一致。 */
+
+    /* ⑤ 菜品图加载失败时的分类兜底色（DishImage.tsx）是**分类语义色**，
+          刻意四色区分（salad 青柠 / drink 蓝 / snack 粉 / bowl 琥珀），
+          不属于品牌色板 —— 改任何一个都会和另一类撞车。 */
+
+    /* ⑥ 新增 UI 颜色时先想清楚：是①~⑤里的既有角色，还是真需要新色？
+          如果是后者，加色阶变量而不是手写 hex。 */
+  }
+
+  body {
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Plus Jakarta Sans', 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #F4F6F8;
+    color: #111827;
+  }
+}
+
+/* ========================================================================= */
+/* 手机壳高度的安全回退（2026-10-28「小程序里弹窗出屏」修复的一半）            */
+/*                                                                           */
+/* DeviceFrameWrapper 原来写 `h-[100dvh]`。dvh 是 CSS 2023 新单位，            */
+/* 旧内核（微信 X5 / 部分 XWeb、老 iOS WKWebView）不认识 → **整条声明失效**，   */
+/* 壳高跌回 auto（被内容撑到比视口还高）。StickerModal 的居中盒实测的是壳矩形，  */
+/* 壳一高，卡片就按「内容高度」居中，超出手机可视区 —— 表现为"弹窗出小程序了"。  */
+/* 解法：先写 100vh（全内核可用），@supports 里再用 100dvh 覆盖（支持的内核）。 */
+/* ⚠️ 换壳高度实现时这两个类要一起改，别再回到裸 dvh。                         */
+.shell-h-safe {
+  height: 100vh;
+}
+@supports (height: 100dvh) {
+  .shell-h-safe {
+    height: 100dvh;
+  }
+}
+.shell-maxh-safe {
+  max-height: 100vh;
+}
+@supports (max-height: 100dvh) {
+  .shell-maxh-safe {
+    max-height: 100dvh;
+  }
+}
+
+/* ≥640px（桌面 / 平板）壳要「留边」显示成手机框：`sm:my-4` 上下各 16px。
+   如果壳高还是 100dvh，壳 + 上下边距 = 视口 + 32px → **整页永远多出 32px 纵向滚动**
+   （2026-11-02 实测：1280×800 时 docH 832 / 视口 800，手机壳底边被切在首屏外）。
+   所以这里从高度里把这 32px 扣掉，并顺手把「最高 844」写死 —— 否则大显示器上
+   壳会被拉到 1000+ 高，手机比例就没了。
+   ⚠️ 三个数字是一组：16+16 必须等于 `sm:my-4`（Tailwind my-4 = 16px）。
+      改边距不改这里，白边会立刻回来。 */
+@media (min-width: 640px) {
+  .shell-h-safe {
+    height: min(844px, calc(100vh - 32px));
+  }
+  .shell-maxh-safe {
+    max-height: min(844px, calc(100vh - 32px));
+  }
+}
+@supports (height: 100dvh) {
+  @media (min-width: 640px) {
+    .shell-h-safe {
+      height: min(844px, calc(100dvh - 32px));
+    }
+    .shell-maxh-safe {
+      max-height: min(844px, calc(100dvh - 32px));
+    }
+  }
+}
+
+/* ========================================================================= */
+/* 胶囊内文字的光学居中补偿                                                    */
+/*                                                                           */
+/* 问题：`align-items:center` 居中的是**行盒**，不是字形。CJK 字形几乎没有下伸部， */
+/* 但字体度量仍然留了 descender 空间，于是墨迹中心比行盒中心低一截。            */
+/* 推导：基线在行盒中的位置 = L/2 + (A−D)/2（与 line-height 无关，改行高没用），   */
+/*      墨迹中心 = 基线 − k，所以偏移 = (A−D)/2 − k ≈ +0.075em，恒定按 em 缩放。  */
+/* 实测（`_pill-ink.py` 量像素，非估算）：                                      */
+/*       fs 12 → +0.83px · fs 11 → +0.50px · fs 9 → +0.67px · fs 10 → +0.83px   */
+/* 用法：把胶囊里那行文字包一层 `pill-label`。                                   */
+/*       ⚠️ 只能包**文字**，不要包图标（图标有自己的视觉重心，跟着抬会变高）。      */
+/*       ⚠️ 不要往段落/正文上套 —— 那是排版基线，抬了会显得整段悬浮。             */
+/*       ⚠️ **纯拉丁 / 纯数字的 8px 小标签不套**（首页 HOT·FRESH·WOW·FREE）：      */
+/*          大写字母没有下伸部、视觉重心本来就偏高，实测套上反而过头 0.6px。       */
+/*          同理，8.5px 的封面角标（TOP热销 / 0蔗糖 / 暖心热食）实测原本就居中，    */
+/*          不要"顺手统一"。                                                      */
+/* 验证：`node scripts/_pill-shots.mjs` 采位置 + 截图，                              */
+/*       `python scripts/_pill-ink.py` 用灰度质心量墨迹中心（附 `--sheet` 出对照图）。*/
+/* ========================================================================= */
+@utility pill-label {
+  /* inline-block 是为了让 transform 在非 flex 上下文里也生效（flex 子项会被块化，
+     本来就生效；这条是给 block 流里的胶囊兜底）。 */
+  display: inline-block;
+  transform: translateY(-0.075em);
+}
+
+/* ========================================================================= */
+/* 2026-10-28 UI 规范审计 —— 全局可访问性基线                                  */
+/* ========================================================================= */
+
+@layer base {
+  /* ① 焦点必须可见。
+        审计前全站只有加载屏的「跳过」和两个 gacha 召唤按钮写了自己的 focus 样式，
+        其余控件全靠浏览器默认 ring —— 而默认 ring 在青柠底/白卡圆角边缘几乎看不见。
+        统一成 2px 深墨 + 2px 外扩，在青柠、白、浅灰三种底上都读得出来。
+        ⚠️ 用 `:focus-visible` 而不是 `:focus`：鼠标点击不出圈，只有键盘/读屏才出。
+        ⚠️ gacha 的两个召唤按钮是例外（`outline:none !important` 是用户明确要求的），
+           它们的可用性靠"整块可点 + 按压反馈"兜底，见 index.css 底部注释。 */
+  :where(button, a[href], [role='button'], [role='tab'], input, select, textarea, [tabindex]:not([tabindex='-1'])):focus-visible {
+    outline: 2px solid #070906;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* ② 触摸目标：视觉尺寸不动，命中区补到 44×44。
+        审计里 22~28px 的纯图标按钮（收藏、加减、详情、图鉴入口）手指按不准，
+        但直接把按钮画到 44 会把卡片排版撑坏。
+        做法：给按钮挂 `gb-hit`，用生成内容撑出一块透明命中区 ——
+        `::after` 属于按钮本身，点它等同点按钮，不影响布局、不影响视觉。
+        ⚠️ 只用于**四周有余量**的独立图标按钮；密集一排（步进器）用 `gb-hit-y`，
+           否则相邻按钮的命中区会互相抢点击。
+        ⚠️⚠️ 定位必须写在 `:where()` 里（特异性 0）。早先直接写 `.gb-hit{position:relative}`，
+           它和 Tailwind 的 `.absolute` 同在 utilities 层、源码顺序又更靠后，于是把元素自己的
+           `absolute` 顶掉了 —— 2026-10-28 首页人气卡的加号从右下角"掉"回文档流，
+           还带着 `right:2.5` 左移 10px，正好压在 ¥ 价格上（用户截图「组件错乱完了」）。
+           `::after` 的规则不用降级：宿主已经被显式定位时，它照样相对宿主定位。 */
+  :where(.gb-hit, .gb-hit-y) {
+    position: relative;
+  }
+  .gb-hit::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  /* 只补高度、不补宽度：给横排紧邻的小按钮（数量加减）用。 */
+  .gb-hit-y::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: max(100%, 44px);
+    transform: translateY(-50%);
+  }
+}
+
+/* Brand opening. All selectors are scoped; no global animation overrides. */
+.brand-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* 柔和低饱和浅芽绿渐变底：中心柔白微光聚焦视觉中心，四周浅青柠绿退后不抢戏 */
+  background: radial-gradient(circle at 50% 46%, #F6FCEB 0%, #E7F6C4 52%, #D7EEA4 100%);
+  color: #000000;
+  font-family: inherit;
+  outline: none;
+  user-select: none;
+  touch-action: none;
+  container-type: size;
+}
+
+/* ========================================================================= */
+/* 背景颜色流动层（2026-10-23 用户要求：「纯静止的背景不好看，增加一点点颜色流动」）       */
+/* 结构在 LoadingScreen.tsx 的 .brand-loader__aurora；回滚见 scripts/backup-loading-2026-10-23/ */
+/* 三个可调旋钮：① 颜色 = 各 blob 的 background；② 大小/位置 = width/top/left；               */
+/*            ③ 速度 = animation-duration。⚠️ 周期必须按「加载页实际可见时长」校准：              */
+/*               开屏约 2s、详情页开屏仅 ~620ms。19s→15s 用户仍看不到，定稿 **2.6s/3.4s/3s**     */
+/*               （620ms 内光斑位移 ~20px，肉眼可感）。建议区间 2.5s~4s，别回到 5s 以上。        */
+/* 约束：不透明度 0.5~0.65 + blur ≤30px。⚠️ 模糊越重越看不出在动（无形渐变平移对人眼几乎
+   不可感），边缘可辨认 + 对比够才看得出流动；用户实测 46px/0.32 完全看不到。 */
+/* ========================================================================= */
+.brand-loader__aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.brand-loader__blob {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(24px);
+  will-change: transform;
+}
+
+/* 光斑 A：主青柠 #C7F665，左上 → 缓慢斜向下漂（最亮的一块，定调） */
+.brand-loader__blob--a {
+  width: 62cqw;
+  aspect-ratio: 1;
+  top: -14cqh;
+  left: -10cqw;
+  background: #c7f665;
+  opacity: 0.62;
+  animation: brand-aurora-drift-a 2.6s ease-in-out infinite;
+}
+
+/* 光斑 B：柠檬黄 #FFF220（取自海浪进度条左端色），右下 → 向右上漂（暖色点睛） */
+.brand-loader__blob--b {
+  width: 52cqw;
+  aspect-ratio: 1;
+  right: -14cqw;
+  bottom: -12cqh;
+  background: #fff220;
+  opacity: 0.5;
+  animation: brand-aurora-drift-b 3.4s ease-in-out infinite;
+}
+
+/* 光斑 C：嫩绿 #B7EF4B，中右 → 上下浮动（填补 A/B 之间的空档，让流动连续） */
+.brand-loader__blob--c {
+  width: 44cqw;
+  aspect-ratio: 1;
+  top: 34cqh;
+  right: 6cqw;
+  background: #b7ef4b;
+  opacity: 0.55;
+  animation: brand-aurora-drift-c 3s ease-in-out infinite;
+}
+
+@keyframes brand-aurora-drift-a {
+  0%,
+  100% {
+    transform: translate(0cqw, 0cqh) scale(1);
+  }
+  50% {
+    transform: translate(13cqw, 11cqh) scale(1.12);
+  }
+}
+
+@keyframes brand-aurora-drift-b {
+  0%,
+  100% {
+    transform: translate(0cqw, 0cqh) scale(1.08);
+  }
+  50% {
+    transform: translate(-15cqw, -10cqh) scale(1);
+  }
+}
+
+@keyframes brand-aurora-drift-c {
+  0%,
+  100% {
+    transform: translate(0cqw, 0cqh) scale(1);
+  }
+  33% {
+    transform: translate(-9cqw, 6cqh) scale(1.1);
+  }
+  66% {
+    transform: translate(5cqw, -7cqh) scale(0.94);
+  }
+}
+
+.brand-loader__header {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  right: 18px;
+  z-index: 10;
+}
+
+.brand-loader__skip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  min-height: 30px;
+  padding: 0 12px;
+  border: 1px solid rgb(38 67 11 / 0.16);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgb(20 36 6 / 0.68);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.brand-loader__skip:hover { opacity: 0.9; }
+.brand-loader__skip:active { transform: scale(0.96); }
+.brand-loader__skip:focus-visible { outline: 1.5px solid #000000; outline-offset: 2px; }
+.brand-loader__skip:disabled { cursor: default; opacity: 0.35; }
+
+.brand-loader__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  /* 压在背景流动层（z-0）之上：Logo 与进度条永远在光斑前面 */
+  position: relative;
+  z-index: 1;
+}
+
+.brand-loader__logo-stage {
+  position: relative;
+  width: clamp(208px, 62cqw, 256px);
+  aspect-ratio: 1000 / 485;
+  margin-inline: auto;
+  animation: brand-logo-stage-enter 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.brand-loader__logo-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 12px 28px rgb(38 67 11 / 0.14));
+}
+
+.brand-logo__crown {
+  transform-origin: 200px 200px;
+  animation: brand-logo-crown-pop 0.65s 0.05s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             brand-logo-crown-float 1.4s 0.7s ease-in-out infinite;
+}
+
+.brand-logo__fresh {
+  transform-origin: 595px 220px;
+  animation: brand-logo-word-pop 0.46s 0.02s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.brand-logo__food {
+  transform-origin: 595px 380px;
+  animation: brand-logo-word-pop 0.5s 0.09s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.brand-loader__wave-capsule {
+  position: relative;
+  width: clamp(156px, 46cqw, 184px);
+  aspect-ratio: 208 / 36;
+  margin-top: 4px;
+  margin-inline: auto;
+  animation: brand-logo-word-pop 0.42s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.brand-loader__wave-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 6px 14px rgb(38 67 11 / 0.12));
+}
+
+/* 整个黄绿渐变海浪体严格从左端 (-192px) 向右端 (+14px) 推进填满胶囊 */
+.brand-loader__wave-advance {
+  animation: brand-wave-left-to-right 1.24s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 右端朝右的海浪前锋连续起伏翻涌（单周期波长 24px） */
+.brand-loader__front-crest--main {
+  animation: brand-crest-undulate-main 0.34s linear infinite;
+}
+
+.brand-loader__front-crest--back {
+  animation: brand-crest-undulate-back 0.44s linear infinite;
+}
+
+/* 内部流光海浪波纹严格【从左向右】(+X) 连续奔涌（单周期波长 56px） */
+.brand-loader__wave-layer--front {
+  animation: brand-wave-roll-right-fast 0.36s linear infinite;
+}
+
+.brand-loader[data-finishing="true"] .brand-loader__wave-advance {
+  transform: translateX(14px);
+}
+.brand-loader[data-finishing="true"] .brand-logo__crown,
+.brand-loader[data-finishing="true"] .brand-loader__front-crest,
+.brand-loader[data-finishing="true"] .brand-loader__wave-layer {
+  animation-play-state: paused;
+}
+
+@keyframes brand-logo-stage-enter {
+  from { opacity: 0; transform: scale(0.92) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes brand-logo-crown-pop {
+  0% { opacity: 0; transform: translate(-10px, -14px) rotate(-14deg) scale(0.72); }
+  70% { opacity: 1; transform: translate(2px, 1px) rotate(3deg) scale(1.04); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes brand-logo-crown-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(-2.5deg); }
+}
+
+@keyframes brand-logo-word-pop {
+  0% { opacity: 0; transform: translateY(8px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 进度从左端起点 (-192px) 向右端终点 (+14px) 平滑推进 */
+@keyframes brand-wave-left-to-right {
+  0% {
+    transform: translateX(-192px);
+  }
+  100% {
+    transform: translateX(14px);
+  }
+}
+
+/* 右侧海浪前锋波峰连续翻涌（波长 24px = Q6+T12+T12） */
+@keyframes brand-crest-undulate-main {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(24px);
+  }
+}
+
+@keyframes brand-crest-undulate-back {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-24px);
+  }
+}
+
+/* 内部海浪波纹严格从左向右 (+X) 奔涌推进（56px 为一个完整正弦波长） */
+@keyframes brand-wave-roll-right-fast {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  50% {
+    transform: translate(28px, -1.5px);
+  }
+  100% {
+    transform: translate(56px, 0px);
+  }
+}
+
+@container (max-height: 430px) {
+  .brand-loader__logo-stage { width: 168px; }
+  .brand-loader__wave-capsule { margin-top: 16px; width: 136px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-loader__logo-stage,
+  .brand-logo__crown,
+  .brand-logo__fresh,
+  .brand-logo__food,
+  .brand-loader__wave-capsule,
+  .brand-loader__wave-advance,
+  .brand-loader__front-crest,
+  .brand-loader__wave-layer,
+  .brand-loader__blob {
+    animation: none;
+  }
+  .brand-loader__wave-advance {
+    transform: translateX(14px);
+  }
+  .brand-loader__skip {
+    transition: none;
+  }
+}
+
+/* Frosted Glass & Matte Texture Helpers */
+.frosted-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.frosted-glass-dark {
+  background: rgba(17, 24, 39, 0.95);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(164, 214, 92, 0.4);
+}
+
+.frosted-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.matte-pill {
+  background: rgba(238, 248, 219, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(164, 214, 92, 0.4);
+}
+
+/* Subtle dot texture */
+.bg-subtle-dots {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.2) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+/* Hide scrollbar universally for all elements in mini program while keeping smooth scrolling */
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* Hide scrollbar utility class */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* 需要「看得见可以滚」的容器专用细滚动条
+   ----------------------------------------------------------------------------
+   上面 `*::-webkit-scrollbar { display: none }` 是全局隐藏（小程序观感），
+   对页面滚动没问题，但弹窗里长内容被切一半时，用户完全不知道还能往下滑
+   （2026-10-27 用户：「这个介绍太长了，可以做滚轮滑动」）。
+   这里用更高优先级（.class 前缀）把 4px 细滚动条单独放出来。 */
+.gb-modal-scroll {
+  -ms-overflow-style: auto;
+  /* ⚠️ 必须显式写回 auto：全局 `* { scrollbar-width: none }` 会直接关掉滚动条，
+     而且只要 scrollbar-width 是 none/thin，Chrome 就**不认**下面的
+     ::-webkit-scrollbar 样式（实测会退成 10px 原生细条或干脆 0px）。
+     只有 auto 才让下面这套 4px 圆头灰条生效。 */
+  scrollbar-width: auto;
+}
+.gb-modal-scroll::-webkit-scrollbar {
+  display: block;
+  width: 4px !important;
+  height: 4px !important;
+  background: transparent !important;
+}
+.gb-modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.gb-modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 999px;
+}
+.gb-modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.65);
+}
+
+/* 3D flip card utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Safe area padding support */
+.safe-pb {
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+.safe-pt {
+  padding-top: max(12px, env(safe-area-inset-top));
+}
+
+/* 8px 档的底部安全区（2026-10-30 补，ui-ux-pro-max §Safe-area compliance）
+   ----------------------------------------------------------------------------
+   底部导航原本写死 `pb-2`（8px）。在桌面预览里 env() = 0，看着没问题；
+   但真机（iPhone 有 home indicator、全面屏安卓有手势条）上这条白色导航会直接
+   压在手势区里 —— 文字被系统横条盖住，且从下往上滑会先触发「回桌面」。
+   ⚠️ 用 max(8px, …) 而不是直接 env()：桌面 / 无手势区机型 env() 求值为 0，
+      直接写 env() 会让内边距归零，导航瞬间变矮 8px。max() 保证下限还是现在的 8px，
+      **桌面观感与改动前完全一致**，只有真机才多出那段安全区。
+   ⚠️ 别改用 .safe-pb（16px 档）：那会把导航撑高 8px，等于改了版式。 */
+.safe-pb-tight {
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+
+/* Remove click/focus black outline on gacha summon buttons */
+#btn-gacha-single, #btn-gacha-ten {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+#btn-gacha-single:focus, #btn-gacha-ten:focus,
+#btn-gacha-single:focus-visible, #btn-gacha-ten:focus-visible,
+#btn-gacha-single:active, #btn-gacha-ten:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Gacha Native SVG Buttons Interactive Feedback (3D Physical Press-Down) */
+#gacha-action-buttons-group:has(#btn-gacha-single:active) #btn-single-cap {
+  transform: translateY(9.5px);
+  transition: transform 0.05s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+#gacha-action-buttons-group:has(#btn-gacha-single:active) #btn-single {
+  transform: rotate(-4.2deg) translateY(2.5px) scale(0.99);
+  transform-origin: 196.5px 137px;
+  transition: transform 0.05s ease-out;
+}
+
+#gacha-action-buttons-group:has(#btn-gacha-ten:active) #btn-multi-cap {
+  transform: translateY(9.5px);
+  transition: transform 0.05s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+#gacha-action-buttons-group:has(#btn-gacha-ten:active) #btn-multi {
+  transform: translateY(2.5px) scale(0.99);
+  transform-origin: 610px 137px;
+  transition: transform 0.05s ease-out;
+}
+
+#gacha-action-buttons-group:has(#btn-gacha-ten:active) #badge-discount {
+  transform: translateY(11.5px) scale(0.96);
+  transform-origin: 710px 45.5px;
+  transition: transform 0.05s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+#gacha-action-buttons-group:has(#btn-gacha-single:hover:not(:disabled)) #btn-single-face {
+  filter: brightness(1.04);
+}
+
+#gacha-action-buttons-group:has(#btn-gacha-ten:hover:not(:disabled)) #btn-multi-face {
+  filter: brightness(1.08);
+}
+
+/* 隐藏横向滚动条但保留滚动能力 —— 结果弹窗的食材滑动队列需要 snap 对齐，
+   但参考图要求边缘干净无滚动条。scrollbar-hide 之前项目里未定义，
+   Tailwind 也不提供（它只有 scrollbar-none，需自行实现）。 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* ── 白描边文字（贴纸感，用在青柠底/彩色底上的黑字）─────────────────
+   用 8 向 text-shadow 而不是 -webkit-text-stroke：
+   · text-stroke 是**居中描边**，会吃掉字形内部，粗黑体加 2px 后笔画明显变细；
+   · text-shadow 只向外扩，字形本身不动，更接近「贴纸外描边」的观感。
+   ⚠️ 只用在深色/彩色底上。白底或 #f7f9fb 这类近白底上白描边等于隐形，
+   小字号还会因为外扩把笔画糊在一起，反而降低可读性。 */
+.text-stroke-white {
+  text-shadow:
+    1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff,
+    1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
+
+/* 大字号版（≥12px 用）。描边粗细要跟着字号走：12px 的字配 1.5px 描边会显得
+   描边偏细、压不住底下的插画；2px 才有「贴纸压图」的分量。 */
+.text-stroke-white-lg {
+  text-shadow:
+    2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+    1.4px 1.4px 0 #fff, -1.4px -1.4px 0 #fff, 1.4px -1.4px 0 #fff, -1.4px 1.4px 0 #fff;
+}

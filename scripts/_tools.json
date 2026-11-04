@@ -1,0 +1,4 @@
+ffmpeg: OK → ffmpeg version 7.0-full_build-www.gyan.dev Copyright (c) 2000-2024 the FFmpeg developers
+ffprobe: OK → ffprobe version 7.0-full_build-www.gyan.dev Copyright (c) 2007-2024 the FFmpeg developers
+magick: NOT FOUND
+node: v22.22.2

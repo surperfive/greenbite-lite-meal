@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>9折限时 badge · 无旋转隔离台</title>
+<style>
+  html,body{margin:0;background:#F4F6F8}
+  svg{display:block}
+  .t { font-family: "PingFang SC","HarmonyOS Sans SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei","Heiti SC","WenQuanYi Micro Hei",system-ui,sans-serif; fill:#000; }
+  .t-h { font-weight: 900; }
+  .t-w { fill:#FFFFFF; }
+</style>
+</head>
+<body>
+<!-- viewBox 620,10 → 180x80，width 720 ⇒ 每 1 用户单位 = 4px，便于亚像素量测。
+     ⚠️ 刻意**不带** badge-body 的 rotate(-3.5°)：旋转会把左右不同 x 的垂直基准错开
+     （跨 14px 就偏 0.86css），是本轮量测误差的主要来源。 -->
+<svg id="h" viewBox="620 10 180 80" width="720" height="320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g-gold" x1="0" y1="0" x2="0.25" y2="1">
+      <stop offset="0" stop-color="#FC5294" />
+      <stop offset="1" stop-color="#FC5294" />
+    </linearGradient>
+  </defs>
+  <rect id="badge-white-pill" x="628.5" y="16" width="164" height="65" rx="32.5" fill="#FFFFFF" />
+  <path id="badge-bubble"
+        d="M658,22 H763 A23.5,23.5 0 0 1 763,69 H686 L668,75 L678,69 H658 A23.5,23.5 0 0 1 658,22 Z"
+        fill="url(#g-gold)" stroke-linejoin="round" />
+  <g id="badge-crown" transform="translate(663.1,47.4) scale(0.66)">
+    <path d="M-16,10 L-16,-6 L-9,0 L0,-12 L9,0 L16,-6 L16,10 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+  </g>
+  <text id="txt-discount" class="t t-w t-h" x="682.1" y="56.3" font-size="24" letter-spacing="0">9折限时</text>
+</svg>
+</body>
+</html>

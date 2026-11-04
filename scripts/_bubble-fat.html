@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>气泡尾巴 · 粗短四档</title>
+<style>
+  html,body{margin:0;background:#F4F6F8}
+  svg{display:block}
+  .t{font-family:"PingFang SC","HarmonyOS Sans SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei","Heiti SC",system-ui,sans-serif;fill:#000}
+  .t-h{font-weight:900}.t-w{fill:#FFF}
+  .row{display:flex;align-items:center;gap:12px;padding:8px 12px}
+  .tag{width:250px;font:12px/1.5 ui-monospace,monospace;color:#222}
+</style>
+</head>
+<body>
+<script>
+const B = { x0: 634.5, y0: 22, x1: 786.5, y1: 69, rx: 16 };
+const O = { x0: 628.5, y0: 16, x1: 792.5, y1: 75, rx: 22 };
+
+function head(b, tailR) {
+  return `M ${b.x0 + b.rx},${b.y0} H ${b.x1 - b.rx} A ${b.rx},${b.rx} 0 0 1 ${b.x1},${b.y0 + b.rx} V ${b.y1 - b.rx} A ${b.rx},${b.rx} 0 0 1 ${b.x1 - b.rx},${b.y1} H ${tailR}`;
+}
+function tail(b, tailL) {
+  return `H ${b.x0 + b.rx} A ${b.rx},${b.rx} 0 0 1 ${b.x0},${b.y1 - b.rx} V ${b.y0 + b.rx} A ${b.rx},${b.rx} 0 0 1 ${b.x0 + b.rx},${b.y0} Z`;
+}
+
+/* 每档：base 左右端点 + 尖端 + 右缘是否走曲线（左缘一律直线，接缝靠"陡"来避免尖刺） */
+const CASES = [
+  { k: 'F1', L: 672, R: 696, T: [668, 81], curve: false, label: 'F1 三角 · 基22 深12' },
+  { k: 'F2', L: 672, R: 696, T: [668, 81], curve: true,  label: 'F2 右缘曲 · 基22 深12' },
+  { k: 'F3', L: 674, R: 700, T: [672, 82], curve: true,  label: 'F3 近垂直尾 · 基26 深13' },
+  { k: 'F4', L: 676, R: 702, T: [678, 83], curve: true,  label: 'F4 垂直尾(略右) · 基26 深14' },
+];
+
+function seg(c, b, L, R, T) {
+  const y1 = b.y1;
+  const right = c.curve
+    ? `C ${R - 9},${y1} ${T[0] + 13},${(y1 + T[1]) / 2} ${T[0]},${T[1]}`
+    : `L ${T[0]},${T[1]}`;
+  return `${right} L ${L},${y1}`;
+}
+
+const NS = 'http://www.w3.org/2000/svg';
+for (const c of CASES) {
+  const row = document.createElement('div');
+  row.className = 'row';
+  const tag = document.createElement('div');
+  tag.className = 'tag';
+  tag.textContent = c.label;
+  row.appendChild(tag);
+
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '615 4 195 96');
+  svg.setAttribute('width', '620');
+  svg.setAttribute('height', '305');
+  svg.dataset.k = c.k;
+
+  const defs = document.createElementNS(NS, 'defs');
+  defs.innerHTML = `<linearGradient id="g${c.k}" x1="0" y1="0" x2="0.25" y2="1">
+    <stop offset="0" stop-color="#FC5294"/><stop offset="1" stop-color="#FC5294"/></linearGradient>`;
+  svg.appendChild(defs);
+
+  const o = document.createElementNS(NS, 'path');
+  o.setAttribute('d', head(O, c.R + 6) + ' ' + seg(c, O, c.L - 6, c.R + 6, [c.T[0] - 6, c.T[1] + 6]) + ' ' + tail(O, c.L - 6));
+  o.setAttribute('fill', '#FFFFFF');
+  svg.appendChild(o);
+
+  const i = document.createElementNS(NS, 'path');
+  i.setAttribute('d', head(B, c.R) + ' ' + seg(c, B, c.L, c.R, c.T) + ' ' + tail(B, c.L));
+  i.setAttribute('fill', `url(#g${c.k})`);
+  svg.appendChild(i);
+
+  const crown = document.createElementNS(NS, 'g');
+  crown.setAttribute('transform', 'translate(663.1,47.4) scale(0.66)');
+  crown.innerHTML = '<path d="M-16,10 L-16,-6 L-9,0 L0,-12 L9,0 L16,-6 L16,10 Z" fill="#FFF" stroke="#FFF" stroke-width="2" stroke-linejoin="round"/>';
+  svg.appendChild(crown);
+
+  const txt = document.createElementNS(NS, 'text');
+  txt.setAttribute('class', 't t-w t-h');
+  txt.setAttribute('x', '682.1'); txt.setAttribute('y', '56.3');
+  txt.setAttribute('font-size', '24');
+  txt.textContent = '9折限时';
+  svg.appendChild(txt);
+
+  row.appendChild(svg);
+  document.body.appendChild(row);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>9折限时 · 气泡形态 A/B</title>
+<style>
+  html,body{margin:0;background:#F4F6F8}
+  svg{display:block}
+  .t { font-family: "PingFang SC","HarmonyOS Sans SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei","Heiti SC","WenQuanYi Micro Hei",system-ui,sans-serif; fill:#000; }
+  .t-h { font-weight: 900; }
+  .t-w { fill:#FFFFFF; }
+  .row{display:flex;align-items:center;gap:14px;padding:10px 14px}
+  .tag{width:210px;font:13px/1.5 ui-monospace,monospace;color:#222}
+</style>
+</head>
+<body>
+<script>
+/* ===== 气泡路径生成器 =====
+   顺时针，从左上角圆弧之后起笔。
+   尾巴两段三次贝塞尔：外缘（离开底边→尖端）与内缘（尖端→回到底边）。
+   关键：内缘末控制点必须落在 y1 水平线上、且在 tailL 右侧 → 切线水平 → 与底边平滑相接，
+   这个"内凹圆角"就是气泡感的来源（三角形尾巴没有它，所以像贴纸角）。 */
+function bubble({ x0, y0, x1, y1, rx, tailL, tailR, tipX, tipY }) {
+  const d = [];
+  d.push(`M ${x0 + rx},${y0}`);
+  d.push(`H ${x1 - rx}`);
+  d.push(`A ${rx},${rx} 0 0 1 ${x1},${y0 + rx}`);
+  d.push(`V ${y1 - rx}`);
+  d.push(`A ${rx},${rx} 0 0 1 ${x1 - rx},${y1}`);
+  d.push(`H ${tailR}`);
+  // 外缘：水平离开底边 → 下探到尖端
+  d.push(`C ${tailR - 9},${y1} ${tipX + 12},${(y1 + tipY) / 2} ${tipX},${tipY}`);
+  // 内缘：从尖端 → 水平回到 tailL（末控制点在 y1 上、x 更大 ⇒ 平滑内凹）
+  d.push(`C ${tipX + 3},${(tipY + y1) / 2} ${tailL + 6},${y1} ${tailL},${y1}`);
+  d.push(`H ${x0 + rx}`);
+  d.push(`A ${rx},${rx} 0 0 1 ${x0},${y1 - rx}`);
+  d.push(`V ${y0 + rx}`);
+  d.push(`A ${rx},${rx} 0 0 1 ${x0 + rx},${y0}`);
+  d.push('Z');
+  return d.join(' ');
+}
+
+/* 白底 = 同一套参数整体外扩 6（圆角中心不变 ⇒ 白边均匀） */
+function outerOf(b) {
+  return bubble({
+    x0: b.x0 - 6, y0: b.y0 - 6, x1: b.x1 + 6, y1: b.y1 + 6, rx: b.rx + 6,
+    tailL: b.tailL - 6, tailR: b.tailR + 6, tipX: b.tipX - 6, tipY: b.tipY + 6,
+  });
+}
+
+/* 现状复刻：胶囊主体 + 细尖尾巴（对照） */
+const LEGACY_BODY = 'M658,22 H763 A23.5,23.5 0 0 1 763,69 H686 L668,75 L678,69 H658 A23.5,23.5 0 0 1 658,22 Z';
+const LEGACY_OUTER = null; // 用 rect 白胶囊
+
+const BODY = { x0: 634.5, y0: 22, x1: 786.5, y1: 69 };
+
+const variants = [
+  { label: 'A 现状（胶囊+细尖尾）', legacy: true },
+  { label: 'B rx16 · 尾巴 668~690', ...BODY, rx: 16, tailL: 668, tailR: 690, tipX: 660, tipY: 81 },
+  { label: 'C rx11 · 尾巴 670~692', ...BODY, rx: 11, tailL: 670, tailR: 692, tipX: 662, tipY: 82 },
+  { label: 'D rx16 · 尾巴 690~714', ...BODY, rx: 16, tailL: 690, tailR: 714, tipX: 682, tipY: 82 },
+];
+
+const NS = 'http://www.w3.org/2000/svg';
+for (const v of variants) {
+  const row = document.createElement('div');
+  row.className = 'row';
+  const tag = document.createElement('div');
+  tag.className = 'tag';
+  tag.textContent = v.label;
+  row.appendChild(tag);
+
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '610 4 200 100');
+  svg.setAttribute('width', '600');
+  svg.setAttribute('height', '300');
+  svg.dataset.variant = v.label[0];
+
+  const defs = document.createElementNS(NS, 'defs');
+  defs.innerHTML = `<linearGradient id="G${v.label[0]}" x1="0" y1="0" x2="0.25" y2="1">
+      <stop offset="0" stop-color="#FC5294"/><stop offset="1" stop-color="#FC5294"/></linearGradient>`;
+  svg.appendChild(defs);
+
+  if (v.legacy) {
+    const r = document.createElementNS(NS, 'rect');
+    r.setAttribute('x', '628.5'); r.setAttribute('y', '16');
+    r.setAttribute('width', '164'); r.setAttribute('height', '65');
+    r.setAttribute('rx', '32.5'); r.setAttribute('fill', '#FFFFFF');
+    svg.appendChild(r);
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', LEGACY_BODY);
+    p.setAttribute('fill', `url(#G${v.label[0]})`);
+    svg.appendChild(p);
+  } else {
+    const outer = document.createElementNS(NS, 'path');
+    outer.setAttribute('d', outerOf(v));
+    outer.setAttribute('fill', '#FFFFFF');
+    svg.appendChild(outer);
+    const inner = document.createElementNS(NS, 'path');
+    inner.setAttribute('d', bubble(v));
+    inner.setAttribute('fill', `url(#G${v.label[0]})`);
+    svg.appendChild(inner);
+  }
+
+  const crown = document.createElementNS(NS, 'g');
+  crown.setAttribute('transform', 'translate(663.1,47.4) scale(0.66)');
+  crown.innerHTML = '<path d="M-16,10 L-16,-6 L-9,0 L0,-12 L9,0 L16,-6 L16,10 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>';
+  svg.appendChild(crown);
+
+  const txt = document.createElementNS(NS, 'text');
+  txt.setAttribute('class', 't t-w t-h');
+  txt.setAttribute('x', '682.1'); txt.setAttribute('y', '56.3');
+  txt.setAttribute('font-size', '24'); txt.setAttribute('letter-spacing', '0');
+  txt.textContent = '9折限时';
+  svg.appendChild(txt);
+
+  row.appendChild(svg);
+  document.body.appendChild(row);
+}
+</script>
+</body>
+</html>

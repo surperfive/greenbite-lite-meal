@@ -1,0 +1,21 @@
+import { chromium } from 'playwright';
+import { BASE } from './_base.mjs';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 410, height: 900 }, deviceScaleFactor: 2 });
+await page.goto(BASE, { waitUntil: 'commit' });
+await page.waitForSelector('.brand-loader', { state: 'detached', timeout: 25000 }).catch(()=>{});
+await page.waitForSelector('[data-dish-thumb="true"]', { timeout: 25000 }).catch(()=>{});
+await page.waitForTimeout(400);
+await page.click('#nav-tab-home');
+await page.waitForTimeout(1600);
+const r = await page.evaluate(() => {
+  const bar = document.getElementById('home-member-bar');
+  const before = { h: +bar.getBoundingClientRect().height.toFixed(2), pt: getComputedStyle(bar).paddingTop, pb: getComputedStyle(bar).paddingBottom, minH: getComputedStyle(bar).minHeight };
+  bar.style.minHeight = '0px';
+  bar.style.paddingTop = '5px';
+  bar.style.paddingBottom = '5px';
+  const cs = getComputedStyle(bar);
+  return { before, after: { h: +bar.getBoundingClientRect().height.toFixed(2), pt: cs.paddingTop, pb: cs.paddingBottom, minH: cs.minHeight, display: cs.display, align: cs.alignItems, inline: bar.getAttribute('style') } };
+});
+console.log(JSON.stringify(r, null, 2));
+await browser.close();

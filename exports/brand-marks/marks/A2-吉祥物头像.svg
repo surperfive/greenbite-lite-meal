@@ -1,0 +1,31 @@
+<svg viewBox="0 0 300 245" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 已按要求移除：头像左上角的王冠 + 右上角的 HELLO! 气泡（连同其上方的三条动作短线）。
+       viewBox 与头像圆环的坐标保持原样，所以头像在页面上的位置/大小完全不变。 -->
+
+  <!-- Avatar Circle -->
+  <!-- 2026-10-28 去掉原先那圈 4.5 单位黑描边（和 mascot-avatar.svg 同步：
+       首页身份条与「我的」页头像是同一只吉祥物，不能一个有黑线一个没有）。
+       白环 + 黑脸本身已经够分，黑线只会让头像看着"套了个圈"。
+       半径 r=102 保持不变 —— 描边是居中的，去掉后外径只少 2.25 单位，
+       白环厚度 / 黑脸尺寸 / 耳朵与鼻子的坐标全部原样。 -->
+  <circle cx="132" cy="136" r="102" fill="#FFFFFF" />
+  <!-- Inner black disc -->
+  <circle cx="132" cy="136" r="91.5" fill="#000000" />
+
+  <!-- Left Ear -->
+  <g transform="translate(92, 108) rotate(-10)">
+    <path d="M -16 0 A 16 16 0 0 1 16 0 L 16 17 Q 16 20 13 20 L -13 20 Q -16 20 -16 17 Z" fill="#C2F164" />
+  </g>
+
+  <!-- Right Ear -->
+  <g transform="translate(172, 108) rotate(10)">
+    <path d="M -16 0 A 16 16 0 0 1 16 0 L 16 17 Q 16 20 13 20 L -13 20 Q -16 20 -16 17 Z" fill="#C2F164" />
+  </g>
+
+  <!-- Snout pill -->
+  <rect x="73" y="142" width="118" height="64" rx="32" fill="#18181B" />
+
+  <!-- Nostril dots -->
+  <circle cx="113" cy="174" r="10" fill="#C2F164" />
+  <circle cx="151" cy="174" r="10" fill="#C2F164" />
+</svg>

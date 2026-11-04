@@ -1,0 +1,22 @@
+[
+  {
+    "port": 5173,
+    "up": true,
+    "status": 200,
+    "title": "GreenBite 轻食 · 点餐小程序"
+  },
+  {
+    "port": 5174,
+    "up": false
+  },
+  {
+    "port": 4173,
+    "up": false
+  },
+  {
+    "port": 3000,
+    "up": true,
+    "status": 200,
+    "title": "AI Studio"
+  }
+]

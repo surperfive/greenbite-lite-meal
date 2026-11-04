@@ -1,0 +1,483 @@
+/* ============================================================================
+   福利中心弹窗（2026-11-03 用户「福利中心的弹窗换成这个」）
+   ----------------------------------------------------------------------------
+   来源：用户提供的 540×695 单页稿（含原图 -4.1° 倾角、3D 礼盒、凹槽胶囊列表）。
+   这里把 <style> 原样搬进来，类名统一加 `wf-` 前缀，避免和全局/Tailwind 撞。
+   ⚠️ 几何尺寸（540 / 695 / 86 / 41 / 462 / 552 ……）全部照抄，**不要改成 390 体系** ——
+      这套是绝对定位的贴纸构图，改任何一个数都要重算它周围三个元素。
+      适配壳宽靠外层 `--wf-s` 等比缩放（见 .wf-scale），不是改内部坐标。
+   ========================================================================== */
+
+.wf-scale {
+  width: calc(540px * var(--wf-s, 1));
+  height: calc(695px * var(--wf-s, 1));
+  position: relative;
+}
+
+.wf-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 540px;
+  height: 695px;
+  transform: scale(var(--wf-s, 1));
+  transform-origin: top left;
+  /* 2026-11-03 用户圈出「这窗口外的这一层」= 白卡外面那圈青柠底板，要去掉。
+     所以这里**不再有底色**：540×695 现在只是一个定位用的透明画布，
+     露出来的是弹窗蒙层。白卡的圆角/描边/阴影都在 .wf-board 上，不受影响。
+     ⛔ 别把下面那串 radial + linear 渐变加回来 —— 那是整幅海报的底板，
+        加回来就等于把这层青柠重新铺上。 */
+  background: transparent;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 白卡本体接回点击（画布是 pointer-events:none，留给蒙层） */
+/* 弹窗主卡片包装层（负责整体逆时针倾斜 -4.1deg）
+   top 原来 86（原稿把卡片放在青柠底板上、略偏下）。底板撤掉后卡片就是唯一的可见物，
+   那 14.5px 的偏心会变成"整张卡偏低"，所以收回居中值：(695 − 552) / 2 = 71.5。
+   ⚠️ 695 是画布高、552 是卡片高，改任何一个都要重算这个数。 */
+.wf-tilt {
+  position: absolute;
+  top: 71.5px;
+  left: 41px;
+  width: 462px;
+  height: 552px;
+  transform: rotate(-4.1deg);
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 10;
+  /* 画布是 pointer-events:none（那块透明区域不该吃掉点击），
+     点击权只交给这张卡。 */
+  pointer-events: auto;
+}
+
+/* 弹窗主体白底板 + 粗黑边 + 左下硬投影 + 内侧白灰立体包边 */
+.wf-board {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #fcfdfb 0%, #f5f7f3 100%);
+  border-radius: 40px;
+  border: 4.5px solid #080907;
+  box-shadow:
+    -3px 10px 0 #080907,
+    -6px 22px 38px rgba(45, 68, 0, 0.22),
+    inset 0 0 0 5px #ffffff,
+    inset 0 -7px 0 5px #eaede6,
+    inset 0 4px 10px rgba(0, 0, 0, 0.04);
+  z-index: 5;
+}
+
+/* ⛔ 左上角悬浮绿色礼盒徽章（.wf-badge-wrap / .wf-badge-sticker / .wf-badge /
+   .wf-badge::before）2026-11-03 20:58 按用户「福利中心去掉这一块」整组删除。
+   原来是 `top:-46px; left:8px`、112×98、-1.5° 的一枚青柠贴纸，跨在卡片左上边框外。
+   删掉后左上角只剩卡片自身的圆角，标题 `.wf-title-group`（top:40px）位置不受影响。 */
+
+/* 「福利中心」跨界标题区域 */
+.wf-title-group {
+  position: absolute;
+  top: 40px;
+  /* 2026-11-03 21:16 用户「礼物放到左边，文字放到右边」：改成**右对齐**
+     （left:auto + right:-20）。容器宽 310、里面 TitleArt 宽 335，svh 会从容器右边
+     溢出 25px —— 那 25px 是空白，但右移过头会让阴影 filter 越过卡片右边，别超过 -28。 */
+  left: auto;
+  /* ⚠️ 别超过 -14：TitleArt 里那条荧光绿涂鸦（白描边到 svg x=303）比文字右缘
+     （x=280）还长 23，右移过头会从卡片右边**戳出去**悬空在蒙层上 —— 实测 -20 时
+     越界约 16px。现在涂鸦已按文字收短（见 WelfareCenterModal 的注释），
+     -9 时涂鸦白描边距黑色右边框内侧还有 4px 呼吸，别再往右加。
+     2026-11-03 21:32 用户「福利中心往左一点点」：-9 → -2（左移 7 画布 ≈ 5 视口），
+     右侧留白从 13 变 18，涂鸦离边框 9px。 */
+  right: -2px;
+  width: 310px;
+  height: 128px;
+  z-index: 22;
+  pointer-events: none;
+}
+
+/* 每一项权益凹槽胶囊容器
+   ⚠️ 2026-11-03 用户「里面组件太挤了，适当缩小一点点」：原稿把三条胶囊排到 182→454，
+   而底部 CTA 的顶边在 453 —— **接缝处只差 -1px，实际是贴着**；槽内图标 / 文字 / 按钮
+   之间也只剩 8~12px。所以整块收一档：
+     · 槽高 82 → 74（×3 省 24）
+     · 槽间距 13 → 15（×2 加 4）
+     · 列表整体下移到 186（躲开标题下那排斜杠）
+     · 图标盒 92×74 → 84×64、按钮 94×50 → 86×44
+   改完列表 186→438，距 CTA 顶 453 有 15px 余量。
+   ⛔ 别只改槽高不改图标/按钮 —— 74 高的槽塞 74 高的图标盒，圆角会被裁。 */
+.wf-list {
+  position: absolute;
+  top: 186px;
+  left: 22px;
+  right: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 20;
+}
+
+.wf-slot {
+  position: relative;
+  height: 74px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f3f5f0 0%, #fcfdfc 55%, #ffffff 100%);
+  border: 2px solid #e1e4dd;
+  box-shadow:
+    0 4px 0 #ebeoe6,
+    0 6px 12px rgba(0, 0, 0, 0.04),
+    inset 0 3px 5px rgba(0, 0, 0, 0.045),
+    inset 0 -3px 0 #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 11px 0 14px;
+  transition: transform 0.2s ease;
+}
+
+/* 凹槽外圈立体双层白灰边线 */
+.wf-slot::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+}
+
+.wf-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.wf-icon-box {
+  position: relative;
+  width: 84px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 三枚权益图标（2026-11-04 01:15 改为位图素材，见组件顶部注释）。
+   高度统一 58、宽度 auto —— 三张长宽比不同（票 1.24 / 日历 1.10 / 皇冠 1.36），
+   写死宽高会变形。58 是「64 高的坑位里留 3px 上下呼吸」的值。 */
+.wf-ic-img {
+  height: 60px;
+  width: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.wf-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  margin-left: 2px;
+}
+
+.wf-title {
+  /* 原稿 19.5px。实测三条标题（都是 9 字）渲染 174px，而文字列可用宽 173.9px ——
+     正好卡在 0 余量上，换一台字体度量略宽的系统（Noto 没加载时退到 PingFang / 微软雅黑）
+     就会顶到右边按钮。收到 19px 换来 4px 余量，0.5px 在 0.67 缩放下是 0.33 CSS px，看不出来。 */
+  font-size: 19px;
+  font-weight: 900;
+  color: #0e100c;
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}
+
+.wf-sub {
+  /* 原稿 13.5px。这张是 540 画布，弹窗按壳宽缩到 0.62（360 屏）/ 0.67（390 屏），
+     13.5 缩完只剩 8.3 / 9.0px —— 掉到全站字号阶（最小 9）以下。
+     提到 15px 后是 9.2 / 10.0px，同时仍在 174px 的文字列里放得下（实测 125px）。 */
+  font-size: 15px;
+  font-weight: 500;
+  color: #6b6f68;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* 右侧胶囊小按钮外层凹槽托盘 */
+.wf-btn-socket {
+  padding: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e5e8e1 0%, #ffffff 100%);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.wf-btn {
+  position: relative;
+  width: 86px;
+  height: 44px;
+  border-radius: 999px;
+  border: 3px solid #080907;
+  font-size: 17px;
+  font-weight: 900;
+  color: #0b0d09;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.15s ease;
+  outline: none;
+}
+
+.wf-btn:hover {
+  filter: brightness(1.03);
+  transform: scale(1.03);
+}
+
+.wf-btn:active {
+  transform: scale(0.94);
+}
+
+/* 第一项：荧光绿按钮 */
+.wf-btn-lime {
+  background: linear-gradient(180deg, #D3F97E 0%, #C7F665 68%, #B7EF4B 100%);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.14),
+    inset 0 -4px 0 rgba(38, 67, 11, 0.22),
+    inset 0 2px 3px rgba(255, 255, 255, 0.8);
+}
+
+/* 荧光绿按钮左侧弧形白高光 */
+.wf-btn-lime::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  bottom: 9px;
+  width: 14px;
+  border-left: 3px solid rgba(255, 255, 255, 0.92);
+  border-top: 2px solid rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px 0 0 999px;
+  pointer-events: none;
+}
+
+/* 第二、三项：纯白立体胶囊按钮 */
+.wf-btn-white {
+  background: linear-gradient(180deg, #ffffff 0%, #f8faf6 75%, #ecefe9 100%);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.1),
+    inset 0 -4px 0 #dfe3dc,
+    inset 0 2px 2px #ffffff;
+}
+
+.wf-btn.claimed {
+  background: linear-gradient(180deg, #eef2e8 0%, #dce2d5 100%);
+  color: #5b6155;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+  cursor: default;
+}
+
+/* 底部通栏主 CTA 按钮区域 */
+.wf-cta-socket {
+  position: absolute;
+  bottom: 21px;
+  left: 20px;
+  right: 20px;
+  height: 78px;
+  padding: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e2e6de 0%, #ffffff 65%, #f4f6f1 100%);
+  border: 1.5px solid #d8ddd3;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.06),
+    inset 0 2px 4px rgba(0, 0, 0, 0.08);
+  z-index: 20;
+}
+
+.wf-cta {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #C7F665 0%, #D3F97E 50%, #C7F665 100%);
+  border: 3.5px solid #080907;
+  box-shadow:
+    0 2px 0 #080907,
+    inset 0 -6px 0 rgba(38, 67, 11, 0.22),
+    inset 0 4px 6px rgba(255, 255, 255, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.15s ease;
+  outline: none;
+}
+
+.wf-cta:hover {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
+
+.wf-cta:active {
+  transform: translateY(2px) scale(0.985);
+}
+
+/* 主按钮左侧标志性白色月牙高光弧线 */
+.wf-cta::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  bottom: 10px;
+  width: 24px;
+  border-left: 3.5px solid rgba(255, 255, 255, 0.92);
+  border-top: 2.5px solid rgba(255, 255, 255, 0.85);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px 0 0 999px;
+  pointer-events: none;
+}
+
+.wf-cta-center {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-right: 18px;
+}
+
+.wf-cta-text {
+  font-size: 21px;
+  font-weight: 900;
+  color: #0b0d09;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.wf-cta-arrow {
+  position: absolute;
+  right: 13px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #080907;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.wf-cta:hover .wf-cta-arrow {
+  transform: translateX(2px);
+}
+
+/* 右上角关闭按钮 */
+.wf-close {
+  position: absolute;
+  top: 12px;
+  right: 13px;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  background: #080907;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 35;
+  transition: transform 0.2s ease;
+}
+
+.wf-close:hover {
+  transform: rotate(90deg) scale(1.08);
+}
+
+/* 右上角 3D 荧光绿礼盒容器
+   ⚠️ 2026-11-03 21:12 用户「礼物盒水平翻转一下，并且放到右边，文字放到左边」：
+      · 右移：`right: 10px → -26px`（伸出卡片右边缘 26，和它本来就伸出顶部 66 是同一套
+        「外挂贴纸」语言，别改成全塞进卡内 —— 塞进去就必然和标题撞）。
+      · 微缩：218×215 → 210×206（约 -4%）。原来 svg 写死 222 宽、比容器还宽 12px，
+        现在 svg 是 100%，礼盒真实尺寸 = 容器尺寸，右移多少就是多少。
+      · 翻转：并进下面 `wfFloatBox` 关键帧的 `scaleX(-1)`，别在 .wf-gift 上另写 transform
+        —— 动画会整帧覆盖，写了也不生效。
+      · 镜像后 rotate 方向会反过来，所以关键帧里写成 `rotate(-0.8deg)` 才保持原来
+        「向右轻晃」的观感。 */
+.wf-gift {
+  position: absolute;
+  /* 2026-11-03 21:16 用户「礼物放到左边，文字放到右边」：整块从左挂。
+     左挂后关闭钮（右上）终于不再被礼盒压住了，这是这次交换的额外收益。
+     ⚠️ 左移量有硬上限：画布左界 24、壳左界 10（视口）。-34 时礼盒实测 x≈12，
+        再往左（-38 时 x=9.6）就贴壳边、-50 直接出屏被裁。想更大只能缩尺寸。 */
+  /* 2026-11-04 01:26 用户「这个往下一点」：top -60 → **-38**（画布单位，
+     实际下移 22×0.655 ≈ 14 CSS px）。原位置礼盒顶比卡片顶高出 27.9px，
+     看着像悬空；现在高出约 14，仍然是「骑在卡片左上角」的外挂贴纸。
+     ⚠️ 再往下就会压到标题的呼吸区：标题组 `.wf-title-group` 左缘 x=150，
+        礼盒右缘已到 155（横向本来就重叠 4.7，只是那块是 SVG 透明区）。
+        要再往下，先确认不会盖住「福」字的左半边。 */
+  top: -38px;
+  /* 2026-11-04 01:42 用户「这个也稍微居中一点」：left -30 → **-18**（右收 12 画布
+     ≈ 7.9 CSS）。原来礼盒伸出卡片左缘 22.6px，收完约 14.7px —— 仍然挂在边上，
+     但不再「快要掉出壳外」。往右是安全方向（不会裁切），
+     上限是别让礼盒右缘压到「福」字（实际文字左缘 x≈200，礼盒右缘现在 ≈163）。 */
+  left: -18px;
+  right: auto;
+  width: 186px;
+  height: 182px;
+  z-index: 30;
+  pointer-events: none;
+  transform-origin: center center;
+  animation: wfFloatBox 4.5s ease-in-out infinite;
+}
+
+@keyframes wfFloatBox {
+  0%,
+  100% {
+    transform: scaleX(-1) translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: scaleX(-1) translateY(-3px) rotate(-0.8deg);
+  }
+}
+
+/* 轻提示气泡 */
+.wf-toast {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: #0b0d09;
+  color: #C7F665;
+  border: 2px solid #ffffff;
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 90;
+  white-space: nowrap;
+}
+
+.wf-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 减少动效：礼盒不飘、过渡归零 */
+@media (prefers-reduced-motion: reduce) {
+  .wf-gift {
+    animation: none;
+  }
+  .wf-tilt,
+  .wf-btn,
+  .wf-cta,
+  .wf-toast,
+  .wf-close {
+    transition-duration: 0.01ms;
+  }
+}

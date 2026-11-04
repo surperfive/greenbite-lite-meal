@@ -1,0 +1,374 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1540" height="1366" viewBox="0 0 1540 1366">
+  <rect width="100%" height="100%" fill="#F4F6F8"/>
+  <text x="64" y="94" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#54801A">ICON SET</text>
+  <text x="64" y="156" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="54" font-weight="900" fill="#0B0F14">图标合集</text>
+  <text x="64" y="188" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="15" fill="#5B6472">轻食点餐小程序 · 界面图标全量 · 共 61 枚</text>
+  <line x1="64" y1="220" x2="1476" y2="220" stroke="#0B0F14" stroke-width="2"/>
+  
+  <g>
+    <rect x="64" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+    <text x="147" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Home</text>
+    <text x="147" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"></path><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"></path><path d="m2.1 21.8 6.4-6.3"></path><path d="m19 5-7 7"></path></svg>
+    <text x="325" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">UtensilsCrossed</text>
+    <text x="325" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+    <text x="503" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Sparkles</text>
+    <text x="503" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">17 refs</text>
+  </g>
+  <g>
+    <rect x="598" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 16H8"></path><path d="M14 8H8"></path><path d="M16 12H8"></path><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"></path></svg>
+    <text x="681" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ReceiptText</text>
+    <text x="681" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="776" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" x2="9.01" y1="9" y2="9"></line><line x1="15" x2="15.01" y1="9" y2="9"></line></svg>
+    <text x="859" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Smile</text>
+    <text x="859" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">5 refs</text>
+  </g>
+  <g>
+    <rect x="954" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1013.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path></svg>
+    <text x="1037" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Utensils</text>
+    <text x="1037" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">3 refs</text>
+  </g>
+  <g>
+    <rect x="1132" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1191.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"></path><path d="M14 2v2"></path><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"></path><path d="M6 2v2"></path></svg>
+    <text x="1215" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Coffee</text>
+    <text x="1215" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">5 refs</text>
+  </g>
+  <g>
+    <rect x="1310" y="274" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1369.00" y="288.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10"></path><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"></path><path d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-2.77 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1"></path><path d="m13 12 4-4"></path><path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2"></path></svg>
+    <text x="1393" y="358" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Salad</text>
+    <text x="1393" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">6 refs</text>
+  </g>
+  <g>
+    <rect x="64" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2.37 11.223 8.372-6.777a2 2 0 0 1 2.516 0l8.371 6.777"></path><path d="M21 15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-5.25"></path><path d="M3 15a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h9"></path><path d="m6.67 15 6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2"></path><rect width="20" height="4" x="2" y="11" rx="1"></rect></svg>
+    <text x="147" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Sandwich</text>
+    <text x="147" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8"></path><path d="M5 8h14"></path><path d="M7 15a6.47 6.47 0 0 1 5 0 6.47 6.47 0 0 0 5 0"></path><path d="m12 8 1-6h2"></path></svg>
+    <text x="325" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">CupSoda</text>
+    <text x="325" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>
+    <text x="503" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Flame</text>
+    <text x="503" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">11 refs</text>
+  </g>
+  <g>
+    <rect x="598" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="rgb(11, 15, 20)"></circle></svg>
+    <text x="681" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Tag</text>
+    <text x="681" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">4 refs</text>
+  </g>
+  <g>
+    <rect x="776" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"></path><path d="M3.103 6.034h17.794"></path><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"></path></svg>
+    <text x="859" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ShoppingBag</text>
+    <text x="859" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">3 refs</text>
+  </g>
+  <g>
+    <rect x="954" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1013.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+    <text x="1037" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Plus</text>
+    <text x="1037" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">10 refs</text>
+  </g>
+  <g>
+    <rect x="1132" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1191.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg>
+    <text x="1215" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Minus</text>
+    <text x="1215" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">5 refs</text>
+  </g>
+  <g>
+    <rect x="1310" y="404" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1369.00" y="418.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+    <text x="1393" y="488" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Trash2</text>
+    <text x="1393" y="503" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">5 refs</text>
+  </g>
+  <g>
+    <rect x="64" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
+    <text x="147" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Ticket</text>
+    <text x="147" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+    <text x="325" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">CreditCard</text>
+    <text x="325" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="m15 9-6 6"></path><path d="M9 9h.01"></path><path d="M15 15h.01"></path></svg>
+    <text x="503" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">BadgePercent</text>
+    <text x="503" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="598" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"></rect><path d="M12 8v13"></path><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"></path><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"></path></svg>
+    <text x="681" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Gift</text>
+    <text x="681" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">7 refs</text>
+  </g>
+  <g>
+    <rect x="776" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"></path><path d="M5 21h14"></path></svg>
+    <text x="859" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Crown</text>
+    <text x="859" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">13 refs</text>
+  </g>
+  <g>
+    <rect x="954" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1013.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>
+    <text x="1037" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Zap</text>
+    <text x="1037" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="1132" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1191.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg>
+    <text x="1215" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Truck</text>
+    <text x="1215" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">3 refs</text>
+  </g>
+  <g>
+    <rect x="1310" y="534" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1369.00" y="548.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"></path><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"></path><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"></path></svg>
+    <text x="1393" y="618" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Store</text>
+    <text x="1393" y="633" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">20 refs</text>
+  </g>
+  <g>
+    <rect x="64" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+    <text x="147" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">MapPin</text>
+    <text x="147" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">7 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+    <text x="325" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Navigation</text>
+    <text x="325" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">4 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+    <text x="503" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Building2</text>
+    <text x="503" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="598" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
+    <text x="681" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Phone</text>
+    <text x="681" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="776" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="10"></circle></svg>
+    <text x="859" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Clock</text>
+    <text x="859" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">5 refs</text>
+  </g>
+  <g>
+    <rect x="954" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1013.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+    <text x="1037" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Target</text>
+    <text x="1037" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">5 refs</text>
+  </g>
+  <g>
+    <rect x="1132" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1191.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+    <text x="1215" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Check</text>
+    <text x="1215" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">11 refs</text>
+  </g>
+  <g>
+    <rect x="1310" y="664" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1369.00" y="678.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+    <text x="1393" y="748" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">CheckCircle2</text>
+    <text x="1393" y="763" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">3 refs</text>
+  </g>
+  <g>
+    <rect x="64" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    <text x="147" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">X</text>
+    <text x="147" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">11 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+    <text x="325" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">AlertCircle</text>
+    <text x="325" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+    <text x="503" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Info</text>
+    <text x="503" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">5 refs</text>
+  </g>
+  <g>
+    <rect x="598" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+    <text x="681" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Loader2</text>
+    <text x="681" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="776" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+    <text x="859" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">RotateCcw</text>
+    <text x="859" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">4 refs</text>
+  </g>
+  <g>
+    <rect x="954" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1013.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+    <text x="1037" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Activity</text>
+    <text x="1037" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="1132" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1191.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+    <text x="1215" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ShieldCheck</text>
+    <text x="1215" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="1310" y="794" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1369.00" y="808.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path></svg>
+    <text x="1393" y="878" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Heart</text>
+    <text x="1393" y="893" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">7 refs</text>
+  </g>
+  <g>
+    <rect x="64" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></svg>
+    <text x="147" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Award</text>
+    <text x="147" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+    <text x="325" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ArrowLeft</text>
+    <text x="325" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+    <text x="503" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ArrowRight</text>
+    <text x="503" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">3 refs</text>
+  </g>
+  <g>
+    <rect x="598" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    <text x="681" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ChevronLeft</text>
+    <text x="681" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="776" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+    <text x="859" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ChevronRight</text>
+    <text x="859" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">23 refs</text>
+  </g>
+  <g>
+    <rect x="954" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1013.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+    <text x="1037" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">ChevronDown</text>
+    <text x="1037" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="1132" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1191.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 0 0-16 0"></path></svg>
+    <text x="1215" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">UserRound</text>
+    <text x="1215" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="1310" y="924" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1369.00" y="938.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
+    <text x="1393" y="1008" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">LogOut</text>
+    <text x="1393" y="1023" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="64" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg>
+    <text x="147" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">MessageSquare</text>
+    <text x="147" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg>
+    <text x="325" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Headphones</text>
+    <text x="325" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>
+    <text x="503" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Share2</text>
+    <text x="503" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="598" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+    <text x="681" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Copy</text>
+    <text x="681" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="776" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+    <text x="859" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Search</text>
+    <text x="859" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">21 refs</text>
+  </g>
+  <g>
+    <rect x="954" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1013.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5H3"></path><path d="M12 19H3"></path><path d="M14 3v4"></path><path d="M16 17v4"></path><path d="M21 12h-9"></path><path d="M21 19h-5"></path><path d="M21 5h-7"></path><path d="M8 10v4"></path><path d="M8 12H3"></path></svg>
+    <text x="1037" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">SlidersHorizontal</text>
+    <text x="1037" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="1132" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1191.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17h6v-6"></path><path d="m22 17-8.5-8.5-5 5L2 7"></path></svg>
+    <text x="1215" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">TrendingDown</text>
+    <text x="1215" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="1310" y="1054" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="1369.00" y="1068.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="1"></circle></svg>
+    <text x="1393" y="1138" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">CircleDot</text>
+    <text x="1393" y="1153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="64" y="1184" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="123.00" y="1198.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+    <text x="147" y="1268" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">Bell</text>
+    <text x="147" y="1283" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">1 refs</text>
+  </g>
+  <g>
+    <rect x="242" y="1184" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="301.00" y="1198.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+    <text x="325" y="1268" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">FileText</text>
+    <text x="325" y="1283" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">2 refs</text>
+  </g>
+  <g>
+    <rect x="420" y="1184" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="479.00" y="1198.00" width="48.00" height="48.00" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <text x="503" y="1268" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">CheckIcon</text>
+    <text x="503" y="1283" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">X1</text>
+  </g>
+  <g>
+    <rect x="598" y="1184" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="657.00" y="1198.00" width="48.00" height="48.00" viewBox="-12 -12 24 24"><path d="M-12,11 L-12,-6 L-6,0 L0,-11 L6,0 L12,-6 L12,11 Z" fill="rgb(253, 207, 41)"></path></svg>
+    <text x="681" y="1268" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">TokenIcon</text>
+    <text x="681" y="1283" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">X2</text>
+  </g>
+  <g>
+    <rect x="776" y="1184" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#E6EAEE"/>
+    <svg x="835.00" y="1198.00" width="48.00" height="48.00" viewBox="-14 -14 28 28"><path d="M-12,11 L-12,-6 L-6,0 L0,-11 L6,0 L12,-6 L12,11 Z" fill="none" stroke="rgb(11, 15, 20)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+    <text x="859" y="1268" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" font-weight="700" fill="#0B0F14">TokenIcon</text>
+    <text x="859" y="1283" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#9AA4B0">X3</text>
+  </g>
+</svg>

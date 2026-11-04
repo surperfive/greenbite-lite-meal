@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+import path from 'node:path';
+const file = 'file:///' + path.resolve('scripts/_crown-ab.html').replace(/\\/g, '/');
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 560, height: 720 }, deviceScaleFactor: 3 });
+await page.goto(file, { waitUntil: 'load' });
+await page.waitForTimeout(400);
+await page.screenshot({ path: 'scripts/_shots/crown-ab.png', fullPage: true });
+console.log('ok', JSON.stringify(await page.evaluate(() => ({ h: document.body.scrollHeight }))));
+await browser.close();

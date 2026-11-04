@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>badge outline harness</title>
+<style>
+  html,body{margin:0;background:#7a7a7a}
+  .panel{position:relative;width:420px;height:150px;overflow:visible}
+  /* 复刻主卡：346 宽 / 2.75px 黑边 / r20 / #FDFDFD / -1.6° / 内侧 1px 白描边 */
+  .card{
+    position:absolute;left:60px;top:44px;width:346px;height:220px;
+    border:2.75px solid #060804;border-radius:20px;background:#FDFDFD;
+    transform:rotate(-1.6deg);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.85);
+  }
+  .badge{position:absolute;z-index:20;transform:rotate(-4.2deg);filter:drop-shadow(2px 3px 2px rgba(0,0,0,.18))}
+  .badge.old{left:-8px;top:-14px;width:68px;height:56px}
+  .badge.new{left:-9.5px;top:-15.5px;width:71px;height:58.7px}
+  .badge svg{display:block;width:100%;height:100%}
+</style>
+</head>
+<body>
+
+<!-- ================= BEFORE ================= -->
+<div class="panel">
+  <div class="card">
+    <div class="badge old">
+      <svg viewBox="56 30 210 172" aria-hidden="true">
+        <defs>
+          <linearGradient id="g1" x1="15%" y1="10%" x2="85%" y2="92%">
+            <stop offset="0%" stop-color="#DCFF4E"/><stop offset="45%" stop-color="#C6FA19"/>
+            <stop offset="85%" stop-color="#B0E80B"/><stop offset="100%" stop-color="#8FC204"/>
+          </linearGradient>
+          <linearGradient id="gl1" x1="0%" y1="0%" x2="60%" y2="60%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.92"/>
+            <stop offset="45%" stop-color="#F2FFAA" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#C6FA19" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="b1" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+        <rect x="56" y="30" width="210" height="172" rx="68" fill="url(#g1)" stroke="#060804" stroke-width="9.5"/>
+        <path d="M 86,184 C 120,196 204,196 238,182 C 252,174 258,156 258,136" stroke="#7FB000" stroke-width="13" stroke-linecap="round" fill="none" opacity="0.9" filter="url(#b1)"/>
+        <path d="M 70,115 C 70,62 96,42 156,42 C 195,42 225,48 240,62 C 215,52 175,50 140,54 C 98,58 80,78 76,122 Z" fill="url(#gl1)" filter="url(#b1)"/>
+        <path d="M 76,102 C 78,66 100,48 142,46" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" fill="none" opacity="0.95" filter="url(#b1)"/>
+        <path d="M 152,78 C 155,78 158,81 159,90 C 160,101 163,104 174,105 C 183,106 186,109 186,113 C 186,117 183,120 174,121 C 163,122 160,125 159,136 C 158,145 155,148 152,148 C 148,148 145,145 144,136 C 143,125 140,122 129,121 C 120,120 117,117 117,113 C 117,109 120,106 129,105 C 140,104 143,101 144,90 C 145,81 148,78 152,78 Z" fill="#060804" transform="rotate(4, 152, 113)"/>
+        <path d="M 197,72 C 199,72 201,74 202,81 C 203,87 205,89 211,90 C 217,91 219,92 219,95 C 219,98 217,99 211,100 C 205,101 203,103 202,109 C 201,116 199,118 197,118 C 195,118 193,116 192,109 C 191,103 189,101 183,100 C 177,99 175,98 175,95 C 175,92 177,91 183,90 C 189,89 191,87 192,81 C 193,74 195,72 197,72 Z" fill="#060804"/>
+        <rect x="119" y="132" width="19" height="19" rx="6" transform="rotate(-12, 128, 141)" fill="#060804"/>
+        <circle cx="126" cy="140" r="3.5" fill="#2A2E26"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ================= AFTER ================= -->
+<div class="panel">
+  <div class="card">
+    <div class="badge new">
+      <svg viewBox="50.75 24.75 219.5 181.5" aria-hidden="true">
+        <defs>
+          <linearGradient id="g2" x1="15%" y1="10%" x2="85%" y2="92%">
+            <stop offset="0%" stop-color="#DCFF4E"/><stop offset="45%" stop-color="#C6FA19"/>
+            <stop offset="85%" stop-color="#B0E80B"/><stop offset="100%" stop-color="#8FC204"/>
+          </linearGradient>
+          <linearGradient id="gl2" x1="0%" y1="0%" x2="60%" y2="60%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.92"/>
+            <stop offset="45%" stop-color="#F2FFAA" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#C6FA19" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="b2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+        <rect x="56" y="30" width="210" height="172" rx="68" fill="url(#g2)"/>
+        <path d="M 86,184 C 120,196 204,196 238,182 C 252,174 258,156 258,136" stroke="#7FB000" stroke-width="13" stroke-linecap="round" fill="none" opacity="0.9" filter="url(#b2)"/>
+        <path d="M 70,115 C 70,62 96,42 156,42 C 195,42 225,48 240,62 C 215,52 175,50 140,54 C 98,58 80,78 76,122 Z" fill="url(#gl2)" filter="url(#b2)"/>
+        <path d="M 76,102 C 78,66 100,48 142,46" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" fill="none" opacity="0.95" filter="url(#b2)"/>
+        <path d="M 152,78 C 155,78 158,81 159,90 C 160,101 163,104 174,105 C 183,106 186,109 186,113 C 186,117 183,120 174,121 C 163,122 160,125 159,136 C 158,145 155,148 152,148 C 148,148 145,145 144,136 C 143,125 140,122 129,121 C 120,120 117,117 117,113 C 117,109 120,106 129,105 C 140,104 143,101 144,90 C 145,81 148,78 152,78 Z" fill="#060804" transform="rotate(4, 152, 113)"/>
+        <path d="M 197,72 C 199,72 201,74 202,81 C 203,87 205,89 211,90 C 217,91 219,92 219,95 C 219,98 217,99 211,100 C 205,101 203,103 202,109 C 201,116 199,118 197,118 C 195,118 193,116 192,109 C 191,103 189,101 183,100 C 177,99 175,98 175,95 C 175,92 177,91 183,90 C 189,89 191,87 192,81 C 193,74 195,72 197,72 Z" fill="#060804"/>
+        <rect x="119" y="132" width="19" height="19" rx="6" transform="rotate(-12, 128, 141)" fill="#060804"/>
+        <circle cx="126" cy="140" r="3.5" fill="#2A2E26"/>
+        <rect x="56" y="30" width="210" height="172" rx="68" fill="none" stroke="#060804" stroke-width="8.5"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

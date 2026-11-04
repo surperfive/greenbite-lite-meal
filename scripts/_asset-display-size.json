@@ -1,0 +1,327 @@
+{
+  "dpr": 2,
+  "assets": [
+    {
+      "path": "/assets/aistudio/image_9b31cf41.jpg",
+      "pxW": 935,
+      "pxH": 312,
+      "naturalW": 820,
+      "naturalH": 405,
+      "wheres": [
+        "nav-tab-me"
+      ]
+    },
+    {
+      "path": "/hero-poster-tuna.jpg",
+      "pxW": 861,
+      "pxH": 638,
+      "naturalW": 820,
+      "naturalH": 615,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/hero-poster-latte.jpg",
+      "pxW": 861,
+      "pxH": 638,
+      "naturalW": 820,
+      "naturalH": 615,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/hero-poster-teal.jpg",
+      "pxW": 861,
+      "pxH": 638,
+      "naturalW": 820,
+      "naturalH": 612,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/backdrops/avocado.jpg",
+      "pxW": 836,
+      "pxH": 449,
+      "naturalW": 820,
+      "naturalH": 458,
+      "wheres": [
+        "detail"
+      ]
+    },
+    {
+      "path": "/Gemini_Generated_Image_mspigdmspigdmspi.png",
+      "pxW": 832,
+      "pxH": 555,
+      "naturalW": 800,
+      "naturalH": 534,
+      "wheres": [
+        "nav-tab-gacha"
+      ]
+    },
+    {
+      "path": "/hero-poster-sandwich.jpg",
+      "pxW": 820,
+      "pxH": 608,
+      "naturalW": 820,
+      "naturalH": 613,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/ordering_header_banner.jpg",
+      "pxW": 820,
+      "pxH": 210,
+      "naturalW": 820,
+      "naturalH": 308,
+      "wheres": [
+        "nav-tab-menu",
+        "detail"
+      ]
+    },
+    {
+      "path": "/online_9f52938bdc.jpg",
+      "pxW": 820,
+      "pxH": 960,
+      "naturalW": 820,
+      "naturalH": 1674,
+      "wheres": [
+        "nav-tab-gacha"
+      ]
+    },
+    {
+      "path": "/invite-banner.png",
+      "pxW": 772,
+      "pxH": 188,
+      "naturalW": 764,
+      "naturalH": 186,
+      "wheres": [
+        "nav-tab-me"
+      ]
+    },
+    {
+      "path": "/me-order-card.jpg",
+      "pxW": 440,
+      "pxH": 264,
+      "naturalW": 384,
+      "naturalH": 214,
+      "wheres": [
+        "nav-tab-me"
+      ]
+    },
+    {
+      "path": "/signature-card.jpg",
+      "pxW": 380,
+      "pxH": 380,
+      "naturalW": 384,
+      "naturalH": 384,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/invite-card.jpg",
+      "pxW": 380,
+      "pxH": 380,
+      "naturalW": 384,
+      "naturalH": 384,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/dishes/cutout/dish-avocado-chicken-salad.png",
+      "pxW": 377,
+      "pxH": 252,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-home",
+        "nav-tab-menu",
+        "nav-tab-orders",
+        "detail"
+      ]
+    },
+    {
+      "path": "/dishes/cutout/dish-tuna-sandwich.png",
+      "pxW": 376,
+      "pxH": 251,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-home",
+        "nav-tab-menu",
+        "nav-tab-orders",
+        "detail"
+      ]
+    },
+    {
+      "path": "/dishes/standard/dish-avocado-chicken-salad.png",
+      "pxW": 370,
+      "pxH": 370,
+      "naturalW": 280,
+      "naturalH": 280,
+      "wheres": [
+        "detail"
+      ]
+    },
+    {
+      "path": "/assets/aistudio/c1f79b62d1ca498e793e833537789423_c1b98b67.jpg",
+      "pxW": 338,
+      "pxH": 251,
+      "naturalW": 720,
+      "naturalH": 538,
+      "wheres": [
+        "nav-tab-me"
+      ]
+    },
+    {
+      "path": "/assets/aistudio/b620c46b437e79bc2a82adb8b5ca2054_c3436860.jpg",
+      "pxW": 338,
+      "pxH": 251,
+      "naturalW": 720,
+      "naturalH": 538,
+      "wheres": [
+        "nav-tab-me"
+      ]
+    },
+    {
+      "path": "/dishes/cutout/dish-kale-smoothie.png",
+      "pxW": 210,
+      "pxH": 180,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-menu",
+        "nav-tab-orders",
+        "detail"
+      ]
+    },
+    {
+      "path": "/entry-norm/entry-benefit.png",
+      "pxW": 200,
+      "pxH": 144,
+      "naturalW": 260,
+      "naturalH": 198,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/entry-norm/entry-gacha.png",
+      "pxW": 200,
+      "pxH": 144,
+      "naturalW": 260,
+      "naturalH": 194,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/dishes/cutout/dish-teriyaki-pot.png",
+      "pxW": 197,
+      "pxH": 197,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-menu",
+        "detail"
+      ]
+    },
+    {
+      "path": "/entry-norm/entry-takeout.png",
+      "pxW": 188,
+      "pxH": 124,
+      "naturalW": 260,
+      "naturalH": 173,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/entry-norm/entry-pickup.png",
+      "pxW": 188,
+      "pxH": 124,
+      "naturalW": 260,
+      "naturalH": 196,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    },
+    {
+      "path": "/mascot-avatar-hd.svg",
+      "pxW": 186,
+      "pxH": 152,
+      "naturalW": 184,
+      "naturalH": 150,
+      "wheres": [
+        "nav-tab-me"
+      ]
+    },
+    {
+      "path": "/dishes/cutout/dish-greek-yogurt.png",
+      "pxW": 180,
+      "pxH": 180,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-menu",
+        "detail"
+      ]
+    },
+    {
+      "path": "/dishes/cutout/dish-coldbrew-latte.png",
+      "pxW": 170,
+      "pxH": 170,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-menu",
+        "detail"
+      ]
+    },
+    {
+      "path": "/ingredients/ing_tomato.png",
+      "pxW": 81,
+      "pxH": 81,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-gacha"
+      ]
+    },
+    {
+      "path": "/ingredients/ing_kale.png",
+      "pxW": 81,
+      "pxH": 81,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-gacha"
+      ]
+    },
+    {
+      "path": "/ingredients/ing_steak.png",
+      "pxW": 81,
+      "pxH": 81,
+      "naturalW": 320,
+      "naturalH": 320,
+      "wheres": [
+        "nav-tab-gacha"
+      ]
+    },
+    {
+      "path": "/mascot-avatar.svg",
+      "pxW": 64,
+      "pxH": 64,
+      "naturalW": 150,
+      "naturalH": 150,
+      "wheres": [
+        "nav-tab-home"
+      ]
+    }
+  ]
+}

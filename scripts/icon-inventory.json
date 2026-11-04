@@ -1,0 +1,726 @@
+[
+  {
+    "name": "Activity",
+    "files": [
+      "src/components/MePage.tsx",
+      "src/components/NutritionReportModal.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "AlertCircle",
+    "files": [
+      "src/components/ErrorBoundary.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ArrowLeft",
+    "files": [
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ArrowRight",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/FavPage.tsx",
+      "src/components/FloatingCart.tsx",
+      "src/components/GachaPage.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 5,
+    "refs": 3,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Award",
+    "files": [
+      "src/components/GachaPage.tsx",
+      "src/components/NutritionReportModal.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "BadgePercent",
+    "files": [
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Battery",
+    "files": [
+      "src/components/DeviceFrameWrapper.tsx",
+      "src/components/MenuPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Bell",
+    "files": [
+      "src/components/OrdersPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Bike",
+    "files": [
+      "src/components/HomePage.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/OrdersPage.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Building2",
+    "files": [
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Check",
+    "files": [
+      "src/components/FloatingCart.tsx",
+      "src/components/GachaPage.tsx",
+      "src/components/HomePage.tsx",
+      "src/components/LoginModal.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/StorePage.tsx"
+    ],
+    "fileCount": 6,
+    "refs": 11,
+    "source": "lucide-react"
+  },
+  {
+    "name": "CheckCircle2",
+    "files": [
+      "src/components/HealthPlanModal.tsx",
+      "src/components/NutritionReportModal.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 4,
+    "refs": 3,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ChevronDown",
+    "files": [
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ChevronLeft",
+    "files": [
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ChevronRight",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/HeaderBar.tsx",
+      "src/components/HomePage.tsx",
+      "src/components/MePage.tsx",
+      "src/components/MemberBar.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 8,
+    "refs": 23,
+    "source": "lucide-react"
+  },
+  {
+    "name": "CircleDot",
+    "files": [
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Clock",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/StorePage.tsx"
+    ],
+    "fileCount": 4,
+    "refs": 5,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Coffee",
+    "files": [
+      "src/components/DishImage.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 5,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Copy",
+    "files": [
+      "src/components/HomePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "CreditCard",
+    "files": [
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Crown",
+    "files": [
+      "src/components/HomePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 13,
+    "source": "lucide-react"
+  },
+  {
+    "name": "CupSoda",
+    "files": [
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "FileText",
+    "files": [
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Flame",
+    "files": [
+      "src/components/DishImage.tsx",
+      "src/components/FavPage.tsx",
+      "src/components/HomePage.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/NutritionReportModal.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 7,
+    "refs": 11,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Gift",
+    "files": [
+      "src/components/HomePage.tsx",
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 7,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Headphones",
+    "files": [
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Heart",
+    "files": [
+      "src/components/FavPage.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/NutritionReportModal.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 5,
+    "refs": 7,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Home",
+    "files": [
+      "src/components/BottomNavBar.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Info",
+    "files": [
+      "src/components/GachaPage.tsx",
+      "src/components/HealthPlanModal.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 5,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Layers",
+    "files": [
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Loader2",
+    "files": [
+      "src/components/LoginModal.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "LogIn",
+    "files": [
+      "src/components/HomePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "LogOut",
+    "files": [
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "MapPin",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/HeaderBar.tsx",
+      "src/components/MePage.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/StorePage.tsx"
+    ],
+    "fileCount": 6,
+    "refs": 7,
+    "source": "lucide-react"
+  },
+  {
+    "name": "MessageSquare",
+    "files": [
+      "src/components/OrdersPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Minus",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/FloatingCart.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 5,
+    "refs": 5,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Monitor",
+    "files": [
+      "src/components/DeviceFrameWrapper.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Navigation",
+    "files": [
+      "src/components/StorePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 4,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Phone",
+    "files": [
+      "src/components/StorePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Plus",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/FavPage.tsx",
+      "src/components/FloatingCart.tsx",
+      "src/components/GachaPage.tsx",
+      "src/components/HomePage.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 8,
+    "refs": 10,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ReceiptText",
+    "files": [
+      "src/components/BottomNavBar.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "RefreshCw",
+    "files": [
+      "src/components/GachaPage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "RotateCcw",
+    "files": [
+      "src/components/ErrorBoundary.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/OrdersPage.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 4,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Salad",
+    "files": [
+      "src/components/DishImage.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 6,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Sandwich",
+    "files": [
+      "src/components/DishImage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Search",
+    "files": [
+      "src/components/MenuPage.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 21,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Share2",
+    "files": [
+      "src/components/HomePage.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ShieldCheck",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "ShoppingBag",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/HomePage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 3,
+    "source": "lucide-react"
+  },
+  {
+    "name": "SlidersHorizontal",
+    "files": [
+      "src/components/MenuPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Smartphone",
+    "files": [
+      "src/components/DeviceFrameWrapper.tsx",
+      "src/components/LoginModal.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Smile",
+    "files": [
+      "src/components/BottomNavBar.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 5,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Sparkles",
+    "files": [
+      "src/components/BannerSlider.tsx",
+      "src/components/BottomNavBar.tsx",
+      "src/components/DeviceFrameWrapper.tsx",
+      "src/components/DishImage.tsx",
+      "src/components/FavPage.tsx",
+      "src/components/GachaPage.tsx",
+      "src/components/HomePage.tsx",
+      "src/components/LoginModal.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 11,
+    "refs": 17,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Store",
+    "files": [
+      "src/components/HomePage.tsx",
+      "src/components/MePage.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/ProductDetailPage.tsx"
+    ],
+    "fileCount": 4,
+    "refs": 20,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Tablet",
+    "files": [
+      "src/components/DeviceFrameWrapper.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Tag",
+    "files": [
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 4,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Target",
+    "files": [
+      "src/components/HealthPlanModal.tsx",
+      "src/components/MePage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 5,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Ticket",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/HomePage.tsx",
+      "src/components/MenuPage.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Trash2",
+    "files": [
+      "src/components/CartPage.tsx",
+      "src/components/FavPage.tsx",
+      "src/components/FloatingCart.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 4,
+    "refs": 5,
+    "source": "lucide-react"
+  },
+  {
+    "name": "TrendingDown",
+    "files": [
+      "src/components/NutritionReportModal.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "TrendingUp",
+    "files": [
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Truck",
+    "files": [
+      "src/components/GachaPage.tsx",
+      "src/components/OrdersPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 3,
+    "source": "lucide-react"
+  },
+  {
+    "name": "UserRound",
+    "files": [
+      "src/components/MemberBar.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 1,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Users",
+    "files": [
+      "src/components/HomePage.tsx"
+    ],
+    "fileCount": 1,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Utensils",
+    "files": [
+      "src/components/BannerSlider.tsx",
+      "src/components/DishImage.tsx",
+      "src/components/OrdersPage.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 3,
+    "source": "lucide-react"
+  },
+  {
+    "name": "UtensilsCrossed",
+    "files": [
+      "src/components/BottomNavBar.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 2,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Wifi",
+    "files": [
+      "src/components/DeviceFrameWrapper.tsx",
+      "src/components/MenuPage.tsx"
+    ],
+    "fileCount": 2,
+    "refs": 0,
+    "source": "lucide-react"
+  },
+  {
+    "name": "X",
+    "files": [
+      "src/components/GachaPage.tsx",
+      "src/components/HomePage.tsx",
+      "src/components/LoginModal.tsx",
+      "src/components/MenuPage.tsx",
+      "src/components/NutritionReportModal.tsx",
+      "src/components/OrdersPage.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/SearchModal.tsx",
+      "src/components/StickerModal.tsx"
+    ],
+    "fileCount": 9,
+    "refs": 11,
+    "source": "lucide-react"
+  },
+  {
+    "name": "Zap",
+    "files": [
+      "src/components/HomePage.tsx",
+      "src/components/ProductDetailPage.tsx",
+      "src/components/SearchModal.tsx"
+    ],
+    "fileCount": 3,
+    "refs": 1,
+    "source": "lucide-react"
+  }
+]

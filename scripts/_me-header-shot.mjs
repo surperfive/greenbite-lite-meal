@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+import { BASE } from './_base.mjs';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 3 });
+await page.goto(BASE, { waitUntil: 'commit' });
+await page.waitForSelector('.brand-loader', { state: 'detached', timeout: 20000 }).catch(() => {});
+await page.waitForSelector('[data-dish-thumb="true"]', { timeout: 20000 });
+await page.click('#nav-tab-me');
+await page.waitForTimeout(1400);
+await page.screenshot({ path: 'scripts/_shots/me-header-after.png', clip: { x: 0, y: 0, width: 430, height: 200 } });
+await browser.close();

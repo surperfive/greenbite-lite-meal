@@ -1,0 +1,30 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<style>
+html,body{margin:0;background:#F4F6F8}
+svg{display:block}
+.t{font-family:"PingFang SC","HarmonyOS Sans SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei","Heiti SC","WenQuanYi Micro Hei",system-ui,sans-serif;fill:#000}
+.t-h{font-weight:900}.t-w{fill:#FFF}
+.row{display:flex;align-items:center;gap:12px;padding:8px 12px}
+.tag{width:190px;font:13px/1.4 ui-monospace,monospace;color:#222}
+</style></head><body>
+<template id="tpl">
+<svg viewBox="620 10 180 80" width="540" height="240" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="G" x1="0" y1="0" x2="0.25" y2="1">
+    <stop offset="0" stop-color="#FC5294"/><stop offset="1" stop-color="#FC5294"/></linearGradient></defs>
+  <rect x="628.5" y="16" width="164" height="65" rx="32.5" fill="#FFFFFF"/>
+  <path d="M658,22 H763 A23.5,23.5 0 0 1 763,69 H686 L668,75 L678,69 H658 A23.5,23.5 0 0 1 658,22 Z" fill="url(#G)" stroke-linejoin="round"/>
+  <g class="crown" transform="translate(663.1,46.4) scale(0.66)">
+    <path d="M-16,10 L-16,-6 L-9,0 L0,-12 L9,0 L16,-6 L16,10 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <text class="t t-w t-h" x="682.1" y="56.3" font-size="24" letter-spacing="0">9折限时</text>
+</svg>
+</template>
+<script>
+for (const [ty,label] of [[46.4,'46.4 (当前)'],[47.0,'47.0'],[47.6,'47.6'],[48.2,'48.2']]) {
+  const r=document.createElement('div');r.className='row';
+  const t=document.createElement('div');t.className='tag';t.textContent='TY='+label;
+  const n=document.getElementById('tpl').content.cloneNode(true);
+  n.querySelector('.crown').setAttribute('transform',`translate(663.1,${ty}) scale(0.66)`);
+  r.append(t,n);document.body.append(r);
+}
+</script></body></html>

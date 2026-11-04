@@ -1,0 +1,61 @@
+node_modules/
+build/
+dist/
+# 验证用 build 产物（`vite build --outDir .verify-dist`，dist 被 safe-delete 守卫挡住时用它起静态服务）
+.verify-dist/
+coverage/
+.vite/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# 验证脚本的产出（scripts/probe-*.mjs → probe-out/，scripts/shot-*.mjs → outputs/）
+# 都是可重跑脚本再生成的截图/录屏，不进版本控制 —— 否则 .git 会被上百 MB 图片撑爆。
+probe-out/
+outputs/
+
+# 一次性排查/验证的临时产出，不进版本控制
+tsc-log.txt
+tsc-exit.txt
+check-*.txt
+health.txt
+cleanup-log.txt
+left-over.txt
+icon-sheet.html
+
+# ---- 图片/素材的历史备份与验证产物（2026-11-04 清理时补）----
+# 这些是「可以重跑脚本再生」或「已被新素材取代」的目录，
+# 进版本库只会把仓库撑到几百 MB，且对复刻项目毫无价值。
+#
+# ⚠️ 注意：.gitignore 不支持行尾注释！`路径/  # 说明` 会让整行（含 # 说明）
+#    被当成一个匹配模式，等于什么都没忽略。注释必须独占一行。
+scripts/_shots/
+scripts/_public-backup-*/
+scripts/_unused-assets/
+scripts/_color/
+scripts/_scrollfix/
+scripts/_scrollset/
+scripts/_std/
+scripts/_large/
+scripts/_switch/
+scripts/_switch2/
+scripts/_wash/
+scripts/_cmp/
+scripts/_buy/
+scripts/_bean/
+scripts/_drink/
+scripts/_banner/
+scripts/assets/
+
+# 构建/缓存产物
+.build-check/
+dist-check/
+.aistudio/
+.backup/
+dist-measure/
+.tools/
+
+# 工具自身的项目数据（WorkBuddy 会话/记忆），与本项目源码无关
+.workbuddy/
+.workbuddy-ai/
