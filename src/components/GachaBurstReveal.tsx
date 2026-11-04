@@ -500,7 +500,10 @@ export const GachaBurstReveal: React.FC<GachaBurstRevealProps> = ({
                   target.y > 8 &&
                   target.y < layerSize.h - 8;
                 const flyX = targetInView ? target!.x - revealAnchor.x : offsetX;
-                const flyY = targetInView ? target!.y - revealAnchor.y : offsetY;
+                // 十连抽限制最大下飞距离（≤ 110px），让 10 张卡轻巧收拢进食材库首行上沿，
+                // 避免未滚动时从揭示位大幅下坠到底部区域（用户反馈「十连抽这些食材往下飞的太狠了」）。
+                const rawFlyY = targetInView ? target!.y - revealAnchor.y : offsetY;
+                const flyY = isSingle ? rawFlyY : Math.min(rawFlyY, 110);
                 const canFly = Boolean(targetInView);
 
                 return (

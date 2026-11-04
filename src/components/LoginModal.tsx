@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Sparkles, Smartphone, Check, Loader2 } from 'lucide-react';
 import { useShellBox } from './StickerModal';
+import { useBackLayer } from '../utils/backStack';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   /* 壳内容区矩形：居中盒贴壳，tall 显示器上不跑出手机壳（同 StickerModal 2026-10-28） */
   const shellBox = useShellBox();
+  useBackLayer(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -44,7 +46,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   return (
     <>
       {/* 蒙层盖满视口；居中盒贴壳内容区（2026-10-28「弹窗超出页面」同款修复） */}
-      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200" />
+      <div
+        onClick={onClose}
+        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+      />
       <div
         className="fixed z-50 flex items-center justify-center p-4 pointer-events-none animate-in fade-in duration-200"
         style={
@@ -53,7 +58,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             : { inset: 0 }
         }
       >
-      <div className="w-full max-w-sm bg-white rounded-2xl p-6 flex flex-col shadow-2xl animate-in slide-in-from-bottom-5 duration-300 pointer-events-auto">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="登录 GreenBite"
+        className="w-full max-w-sm bg-white rounded-2xl p-6 flex flex-col shadow-2xl animate-in slide-in-from-bottom-5 duration-300 pointer-events-auto"
+      >
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-[#C7F665] font-black text-sm border border-[#C7F665]/30">
@@ -62,8 +72,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             <h3 className="font-extrabold text-slate-900 text-base">登录 GreenBite</h3>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800"
+            aria-label="关闭"
+            className="gb-hit w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800"
           >
             <X className="w-4 h-4" />
           </button>

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Dish } from '../types';
 import { DishImage } from './DishImage';
+import { useBackLayer } from '../utils/backStack';
 import {
   Search,
   ArrowLeft,
@@ -78,6 +79,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   });
   const [sortType, setSortType] = useState<SortType>('default');
   const inputRef = useRef<HTMLInputElement>(null);
+  useBackLayer(isOpen, onClose);
 
   // Auto focus input on open
   useEffect(() => {
@@ -190,27 +192,30 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         transition={{ duration: 0.22, ease: 'easeOut' }}
         className="absolute inset-0 z-50 bg-[#F4F6F8] flex flex-col overflow-hidden select-none"
       >
-        {/* Top Header & Search Input Box */}
-        <div className="flex-shrink-0 bg-white border-b border-slate-200/80 px-3 pt-3 pb-2.5 shadow-2xs">
-          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2.5">
+        {/* Top Header & Search Input Box
+            ⚠️ `pr-[92px]` 是给全局右上角 `#mp-capsule`（right-3 top-2.5 z-[55]，73.4×26）让位，
+               避免「取消 / 搜索」按钮与输入框右端被小程序胶囊遮挡。 */}
+        <div className="flex-shrink-0 bg-white border-b border-slate-200/80 pl-3 pr-[92px] pt-2.5 pb-2.5 shadow-2xs">
+          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
             {/* Back Button */}
             <button
               type="button"
               onClick={onClose}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100 active:scale-95 transition-all duration-200 ease-out flex-shrink-0"
+              aria-label="返回"
+              className="gb-hit w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100 active:scale-95 transition-all duration-200 ease-out flex-shrink-0"
             >
               <ArrowLeft className="w-5 h-5 stroke-[2.2]" />
             </button>
 
             {/* Input Capsule */}
-            <div className="relative flex-1 flex items-center bg-slate-100 rounded-full px-3 py-1.5 border border-slate-200/60 focus-within:border-slate-900 focus-within:bg-white focus-within:ring-2 focus-within:ring-slate-900/10 transition-all">
+            <div className="relative flex-1 min-w-0 flex items-center bg-slate-100 rounded-full px-3 py-1.5 border border-slate-200/60 focus-within:border-slate-900 focus-within:bg-white focus-within:ring-2 focus-within:ring-slate-900/10 transition-all">
               <Search className="w-4 h-4 text-slate-900 flex-shrink-0 mr-2" />
               <input
                 ref={inputRef}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="搜索餐品、卡路里(如: 300)、高蛋白..."
+                placeholder="搜索餐品、卡路里(如: 300)..."
                 className="w-full bg-transparent text-sm text-slate-900 placeholder-slate-400 focus:outline-none"
               />
               {query && (
@@ -220,7 +225,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     setQuery('');
                     inputRef.current?.focus();
                   }}
-                  className="w-4 h-4 rounded-full bg-slate-300 hover:bg-slate-400 text-white flex items-center justify-center text-[10px] ml-1 flex-shrink-0"
+                  aria-label="清空搜索词"
+                  className="gb-hit w-4 h-4 rounded-full bg-slate-300 hover:bg-slate-400 text-white flex items-center justify-center text-[10px] ml-1 flex-shrink-0"
                 >
                   <X className="w-2.5 h-2.5 stroke-[3]" />
                 </button>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dish } from '../types';
 import { DishImage } from './DishImage';
-import { Heart, Plus, Trash2, ArrowRight, Flame, Sparkles } from 'lucide-react';
+import { Heart, Plus, Trash2, ArrowRight, Flame, Sparkles, ChevronLeft } from 'lucide-react';
 
 interface FavPageProps {
   favoriteDishes: Dish[];
@@ -9,6 +9,7 @@ interface FavPageProps {
   onRemoveFavorite: (dishId: number) => void;
   onSelectDish: (dish: Dish) => void;
   onNavigate: (tab: string) => void;
+  onBack?: () => void;
 }
 
 export const FavPage: React.FC<FavPageProps> = ({
@@ -16,7 +17,8 @@ export const FavPage: React.FC<FavPageProps> = ({
   onAddToCart,
   onRemoveFavorite,
   onSelectDish,
-  onNavigate
+  onNavigate,
+  onBack
 }) => {
   return (
     <div className="w-full min-h-full bg-[#F4F6F8] text-slate-900 pb-28 select-none">
@@ -33,6 +35,14 @@ export const FavPage: React.FC<FavPageProps> = ({
 
         <div className="flex items-center justify-between relative z-10">
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => (onBack ? onBack() : onNavigate('me'))}
+              aria-label="返回"
+              className="gb-hit -ml-1 flex h-7 w-7 items-center justify-center rounded-full bg-black/10 text-black transition-transform active:scale-95"
+            >
+              <ChevronLeft className="h-4 w-4 stroke-[2.6]" />
+            </button>
             <h2 className="text-xl font-black text-black tracking-tight">我的轻食收藏</h2>
             <span className="px-2.5 py-0.5 rounded-full bg-black text-[#C7F665] text-[11px] font-black border border-black shadow-2xs">
               <span className="pill-label">{favoriteDishes.length} 款</span>

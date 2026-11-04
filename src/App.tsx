@@ -25,6 +25,7 @@ import {
   FlyingOrbItem,
   ToteMascotStage
 } from './components/CartFlyOrbLayer';
+import { useBackLayer } from './utils/backStack';
 
 import {
   Dish,
@@ -153,6 +154,16 @@ export default function App() {
       setActiveTab(previousTab || 'home');
     }
   };
+
+  const handleBackFromSubpage = useCallback(() => {
+    const fallback = activeTab === 'fav' ? 'me' : 'menu';
+    const target = previousTab && previousTab !== activeTab ? previousTab : fallback;
+    handleNavigateTab(target);
+  }, [activeTab, previousTab, handleNavigateTab]);
+
+  // 接入全局 LIFO 返回栈（顺序：二级页在下，详情页在上，弹窗通过各自组件挂载在最顶）
+  useBackLayer(activeTab === 'cart' || activeTab === 'fav', handleBackFromSubpage);
+  useBackLayer(isProductDetailOpen, handleCloseProductDetail);
 
   const commitDishToCart = useCallback((dish: Dish, qty: number = 1) => {
     if (!DISHES.some((d) => d.id === dish.id)) {
@@ -495,6 +506,7 @@ export default function App() {
                 onClearCart={handleClearCart}
                 onOpenCheckout={handleOpenCheckout}
                 onNavigate={handleNavigateTab}
+                onBack={handleBackFromSubpage}
                 selectedCoupon={selectedCoupon}
                 onSelectCoupon={setSelectedCoupon}
                 coupons={coupons}
@@ -538,6 +550,7 @@ export default function App() {
                 onRemoveFavorite={handleToggleFavorite}
                 onSelectDish={handleSelectDish}
                 onNavigate={handleNavigateTab}
+                onBack={handleBackFromSubpage}
               />
             </div>
           )}

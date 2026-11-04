@@ -293,10 +293,26 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     return parts.join('');
   }, [dish, size, temperature, beanBase, strength, sweetness, selectedAddons]);
 
+  const saveToastTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (saveToastTimerRef.current) {
+        window.clearTimeout(saveToastTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleSaveTaste = () => {
     onToggleFav(dish.id);
     setSavedTasteToast(true);
-    setTimeout(() => setSavedTasteToast(false), 2000);
+    if (saveToastTimerRef.current) {
+      window.clearTimeout(saveToastTimerRef.current);
+    }
+    saveToastTimerRef.current = window.setTimeout(() => {
+      setSavedTasteToast(false);
+      saveToastTimerRef.current = null;
+    }, 900);
   };
 
   const handleAddAction = () => {
@@ -328,8 +344,9 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       <div className="absolute top-0 inset-x-0 z-40 px-3 pt-2.5 pb-2 flex items-center justify-between pointer-events-auto">
         {/* Left Back Arrow Circle */}
         <button
+          type="button"
           onClick={onBack}
-          className="w-8 h-8 rounded-full bg-black/70 hover:bg-black/85 backdrop-blur-md text-[#C7F665] flex items-center justify-center active:scale-95 transition-all duration-200 ease-out shadow-md"
+          className="gb-hit w-8 h-8 rounded-full bg-black/70 hover:bg-black/85 backdrop-blur-md text-[#C7F665] flex items-center justify-center active:scale-95 transition-all duration-200 ease-out shadow-md"
           aria-label="返回"
         >
           <ChevronLeft className="w-4 h-4 stroke-[3]" />
@@ -639,14 +656,24 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </div>
 
           {/* Save Toast Notification
-              ⚠️ 75% 黑而非实心黑：与全局 `Toast` 同一套"半透明黑"语言（用户要求黑框降透明度）。
-                 这里比全局 toast 稍实一点，因为它贴在白色面板里、没有背景模糊可依。 */}
-          {savedTasteToast && (
-            <div className="mt-2.5 py-1.5 px-3 bg-slate-900/75 text-white text-[11px] font-bold rounded-lg flex items-center gap-1.5 animate-in fade-in shadow-md">
-              <Sparkles className="w-3 h-3 text-amber-300" />
-              <span>{isFav ? '已收藏当前商品！' : '已取消收藏'}</span>
-            </div>
-          )}
+              ⚠️ 轻透半透明雾面（45%~35% 渐变黑 + backdrop-blur + 内高光亮边）+ 快速消散动效（900ms 停留 + 0.22s 模糊淡出） */}
+          <AnimatePresence>
+            {savedTasteToast && (
+              <motion.div
+                key={isFav ? 'fav-on' : 'fav-off'}
+                initial={{ opacity: 0, y: -4, scale: 0.98, filter: 'blur(2px)' }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -4, scale: 0.98, filter: 'blur(3px)' }}
+                transition={{ duration: 0.22, ease: 'easeOut' }}
+                className="mt-2.5 py-1.5 px-3 bg-gradient-to-r from-slate-900/48 via-slate-800/42 to-slate-900/35 backdrop-blur-md border border-white/30 text-white text-[11px] font-bold rounded-lg flex items-center gap-1.5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.38),0_4px_12px_rgba(15,23,42,0.08)]"
+              >
+                <Sparkles className="w-3 h-3 text-amber-300 drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]" />
+                <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">
+                  {isFav ? '已收藏当前商品！' : '已取消收藏'}
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* B. SCROLLABLE SPECIFICATIONS (分量规格及以下 - 加大上下与组件间距) */}

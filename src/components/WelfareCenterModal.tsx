@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'motion/react';
 import { useShellBox } from './StickerModal';
+import { useBackLayer } from '../utils/backStack';
 import './welfare-center.css';
 
 /* ============================================================================
@@ -393,15 +394,15 @@ const GiftBox3D = () => (
    ⛔ 别再用 `<svg>` 重画这三枚 —— 手绘那版的光泽和参考图差得远，这是用户明确要求的替换。 */
 
 const CouponIcon = () => (
-  <img src="/welfare-icons/ic-ticket.png" alt="" className="wf-ic-img" draggable={false} />
+  <img src="/welfare-icons/ic-ticket.png" alt="" className="wf-ic-img" draggable={false} loading="lazy" decoding="async" />
 );
 
 const DiscountCalendarIcon = () => (
-  <img src="/welfare-icons/ic-calendar.png" alt="" className="wf-ic-img" draggable={false} />
+  <img src="/welfare-icons/ic-calendar.png" alt="" className="wf-ic-img" draggable={false} loading="lazy" decoding="async" />
 );
 
 const CrownIcon = () => (
-  <img src="/welfare-icons/ic-crown.png" alt="" className="wf-ic-img" draggable={false} />
+  <img src="/welfare-icons/ic-crown.png" alt="" className="wf-ic-img" draggable={false} loading="lazy" decoding="async" />
 );
 
 const CtaGiftIcon = () => (
@@ -451,14 +452,8 @@ export const WelfareCenterModal: React.FC<WelfareCenterModalProps> = ({
     if (toastTimer.current) clearTimeout(toastTimer.current);
   }, []);
 
-  // Esc 关闭（与其它弹窗一致的手感）
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  // 物理返回键 / 手势返回 / Esc 关闭（接入全局 LIFO 返回栈）
+  useBackLayer(true, onClose);
 
   /* 等比缩放：画布 540×695，按壳宽/壳高取较小的那个比例。
      ⚠️ 不做 `@media (max-width:580px)` 那套 —— 弹窗要按**壳**算，不是按视口算
@@ -481,6 +476,7 @@ export const WelfareCenterModal: React.FC<WelfareCenterModalProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.18 }}
+        onClick={onClose}
         className="fixed inset-0 z-50 bg-black/62 backdrop-blur-sm"
       />
       <motion.div

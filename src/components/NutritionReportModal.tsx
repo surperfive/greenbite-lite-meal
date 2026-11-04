@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Activity, Flame, Award, Heart, CheckCircle2, TrendingDown } from 'lucide-react';
 import { useShellBox } from './StickerModal';
+import { useBackLayer } from '../utils/backStack';
 
 interface NutritionReportModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ export const NutritionReportModal: React.FC<NutritionReportModalProps> = ({
   /* 壳内容区矩形：居中盒贴壳，tall 显示器上不跑出手机壳（同 StickerModal 2026-10-28）。
      ⚠️ 必须在 early return 之前调（hooks 顺序），闭合后值只是暂时用不到。 */
   const shellBox = useShellBox();
+  useBackLayer(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -24,7 +26,10 @@ export const NutritionReportModal: React.FC<NutritionReportModalProps> = ({
   return (
     <>
       {/* 蒙层盖满视口；居中盒贴壳内容区（2026-10-28「弹窗超出页面」同款修复） */}
-      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200" />
+      <div
+        onClick={onClose}
+        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+      />
       <div
         className="fixed z-50 flex items-center justify-center p-4 pointer-events-none animate-in fade-in duration-200"
         style={
@@ -34,6 +39,9 @@ export const NutritionReportModal: React.FC<NutritionReportModalProps> = ({
         }
       >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="本周轻食健康分析报告"
         className="w-full max-w-md bg-white rounded-2xl overflow-y-auto flex flex-col shadow-2xl animate-in slide-in-from-bottom-5 duration-300 pointer-events-auto"
         style={{ maxHeight: cardMaxH }}
       >
@@ -43,8 +51,10 @@ export const NutritionReportModal: React.FC<NutritionReportModalProps> = ({
             <h3 className="font-extrabold text-slate-900 text-base">本周轻食健康分析报告</h3>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800"
+            aria-label="关闭"
+            className="gb-hit w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800"
           >
             <X className="w-4 h-4" />
           </button>

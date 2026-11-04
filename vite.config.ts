@@ -12,9 +12,7 @@ export default defineConfig(() => {
       },
     },
     server: {
-      // 原为 3000，与另一个应用的端口冲突，改用 Vite 常规默认 5173。
-      // 注意：这里没开 strictPort，端口被占时 Vite 会自动顺延（会在终端打印实际端口）。
-      port: 5173,
+      port: 3000,
       host: '0.0.0.0',
       allowedHosts: true as const,
       hmr: process.env.DISABLE_HMR !== 'true',

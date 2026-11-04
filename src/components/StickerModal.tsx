@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'motion/react';
 import { X } from 'lucide-react';
+import { useBackLayer } from '../utils/backStack';
 
 export interface ShellBoxRect {
   top: number;
@@ -332,6 +333,7 @@ export const StickerModal: React.FC<StickerModalProps> = ({
 }) => {
   /* 壳内容区矩形：有值 → 居中盒贴壳（弹窗不会跑出手机壳）；null → 退回视口居中 */
   const shellBox = useShellBox();
+  useBackLayer(true, onClose);
   /* maxHeight 里再夹一层「壳内容高 − p-4×2」：vh 上限在 tall 显示器上会远超壳高
      （86vh @1242 = 1068 > 壳 844），min() 取小的那个。px 值不受祖先 auto 高度影响。 */
   const effectiveMaxHeight = shellBox
@@ -357,6 +359,7 @@ export const StickerModal: React.FC<StickerModalProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.18 }}
+        onClick={onClose}
         className="fixed inset-0 z-50 bg-black/62 backdrop-blur-sm"
       />
       {/* 居中盒：⚠️ 不再 `inset-0` 相对视口居中 —— 那会在 tall 显示器上把卡片

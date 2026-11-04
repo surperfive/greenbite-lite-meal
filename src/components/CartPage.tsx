@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ShieldCheck,
   ChevronRight,
+  ChevronLeft,
   MapPin,
   Clock,
 } from 'lucide-react';
@@ -25,6 +26,7 @@ interface CartPageProps {
   onClearCart: () => void;
   onOpenCheckout: () => void;
   onNavigate: (tab: string) => void;
+  onBack?: () => void;
   selectedCoupon: Coupon | null;
   onSelectCoupon: (coupon: Coupon | null) => void;
   coupons: Coupon[];
@@ -50,6 +52,7 @@ export const CartPage: React.FC<CartPageProps> = ({
   onClearCart,
   onOpenCheckout,
   onNavigate,
+  onBack,
   selectedCoupon,
   coupons,
   onSelectDish,
@@ -98,12 +101,21 @@ export const CartPage: React.FC<CartPageProps> = ({
              正好压住这里的「清空」按钮（原来被整颗盖住）。86 = 73.4 + 12 + 呼吸。 */}
       <div className="flex items-center justify-between pl-0.5 pr-[86px]">
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => (onBack ? onBack() : onNavigate('menu'))}
+            aria-label="返回"
+            className="gb-hit -ml-0.5 flex h-7 w-7 items-center justify-center rounded-full bg-white text-slate-900 shadow-2xs transition-transform active:scale-95"
+          >
+            <ChevronLeft className="h-4 w-4 stroke-[2.6]" />
+          </button>
           <h2 className="text-[17px] font-black tracking-tight text-slate-900">确认订单</h2>
           <span className="rounded-full bg-white px-2 py-[3px] text-[10px] font-black text-slate-500 shadow-xs">
             <span className="pill-label">共 {totalCount} 件</span>
           </span>
         </div>
         <button
+          type="button"
           onClick={onClearCart}
           className="flex items-center gap-1 text-[11px] font-bold text-slate-400 transition-colors hover:text-slate-600 active:scale-95"
         >

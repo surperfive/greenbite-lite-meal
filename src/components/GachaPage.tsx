@@ -235,27 +235,20 @@ export const GachaPage: React.FC<GachaPageProps> = ({
       const futureIdx = [...freshIds, ...existingIds].indexOf(ingredientId);
       if (futureIdx < 0) return null;
 
-      // ① 该未来格子已经有卡片 → 直接用它现在的真实坐标
-      const hit = rects[futureIdx];
-      if (hit) return { x: hit.left + hit.width / 2, y: hit.top + hit.height / 2 };
-
-      // ② 超出已有卡片 → 用已有卡片的几何外推格子位置
-      if (!geometryReliable) return null;
-      const first = rects[0];
-      const cellW = first.width;
-      const cellH = first.height;
+      // 统一飞向食材库「第一行」对应列（col = futureIdx % cols）的偏上入口处：
+      // 之前按 row = Math.floor(futureIdx / cols) 往下外推到第 2~4 行（+120~+360px），
+      // 导致十连抽的后 7 张卡一路向下穿出食材卡、压过「满 10 款起送」甚至飞进底部导航栏。
       let cols = 1;
+      const first = rects[0];
       for (let i = 1; i < rects.length; i++) {
         if (Math.abs(rects[i].top - first.top) < 2) cols++;
         else break;
       }
-      const gapX = cols > 1 ? rects[1].left - first.left - cellW : 0;
-      const gapY = rects.length > cols ? rects[cols].top - first.top - cellH : 0;
-      const col = futureIdx % cols;
-      const row = Math.floor(futureIdx / cols);
+      const col = futureIdx % Math.max(1, cols);
+      const targetCard = rects[col] ?? first;
       return {
-        x: first.left + col * (cellW + gapX) + cellW / 2,
-        y: first.top + row * (cellH + gapY) + cellH / 2
+        x: targetCard.left + targetCard.width / 2,
+        y: targetCard.top + targetCard.height * 0.22
       };
     },
     []
