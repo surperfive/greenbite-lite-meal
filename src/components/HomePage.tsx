@@ -755,83 +755,67 @@ export const HomePage: React.FC<HomePageProps> = ({
             onClose={() => setModalType(null)}
             ariaLabel="邀请好友"
             title="邀请新人 0 元免单"
-            /* ⚠️ 这一条**不进 xl**：8 个字（含空格），40px 时宽约 320px，
-               正好等于卡片内宽（348 − px-3.5×2），会顶到圆角甚至折行。
-               用 md(34) 后约 272px，仍是一行且留 48px 余量。 */
             titleSize="md"
             badge={<Gift className="h-[30px] w-[30px]" strokeWidth={2.6} />}
             badgeSize="lg"
             badgeBorderWidth={4}
             subtitle="好友通过您的专属口令下单，好友首单立减，您可获得免费招牌能量碗！"
             maxWidth={348}
-            bodyClassName="space-y-3"
+            bodyClassName="space-y-2.5"
             footer={
-              <>
-                <StickerButton tone="lime" onClick={handleCopyInviteCode}>
-                  <Share2 className="w-4 h-4" strokeWidth={2.8} />
-                  <span>立即分享邀请好友</span>
-                </StickerButton>
-                <button
-                  onClick={() => setModalType(null)}
-                  className="mt-2 w-full text-[10px] font-bold text-[#070906]/45 transition-colors hover:text-[#070906]/70"
-                >
-                  关闭
-                </button>
-              </>
+              <StickerButton tone="lime" onClick={handleCopyInviteCode}>
+                <Share2 className="w-4 h-4" strokeWidth={2.8} />
+                <span>立即分享邀请好友</span>
+              </StickerButton>
             }
           >
             {/* Graphic Header */}
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[16px] border-[2px] border-[#070906] bg-[#ECFDC0] shadow-[1.5px_2px_0_rgba(7,9,6,0.14)]">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[18px] border-[2.5px] border-[#080907] bg-[linear-gradient(180deg,#E8FBC4_0%,#C7F665_100%)] shadow-[0_2px_0_#080907,inset_0_-3px_0_rgba(38,67,11,0.2),inset_0_2px_2px_rgba(255,255,255,0.85)]">
               <img
                 src="/853c20910e5626627b9b82adf81b1c68.png"
                 alt="邀请免单"
                 className="h-10 w-10 object-contain"
-               loading="lazy" decoding="async" />
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
-            {/* Invite Code Box */}
-            <StickerPanel innerClassName="flex items-center justify-between p-2.5">
+            {/* Invite Code Recessed Capsule Slot */}
+            <StickerPanel pill innerClassName="flex items-center justify-between pl-4 pr-2 py-2">
               <div className="text-left">
-                <span className="block text-[9px] font-bold text-[#070906]/40">我的专属邀请口令</span>
-                <span className="text-[15px] font-black tracking-[0.12em] text-[#070906]">SLIM888</span>
+                <span className="block text-[10px] font-bold text-[#6b6f68]">我的专属邀请口令</span>
+                <span className="text-[15px] font-black tracking-[0.12em] text-[#0e100c]">SLIM888</span>
               </div>
-              <button
+              <StickerButton
+                size="sm"
+                block={false}
+                tone={copiedCode ? 'white' : 'lime'}
                 onClick={handleCopyInviteCode}
-                className={`flex items-center gap-1 rounded-full border-[2px] px-2.5 py-1.5 text-[11px] font-black transition-all duration-200 ease-out active:translate-y-[1px] ${
-                  copiedCode
-                    ? 'border-[#070906] bg-[#C7F665] text-[#070906]'
-                    : 'border-[#070906] bg-[#070906] text-white'
-                }`}
               >
                 {copiedCode ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : <Copy className="h-3.5 w-3.5" strokeWidth={2.8} />}
                 <span>{copiedCode ? '已复制' : '复制口令'}</span>
-              </button>
+              </StickerButton>
             </StickerPanel>
 
             {/* Steps */}
             <div className="grid grid-cols-3 gap-2 text-center">
               {['发送邀请口令', '好友领取首单', '获得免单大奖'].map((label, i) => (
-                <div
+                <StickerPanel
                   key={label}
-                  className="rounded-[14px] border-[1.5px] border-[#070906]/12 bg-white px-1 py-2"
+                  className="rounded-[18px]"
+                  innerClassName="px-1.5 py-2.5"
                 >
-                  <span className="mx-auto mb-1 flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] border-[#070906] bg-[#C7F665] text-[10px] font-black text-[#070906]">
+                  <span className="mx-auto mb-1 flex h-5 w-5 items-center justify-center rounded-full border-[2px] border-[#080907] bg-[linear-gradient(180deg,#D3F97E_0%,#C7F665_100%)] text-[10px] font-black text-[#080907] shadow-[0_1px_0_rgba(0,0,0,0.12)]">
                     {i + 1}
                   </span>
-                  <p className="text-[10px] font-bold leading-tight text-[#070906]/75">{label}</p>
-                </div>
+                  <p className="text-[10px] font-extrabold leading-tight text-[#0e100c]">{label}</p>
+                </StickerPanel>
               ))}
             </div>
           </StickerModal>
         )}
 
         {/* 3. Daily Red Packet / Lucky Draw In-App Modal */}
-        {/* ⚠️ 这个「每日红包」弹窗原来是整卡 from-[#EC4899] to-red-600 的红粉渐变。
-            2026-10-27「所有红色改成 #fc259b」后红色端点换过一版压暗值；
-            2026-10-28 晚定版：全站红**只有一个值 #FC5294**（用户看到深玫红问「为什么是暗色」），
-            这个 ¥15.0 也回到 #FC5294，不再单独压深。
-            2026-10-28 外壳换成贴纸风后，粉只留在金额和标签上 ——
-            整卡粉会和「黑描边 + 青柠」的贴纸语言打架。 */}
         {modalType === 'redpacket' && (
           <StickerModal
             onClose={() => setModalType(null)}
@@ -845,31 +829,23 @@ export const HomePage: React.FC<HomePageProps> = ({
             maxWidth={348}
             bodyClassName="space-y-2.5"
             footer={
-              <>
-                {!redPacketClaimed ? (
-                  <StickerButton tone="lime" onClick={handleClaimRedPacket}>
-                    <Gift className="w-4 h-4" strokeWidth={2.8} />
-                    <span>立即存入我的券包</span>
-                  </StickerButton>
-                ) : (
-                  <StickerButton
-                    tone="ink"
-                    onClick={() => {
-                      setModalType(null);
-                      onNavigate('menu');
-                    }}
-                  >
-                    <ShoppingBag className="w-4 h-4" strokeWidth={2.8} />
-                    <span>已放入券包，去点餐抵扣</span>
-                  </StickerButton>
-                )}
-                <button
-                  onClick={() => setModalType(null)}
-                  className="mt-2 w-full text-[10px] font-bold text-[#070906]/45 transition-colors hover:text-[#070906]/70"
+              !redPacketClaimed ? (
+                <StickerButton tone="lime" onClick={handleClaimRedPacket}>
+                  <Gift className="w-4 h-4" strokeWidth={2.8} />
+                  <span>立即存入我的券包</span>
+                </StickerButton>
+              ) : (
+                <StickerButton
+                  tone="lime"
+                  onClick={() => {
+                    setModalType(null);
+                    onNavigate('menu');
+                  }}
                 >
-                  关闭
-                </button>
-              </>
+                  <ShoppingBag className="w-4 h-4" strokeWidth={2.8} />
+                  <span>已放入券包，去点餐抵扣</span>
+                </StickerButton>
+              )
             }
           >
             {/* Mascot Red Packet Graphic */}
@@ -877,22 +853,30 @@ export const HomePage: React.FC<HomePageProps> = ({
               <RedPacketFuIcon className="h-20 w-20" />
             </div>
 
-            {/* Red Packet Amount Card */}
-            <div className="rounded-[14px] border-[1.5px] border-[#070906]/12 bg-white p-3 text-left">
-              <div className="flex items-baseline justify-between">
+            {/* Red Packet Amount Slot Card */}
+            <StickerPanel innerClassName="p-3.5 text-left">
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <span className="text-[22px] font-black leading-none text-[#FC5294]">¥15.0</span>
-                  <span className="ml-1 text-[10px] font-bold text-[#070906]/40">满 ¥38 可用</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[23px] font-black leading-none text-[#FC5294]">¥15.0</span>
+                    <span className="text-[10px] font-bold text-[#6b6f68]">满 ¥38 可用</span>
+                  </div>
+                  <h5 className="mt-1.5 text-[13px] font-black text-[#0e100c]">健康能量餐通用抵扣金</h5>
+                  <p className="mt-0.5 text-[10px] font-medium leading-relaxed text-[#6b6f68]">
+                    全场所有减脂沙拉、慢碳能量碗、鲜榨轻饮均可使用
+                  </p>
                 </div>
-                <span className="rounded-full border border-[#FAB7D9] bg-[#FDD3EA] px-2 py-0.5 text-[9px] font-black text-[#DB2777]">
-                  今日专享
-                </span>
+                <StickerButton
+                  size="sm"
+                  block={false}
+                  tone={redPacketClaimed ? 'white' : 'lime'}
+                  disabled={redPacketClaimed}
+                  onClick={handleClaimRedPacket}
+                >
+                  <span>{redPacketClaimed ? '已领' : '领取'}</span>
+                </StickerButton>
               </div>
-              <h5 className="mt-2 text-xs font-extrabold text-[#070906]">健康能量餐通用抵扣金</h5>
-              <p className="mt-0.5 text-[10px] leading-relaxed text-[#070906]/50">
-                全场所有减脂沙拉、慢碳能量碗、鲜榨轻饮均可使用
-              </p>
-            </div>
+            </StickerPanel>
           </StickerModal>
         )}
       </AnimatePresence>

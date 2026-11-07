@@ -64,44 +64,11 @@ interface WelfareCenterModalProps {
    现在涂鸦右端停在文字右缘 +4，留在卡内约 10px。别再加长回去。 */
 const TitleArt = () => (
   <svg width="335" height="145" viewBox="0 0 335 145" fill="none" style={{ overflow: 'visible' }}>
-    {/* ⚠️ 2026-11-03 21:30 用户「取消掉福利中心的投影效果」：
-        原来这里有一个 `<filter id="wfTitleShadow">`（feDropShadow dy=4 / stdDeviation 3.5 /
-        黑 10%），挂在包住「文字白描边 + 涂鸦」的 <g> 上 —— 效果是标题和荧光条下方各拖一条
-        淡灰影。删掉后标题组是纯平的贴纸，压在卡片上靠白描边本身分层，不再有浮起感。
-        ⛔ 别用 `filter: drop-shadow(...)` 从 CSS 加回来，那会连 svg 的 overflow:visible
-           区域一起投影，边缘会多出一圈方角灰边。 */}
     <g>
-      <text
-        x="14"
-        y="76"
-        fontFamily="'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif"
-        fontWeight="900"
-        fontSize="68"
-        letterSpacing="-2"
-        transform="skewX(-5)"
-        stroke="#FFFFFF"
-        strokeWidth="20"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        fill="#FFFFFF"
-      >
-        福利中心
-      </text>
-      <path
-        d="M40 96 L268 93 C284 93 288 118 268 119 L62 121 Z"
-        fill="#FFFFFF"
-        stroke="#FFFFFF"
-        strokeWidth="14"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-    </g>
-
-    <g>
-      <rect x="64" y="88" width="214" height="22" rx="11" transform="rotate(-0.8 186 99)" fill="#C7F665" />
-      <rect x="40" y="96" width="140" height="7" rx="3.5" transform="rotate(-1.2 110 99)" fill="#C7F665" />
-      <rect x="60" y="106" width="128" height="6.5" rx="3.25" transform="rotate(-1 124 109)" fill="#C7F665" />
-      <path d="M225 108 H266 C271 108 272 113 266 113.5 L218 114 Z" fill="#C7F665" />
+      <rect x="16" y="88" width="262" height="22" rx="11" transform="rotate(-0.8 147 99)" fill="#C7F665" />
+      <rect x="12" y="96" width="168" height="7" rx="3.5" transform="rotate(-1.2 96 99)" fill="#C7F665" />
+      <rect x="20" y="106" width="156" height="6.5" rx="3.25" transform="rotate(-1 98 109)" fill="#C7F665" />
+      <path d="M225 108 H272 C277 108 278 113 272 113.5 L218 114 Z" fill="#C7F665" />
     </g>
 
     {/* ⚠️ 2026-11-03 21:08 用户「去除福利中心这四个字的黑描边」：

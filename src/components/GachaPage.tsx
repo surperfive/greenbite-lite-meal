@@ -8,7 +8,7 @@ import { GachaBurstReveal } from './GachaBurstReveal';
 import { CloudSkyBackground } from './CloudSkyBackground';
 import { CheckBadge, CheckIcon } from './CheckBadge';
 import TokenIcon from './TokenIcon';
-import { StickerModal, StickerButton } from './StickerModal';
+import { StickerModal, StickerBadge, StickerButton, StickerPanel, StickerScribble, StickerSlashDivider } from './StickerModal';
 import { OPTION_CARD_SELECTED, OPTION_CARD_UNSELECTED } from '../tokens';
 import { resumeAudio, warmUpAudio } from '../utils/audioContext';
 import { ingredientArt } from '../utils/ingredientArt';
@@ -20,7 +20,8 @@ import {
   Award,
   Info,
   Truck,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from 'lucide-react';
 
 interface GachaPageProps {
@@ -699,7 +700,7 @@ export const GachaPage: React.FC<GachaPageProps> = ({
       originalPrice: totalOriginalPrice,
       sold: '100% 独一无二',
       category: 'bowl',
-      image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80',
+      image: '/dishes/dish-avocado-chicken-salad.jpg',
       bg: 'bg-[#F2FCE0]',
       color: 'text-[#54801A]',
       tags: selectedIngredients.map((i) => i.name),
@@ -2244,54 +2245,53 @@ export const GachaPage: React.FC<GachaPageProps> = ({
             bodyStyle={{ maskImage: dexMask, WebkitMaskImage: dexMask }}
             bodyClassName="space-y-1.5 pb-2"
             footer={
-              <StickerButton tone="ink" onClick={() => setShowChecklistModal(false)}>
+              <StickerButton tone="lime" onClick={() => setShowChecklistModal(false)}>
                 <span className="pill-label">我知道了</span>
               </StickerButton>
             }
           >
-            {/* Full Catalog List — 展示全部奖池，不做截断。
-                旧实现 slice(0, 10) 只显示前 10 种，而后 10 种（竹节玉米/西兰花/毛豆/
-                白芝麻/松露/辣椒/油醋汁等）玩家永远无法查看，「已收录全品类」名不副实。
-                isOwned 只按 id 判定；旧实现额外写了 `i === 0 && ing.id === 'ing_steak'`
-                的硬编码兜底，会在未真正拥有时谎报「已收集」，已移除。
-
-                ⚠️ 滚动容器必须是 flex 流里的 `flex-1 min-h-0`（StickerModal 已处理），
-                   不能写 `absolute inset-0`：卡片高度是 max-h 撑出来的，不是定高，
-                   绝对定位后这层不再贡献内容高度 → 整张卡会塌成"标题+按钮"134px。 */}
             {GACHA_INGREDIENTS.map((ing) => {
               const isOwned = pantry.some((p) => p.id === ing.id);
               return (
                 <div
                   key={ing.id}
-                  className={`flex items-center justify-between rounded-[12px] border-[1.5px] px-2 py-1.5 transition-all ${
+                  className={`relative flex items-center justify-between rounded-full border-[2px] pl-2.5 pr-2 py-1.5 transition-all ${
                     isOwned
-                      ? 'border-[#070906]/25 bg-[#ECFDC0]/70'
-                      : 'border-[#070906]/12 bg-white opacity-70'
+                      ? 'border-[#b9e265] bg-[linear-gradient(180deg,#f1fde0_0%,#fbfef5_60%,#ffffff_100%)] shadow-[0_2.5px_0_#d8f09e,inset_0_2px_3px_rgba(84,128,26,0.06),inset_0_-2px_0_#ffffff]'
+                      : 'border-[#e1e4dd] bg-[linear-gradient(180deg,#f3f5f0_0%,#fcfdfc_55%,#ffffff_100%)] shadow-[0_2.5px_0_#ebeee6,inset_0_2px_3px_rgba(0,0,0,0.04),inset_0_-2px_0_#ffffff]'
                   }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-[9px] border-[1.5px] border-[#070906]/15 bg-white shadow-2xs">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[2px] border-[#080907]/15 bg-white shadow-2xs">
                       {renderIngredientVisual(ing.id, ing.name)}
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[13px] font-black leading-tight text-[#070906]">{ing.name}</span>
-                        <span className="rounded-full border border-[#070906]/15 bg-white px-1.5 py-0.2 text-[9px] font-bold text-[#070906]/60">
+                        <span className="text-[13px] font-black leading-tight text-[#0e100c]">{ing.name}</span>
+                        <span className="rounded-full border border-[#080907]/15 bg-white px-1.5 py-0.2 text-[9px] font-bold text-[#080907]/65">
                           {ing.rarity}
                         </span>
                       </div>
-                      <p className="mt-0.5 text-[11px] leading-tight text-[#070906]/55">{ing.desc}</p>
+                      <p className="mt-0.5 truncate text-[10px] font-medium leading-tight text-[#6b6f68]">{ing.desc}</p>
                     </div>
                   </div>
 
-                  <div className="flex-shrink-0 text-right">
-                    {isOwned ? (
-                      <span className="flex items-center gap-0.5 text-[11px] font-black text-[#54801A]">
-                        <Check className="h-3 w-3" /> 已收集
-                      </span>
-                    ) : (
-                      <span className="text-[11px] font-bold text-[#070906]/45">待解锁</span>
-                    )}
+                  <div className="flex-shrink-0 pl-2">
+                    <StickerButton
+                      size="sm"
+                      block={false}
+                      tone={isOwned ? 'lime' : 'white'}
+                      disabled={!isOwned}
+                    >
+                      {isOwned ? (
+                        <>
+                          <Check className="h-3 w-3" strokeWidth={3} />
+                          <span>已收</span>
+                        </>
+                      ) : (
+                        <span>待解锁</span>
+                      )}
+                    </StickerButton>
                   </div>
                 </div>
               );
@@ -2300,248 +2300,75 @@ export const GachaPage: React.FC<GachaPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* MODAL: Get More Gacha Tokens / Daily Check-in
-          ------------------------------------------------------------
-          2026-10-25 第 2 版：按用户提供的 GOT NEW INGREDIENTS **SVG 源码**逐项移植
-          （用户原话「这个窗口使用这个SVG」）。换算比例 = 331 / 1018 ≈ 0.325，
-          下面每个数都是 SVG 原坐标乘这个比例，注释里写了原值：
-            · 主卡 1018×912 / r63 / 边 8.5  → 宽 331 / r20 / 边 2.75
-            · **黑色立体边层**（SVG 主卡右下那层 #060804，偏移 +10,+8 → +3.25,+2.6）
-            · **内侧白色高光描边** 3 → 1px（inset 1.6）
-            · **左上 3D 徽章** 210×172 / r68 / 边 9.5 → 68×56 / r22 / 边 3，-4.2° 跨边框悬浮
-              （2026-10-26 改：边 9.5→8.5 让屏上黑边 = 2.75px 与卡片边框一致，元素 68×56→71×58.7，
-               见下方徽章那段注释）
-            · **状态胶囊** 650×58 → 高 19；底 #ECFDC0 / 边 #C7EE74（浅绿，不是白底黑边）
-            · **内容卡双层倒角**：外层 #EEEEF0→#DCDEE2，内层 #F3F5F8→#FFF + 1px 白描边
-            · **按钮** 高 144 / r72 / 边 10 → 47 / r23.5 / 边 3.25，带错位投影 + 左上高光弧
-          ⚠️ 整体倾斜从 SVG 的 **-3.1° 收到 -1.6°**：-3.1° 在 1064 画布上是设计感，
-            在 346 宽的 HTML 卡上会把中文小字读歪，按钮点击区也跟着转。
-          ⚠️ 倾斜必须放在**内层静态 div**：写进 motion.div 的 animate 会被 transform 覆盖。
-          ⚠️ 3D 徽章的渐变 id 用 `gb-badge-*` 前缀，避免和页面里其它 SVG 撞 id。 */}
+      {/* MODAL: Get More Gacha Tokens / Daily Check-in */}
       <AnimatePresence>
         {showGetTokensModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/62 backdrop-blur-sm">
             <motion.div
-              initial={{ scale: 0.88, opacity: 0 }}
+              initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 340, damping: 26 }}
-              className="relative w-full max-w-[346px]"
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 330, damping: 26 }}
+              className="relative w-full max-w-[352px]"
             >
-              <div className="relative -rotate-[1.6deg]">
-                {/* 黑色立体边层（SVG 里主卡右下那层，偏移 3.25 / 2.6） */}
-                <div className="absolute inset-0 translate-x-[3.25px] translate-y-[2.6px] rounded-[20px] bg-[#060804]" />
-
-                {/* 主卡 */}
+              <div className="relative -rotate-[2.2deg]">
+                {/* 主卡：福利中心 .wf-board 同款 28px 大圆角 + 3.5px 黑边 + 左下硬投影 + 内侧白灰立体包边 */}
                 <div
-                  className="relative rounded-[20px] border-[2.75px] border-[#060804] bg-[#FDFDFD] px-3.5 pb-3.5 pt-4"
+                  className="relative rounded-[28px] border-[3.5px] border-[#080907] px-4 pb-4 pt-4"
                   style={{
+                    background: 'linear-gradient(180deg, #fcfdfb 0%, #f5f7f3 100%)',
                     boxShadow:
-                      'inset 0 0 0 1px rgba(255,255,255,0.85), 0 5px 7px rgba(74,107,0,0.22)',
+                      '-2.5px 7px 0 #080907, -5px 16px 28px rgba(45, 68, 0, 0.22), inset 0 0 0 3.5px #ffffff, inset 0 -5px 0 3.5px #eaede6, inset 0 3px 8px rgba(0, 0, 0, 0.04)',
                   }}
                 >
-                  {/* ===== 左上角 3D 荧光徽章（跨边框悬浮，-4.2°） =====
-                      viewBox 用 SVG 原坐标（青柠块本体 = `56 30 210 172`），内部所有 path
-                      都可以照抄原值，不用重算。
-                      ⚠️ 2026-10-26 用户「这个修复一下，改成规则的描边」——徽章黑描边**粗细不匀**：
-                        描边是**居中**画在路径上的（strokeWidth 9.5 → 屏上 3.08px，路径两侧各 1.54px），
-                        而旧 viewBox 正好等于青柠块本体（210×172），元素又是 68×56 等比 →
-                        **外侧那 1.54px 被 SVG 视口裁掉了**，只剩内侧 1.54px 可见。
-                        于是徽章自己的黑边只有 1.54px，而卡片边框是 2.75px，
-                        两条黑边在左上/左侧相接处**从 1.54 突跳到 2.75**，右下又只有 1.54 →
-                        看上去就是"上厚下薄、拐角有台阶"的不规则描边。
-                      解法：① viewBox 向外扩到把**整条描边**框进去（四周留 pad 0.5 单位）；
-                        ② strokeWidth 9.5 → **8.5**（8.5 × 0.3236 = 2.751px），
-                           和卡片边框 2.75px **严格相等**，交界处不再有台阶；
-                        ③ 元素同步放大到 71×58.7（= 219.5:181.5 等比，缩放仍是 0.3236，
-                           青柠块本体渲染宽 67.96px ≈ 旧 68px，**尺寸不动**），
-                           再用 left/top 各 -1.54px 抵消新增的外圈，青柠块位置纹丝不动。
-                      ⚠️ 改 strokeWidth 必须同步改 viewBox 与元素尺寸，三者是绑定的：
-                        viewBox = 210+sw+1 : 172+sw+1，元素 = viewBox × 0.3236，
-                        否则 meet 缩放改按另一轴走，描边会变细或青柠块变形。 */}
-                  <div className="pointer-events-none absolute -left-[9.5px] -top-[15.5px] z-20 h-[58.7px] w-[71px] -rotate-[4.2deg] drop-shadow-[2px_3px_2px_rgba(0,0,0,0.18)]">
-                    <svg viewBox="50.75 24.75 219.5 181.5" className="h-full w-full" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="gb-badge-grad" x1="15%" y1="10%" x2="85%" y2="92%">
-                          <stop offset="0%" stopColor="#DCFF4E" />
-                          <stop offset="45%" stopColor="#C6FA19" />
-                          <stop offset="85%" stopColor="#B0E80B" />
-                          <stop offset="100%" stopColor="#8FC204" />
-                        </linearGradient>
-                        <linearGradient id="gb-badge-gloss" x1="0%" y1="0%" x2="60%" y2="60%">
-                          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.92" />
-                          <stop offset="45%" stopColor="#F2FFAA" stopOpacity="0.55" />
-                          <stop offset="100%" stopColor="#C6FA19" stopOpacity="0" />
-                        </linearGradient>
-                        <filter id="gb-badge-blur" x="-30%" y="-30%" width="160%" height="160%">
-                          <feGaussianBlur stdDeviation="2" />
-                        </filter>
-                      </defs>
-                      {/* 青柠块本体（**只填色不描边**：描边提到最上层单独画，见末尾） */}
-                      <rect
-                        x="56"
-                        y="30"
-                        width="210"
-                        height="172"
-                        rx="68"
-                        fill="url(#gb-badge-grad)"
-                      />
-                      {/* 底侧暗绿立体倒角 */}
-                      <path
-                        d="M 86,184 C 120,196 204,196 238,182 C 252,174 258,156 258,136"
-                        stroke="#7FB000"
-                        strokeWidth="13"
-                        strokeLinecap="round"
-                        fill="none"
-                        opacity="0.9"
-                        filter="url(#gb-badge-blur)"
-                      />
-                      {/* 左上柔光高光层 */}
-                      <path
-                        d="M 70,115 C 70,62 96,42 156,42 C 195,42 225,48 240,62 C 215,52 175,50 140,54 C 98,58 80,78 76,122 Z"
-                        fill="url(#gb-badge-gloss)"
-                        filter="url(#gb-badge-blur)"
-                      />
-                      {/* 锐利高光弧 */}
-                      <path
-                        d="M 76,102 C 78,66 100,48 142,46"
-                        stroke="#FFFFFF"
-                        strokeWidth="11"
-                        strokeLinecap="round"
-                        fill="none"
-                        opacity="0.95"
-                        filter="url(#gb-badge-blur)"
-                      />
-                      {/* 中央大十字闪光星（4 瓣圆润） */}
-                      <path
-                        d="M 152,78 C 155,78 158,81 159,90 C 160,101 163,104 174,105 C 183,106 186,109 186,113 C 186,117 183,120 174,121 C 163,122 160,125 159,136 C 158,145 155,148 152,148 C 148,148 145,145 144,136 C 143,125 140,122 129,121 C 120,120 117,117 117,113 C 117,109 120,106 129,105 C 140,104 143,101 144,90 C 145,81 148,78 152,78 Z"
-                        fill="#060804"
-                        transform="rotate(4, 152, 113)"
-                      />
-                      {/* 右上小十字 */}
-                      <path
-                        d="M 197,72 C 199,72 201,74 202,81 C 203,87 205,89 211,90 C 217,91 219,92 219,95 C 219,98 217,99 211,100 C 205,101 203,103 202,109 C 201,116 199,118 197,118 C 195,118 193,116 192,109 C 191,103 189,101 183,100 C 177,99 175,98 175,95 C 175,92 177,91 183,90 C 189,89 191,87 192,81 C 193,74 195,72 197,72 Z"
-                        fill="#060804"
-                      />
-                      {/* 左下圆角菱形黑点 */}
-                      <rect
-                        x="119"
-                        y="132"
-                        width="19"
-                        height="19"
-                        rx="6"
-                        transform="rotate(-12, 128, 141)"
-                        fill="#060804"
-                      />
-                      <circle cx="126" cy="140" r="3.5" fill="#2A2E26" />
-                      {/* ===== 黑描边（**最后画**，压在所有 3D 图层之上） =====
-                          ⚠️ 必须放在末尾：倒角（#7FB000 13 宽 + 模糊 2）和左上柔光高光
-                          （白色 + 模糊 2）都贴着形状边缘内侧走，如果描边在它们下面，
-                          会被吃掉 1px 左右 → 实测底部黑边只剩 0.00px、左右 1.50/1.25px，
-                          就是用户说的"描边不规则"。描边最后画 = 四边恒定 2.75px。 */}
-                      <rect
-                        x="56"
-                        y="30"
-                        width="210"
-                        height="172"
-                        rx="68"
-                        fill="none"
-                        stroke="#060804"
-                        strokeWidth="8.5"
-                      />
-                    </svg>
-                  </div>
+                  {/* ===== 左上角荧光贴纸徽章（与全站弹窗统一使用 StickerBadge，去除底部月牙灰影） ===== */}
+                  <StickerBadge
+                    size="lg"
+                    borderWidth={4}
+                    icon={<Sparkles className="h-[30px] w-[30px]" strokeWidth={2.6} />}
+                  />
 
-                  {/* ===== 右上关闭（SVG r42 → 直径 27，X 线宽 8.5 → 2.75） ===== */}
+                  {/* ===== 右上关闭（对齐福利中心 .wf-close：黑底 + 2px 白边） ===== */}
                   <button
+                    type="button"
                     onClick={() => setShowGetTokensModal(false)}
                     aria-label="关闭"
-                    className="absolute right-2.5 top-2.5 z-30 flex h-[27px] w-[27px] items-center justify-center rounded-full bg-[#070906] cursor-pointer transition-all duration-200 ease-out active:scale-90"
+                    title="关闭"
+                    className="absolute right-3 top-3 z-30 flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-full border-2 border-white bg-[#080907] shadow-[0_2px_5px_rgba(0,0,0,0.18)] transition-transform duration-200 ease-out hover:rotate-90 hover:scale-108 active:scale-90"
                   >
-                    <X className="h-3.5 w-3.5 text-white" strokeWidth={3.5} />
-                  </button>
-
-                  {/* ===== 标题区（mt-[42px] 让开徽章底沿 42px） ===== */}
-                  <div className="relative mt-[42px]">
-                    {/* 单行大字。⚠️ 2026-10-25 用户「去掉（吉祥物），标题改成单行并扩大」：
-                        吉祥物 + 动作线整块移除，标题从两行 26px 改成单行 42px。
-                        42px × 5 字 ≈ 210px，占内容宽（318）的 66%，右侧留 108px 呼吸位。
-                        再往上加字号（>46）中文会显得笨重、且 -2° 倾斜后右端容易压到卡片边。 */}
-                    {/* ⚠️ 字体粗细：`font-black` 已是 900（中文黑体上限），要"更粗"只能靠外扩描边。
-                        这里用 **8 向 text-shadow**（不是 `-webkit-text-stroke`）：
-                        text-stroke 是**居中**描边，会把笔画内部吃掉、粗黑体反而显细
-                        （index.css 里 `.text-stroke-white` 的注释有同样的结论）。
-                        text-shadow 只向外扩，字形不动。
-                        2026-10-25 用户「减少字体描边、加大字间距」：外扩从 0.9/0.65 收到 0.45/0.32
-                        （笔画不再糊在一起），`tracking-tight`(-0.025em) → `tracking-[0.04em]`。 */}
-                    {/* ⚠️ 2026-10-26 用户「标题右侧加上这个图标，图标为绿色描边」：
-                        抽卡币皇冠（`<TokenIcon outline />`）挂在标题右侧，绿色**描边**（空心）。
-                        · 旋转挪到外层 flex 上：标题和图标必须**同一个 -2°**，否则图标像贴歪的。
-                        · 图标尺寸 34px 时墨迹约 29×27（描边版 viewBox 28 单位、墨迹占 24/28），
-                          线宽 2.2 单位 ≈ 2.7px —— 比标题的 46px 墨迹矮一档，是"副标"的体量。
-                        · 描边色 #B0E80B 取自 3D 徽章渐变的中间档：纯青柠 #C8FF1A 在白卡上
-                          对比度只有 1.1:1，2~3px 的线会糊掉；这个深度约 1.5:1，仍明显是"绿"。 */}
-                    <div className="relative z-10 flex items-center gap-2 -rotate-2">
-                      <h3
-                        className="text-[46px] font-black leading-none tracking-[0.04em] text-[#070906]"
-                        style={{
-                          textShadow:
-                            '0.45px 0 0 #070906, -0.45px 0 0 #070906, 0 0.45px 0 #070906, 0 -0.45px 0 #070906, 0.32px 0.32px 0 #070906, -0.32px -0.32px 0 #070906, 0.32px -0.32px 0 #070906, -0.32px 0.32px 0 #070906',
-                        }}
-                      >
-                        获取抽卡币
-                      </h3>
-                      {/* ⚠️ `translate-y-[10px]` 不是随手加的：`items-center` 对齐的是 h3 的**行盒**，
-                          而中文墨迹在行盒里偏下 —— 实测（去旋转后）标题墨迹中心比图标中心低 **10.4px**，
-                          不下移的话皇冠看着"飘在字头右上"。这个位移在旋转后的局部坐标系里，跟着标题一起斜。
-                      ⚠️ 2026-10-26 演进：34 → 44 + `-rotate-90`（用户撤回旋转）→ 34 → 44 直立 → **52 直立**。
-                        要再试旋转，记得：顺时针 +90° 底边朝右（背对标题），逆时针 -90° 底边才朝左对着标题。
-                        · 52px 的墨迹 ≈ 45×45，比标题（46px 字、墨迹高 39.5）高一档，是"压标题"的体量。
-                        · 宽度够：标题墨迹 239.2 + gap 8 + 52 = 299.2 < 内容区 314，右侧仍余 ~15px。
-                          **上限 ≈ 64px**（= 314 − 239.2 − 8），再大就得缩 gap 或标题字距。
-                        · ⚠️ `-my-[3px]` 是**必须的**：图标 52 > 标题行盒 46，不加负外边距的话
-                          行高被撑到 52，下面 Z 划痕整块下移 6px、弹窗高度 391 → 397 全变。
-                          负 margin 只压**外边距盒**（46 = 52 − 3×2），`items-center` 仍按外边距盒居中，
-                          图标视觉中心一点不动，但行高不变。 */}
-                      <TokenIcon
-                        outline
-                        strokeWidth={2.2}
-                        className="-my-[3px] h-[52px] w-[52px] translate-y-[10px] text-[#B0E80B]"
-                      />
-                    </div>
-                    {/* 荧光笔：用户「绿色下划线变成双横线（Z 形状）」——
-                        照 SVG 原设计的折线来：`M 74,414 L 352,407 L 138,425 L 474,412`
-                        （右上 → 折回左下 → 再拉到右），就是一道 Z。
-                        线宽 11 → 屏上 6.47px（240px 宽 / 408 单位）。
-                        ⚠️ 别改回单条圆角 div —— 单条是"下划线"，Z 折线才是参考图里那笔手绘划痕。
-                        ⚠️ 2026-10-26 量过：内容真实包围盒 = x −0.5~401.5、y −1.5~29.5（端点 ±5.5 半线宽），
-                        旧 viewBox `0 0 400 34` 比内容小 1.5 单位。但**实际没被裁**——因为
-                        meet 缩放按高度走（0.588 < 240/400），viewBox 画幅只有 235.3px < 元素 240px，
-                        左右各 2.35px 富余，溢出的 0.88px 落在富余区里（像素实测改前/改后画幅都是 236.25px）。
-                        现在仍换成 `−3.5 −4.5 408 37` 把内容**完整框住**：等比后线宽还是 6.47px、
-                        上下各留 1.76px，以后改尺寸/比例不会突然被切。
-                        ⚠️ 改 viewBox 必须同步改 `h-[22px] w-[240px]`（408:37 的等比），
-                        否则 meet 缩放改按高度走、线会变细 + 左右留白。`mt-2` 是补上新增的 1.76px 上留白。 */}
-                    <svg
-                      viewBox="-3.5 -4.5 408 37"
-                      className="mt-2 h-[22px] w-[240px] -rotate-2"
-                      aria-hidden="true"
-                    >
+                    <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                       <path
-                        d="M 5,9 L 330,4 L 72,24 L 396,19"
-                        stroke="#C8FF1A"
-                        strokeWidth="11"
+                        d="M2 2L12 12M12 2L2 12"
+                        stroke="#FFFFFF"
+                        strokeWidth="2.6"
                         strokeLinecap="round"
-                        strokeLinejoin="round"
-                        fill="none"
                       />
                     </svg>
+                  </button>
+
+                  {/* ===== 标题区 ===== */}
+                  <div className="relative mt-[38px]">
+                    <div className="flex justify-center">
+                      <div className="inline-flex flex-col items-stretch">
+                        <div className="relative z-10 flex items-center gap-2">
+                          <h3 className="relative -skew-x-[5deg] text-[40px] font-black leading-none tracking-[-0.02em] text-[#090B08]">
+                            获取抽卡币
+                          </h3>
+                          <TokenIcon
+                            outline
+                            strokeWidth={2.2}
+                            className="-my-[3px] h-[46px] w-[46px] translate-y-[6px] text-[#B0E80B]"
+                          />
+                        </div>
+                        <StickerScribble size="lg" className="mt-1" />
+                      </div>
+                    </div>
+                    <StickerSlashDivider className="mx-auto mt-1.5 max-w-[220px]" />
                   </div>
 
-                  {/* ===== 状态胶囊（SVG 650×58 → 高 19；底 #ECFDC0 / 边 #C7EE74） ===== */}
-                  <div id="tokens-status-pill" className="mt-3.5 flex items-center gap-2 rounded-full border border-[#C7EE74] bg-[#ECFDC0] px-2.5 py-[5px]">
+                  {/* ===== 状态胶囊 ===== */}
+                  <div id="tokens-status-pill" className="mt-2.5 flex items-center gap-2 rounded-full border border-[#C7EE74] bg-[#ECFDC0] px-3 py-[5px]">
                     <span className="flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-[4px] border-[1.5px] border-[#070906] bg-[#ECFDC0]">
-                      {/* 原来这里是 `Sparkles`（和大按钮/页头的皇冠不一致），统一到 TokenIcon */}
                       <TokenIcon className="h-2.5 w-2.5 text-[#070906]" />
                     </span>
                     <span className="pill-label text-[11px] font-black text-[#070906]">当前剩余</span>
@@ -2554,114 +2381,78 @@ export const GachaPage: React.FC<GachaPageProps> = ({
                     </span>
                   </div>
 
-                  {/* ===== 任务卡 1：每日签到（双层倒角：外层灰渐变 + 内层白渐变） ===== */}
-                  <div id="task-row-sign" className="mt-2 rounded-[17.5px] bg-gradient-to-br from-[#EEEEF0] via-[#E5E7EB] to-[#DCDEE2] p-[1.5px]">
-                    <div className="flex items-center justify-between gap-2 rounded-[16px] bg-gradient-to-br from-[#F3F5F8] via-[#F8F9FB] to-white px-2.5 py-2 ring-1 ring-white">
-                      <div className="flex min-w-0 items-center gap-2">
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border-[2px] border-[#070906] bg-[#C7F665]">
-                          <TokenIcon className="h-4 w-4 text-[#070906]" />
+                  {/* ===== 任务槽 1：每日签到（福利中心 .wf-slot 凹槽胶囊 + .wf-btn-lime 领取钮） ===== */}
+                  <div id="task-row-sign" className="mt-2.5">
+                    <StickerPanel pill innerClassName="flex items-center justify-between gap-2 pl-3 pr-2 py-2">
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[2px] border-[#080907] bg-[linear-gradient(180deg,#D3F97E_0%,#C7F665_100%)] shadow-[0_1.5px_0_rgba(0,0,0,0.12)]">
+                          <TokenIcon className="h-4 w-4 text-[#080907]" />
                         </span>
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <span className="text-[12px] font-black leading-none text-[#070906]">每日签到</span>
+                            <span className="text-[13px] font-black leading-none text-[#0e100c]">每日签到</span>
                             <span className="rounded-full bg-[#E4FCA9] px-1.5 py-[2px] text-[8px] font-black leading-none text-[#0E130A]">
                               每日限 1 次
                             </span>
                           </div>
-                          <div className="mt-1 text-[10px] font-bold leading-none text-[#54801A]">+1 抽卡币</div>
+                          <div className="mt-1 text-[10px] font-bold leading-none text-[#6b6f68]">每日免费领取 · +1 抽卡币</div>
                         </div>
                       </div>
-                      {/* 按钮：错位投影 + 青柠渐变 + 3px 黑边 + 左上高光弧 */}
-                      <span className="relative shrink-0">
-                        {!hasCheckedInToday && (
-                          <span className="absolute inset-0 translate-y-[2.5px] rounded-full bg-[#DDF988]" />
-                        )}
-                        <button
-                          disabled={hasCheckedInToday}
-                          onClick={() => {
-                            if (hasCheckedInToday) {
-                              onShowToast('今日已签到');
-                              return;
-                            }
-                            setTokens((prev) => prev + 1);
-                            setHasCheckedInToday(true);
-                            onShowToast('签到成功！已获得 1 枚抽卡币');
-                            setShowGetTokensModal(false);
-                          }}
-                          className={`relative rounded-full border-[3px] px-3 py-1.5 text-[11px] font-black transition-all duration-200 ease-out ${
-                            hasCheckedInToday
-                              ? 'border-[#070906]/35 bg-[#E8E8E8] text-[#070906]/40 cursor-not-allowed'
-                              : 'border-[#070906] bg-gradient-to-br from-[#D4FF2A] via-[#C7FD19] to-[#B8F00B] text-[#070905] cursor-pointer active:translate-y-[1.5px]'
-                          }`}
-                        >
-                          {!hasCheckedInToday && (
-                            <span
-                              className="pointer-events-none absolute inset-0 rounded-full"
-                              style={{
-                                backgroundImage:
-                                  'radial-gradient(ellipse 58% 78% at 16% 6%, rgba(255,255,255,0.9), rgba(255,255,255,0) 64%)',
-                              }}
-                            />
-                          )}
-                          {hasCheckedInToday ? '已签到' : '领 1 币'}
-                        </button>
-                      </span>
-                    </div>
+                      <StickerButton
+                        size="sm"
+                        block={false}
+                        tone="lime"
+                        disabled={hasCheckedInToday}
+                        onClick={() => {
+                          if (hasCheckedInToday) {
+                            onShowToast('今日已签到');
+                            return;
+                          }
+                          setTokens((prev) => prev + 1);
+                          setHasCheckedInToday(true);
+                          onShowToast('签到成功！已获得 1 枚抽卡币');
+                          setShowGetTokensModal(false);
+                        }}
+                      >
+                        <span>{hasCheckedInToday ? '已签到' : '领 1 币'}</span>
+                      </StickerButton>
+                    </StickerPanel>
                   </div>
 
-                  {/* ===== 任务卡 2：好友助力 ===== */}
-                  <div id="task-row-share" className="mt-2 rounded-[17.5px] bg-gradient-to-br from-[#EEEEF0] via-[#E5E7EB] to-[#DCDEE2] p-[1.5px]">
-                    <div className="flex items-center justify-between gap-2 rounded-[16px] bg-gradient-to-br from-[#F3F5F8] via-[#F8F9FB] to-white px-2.5 py-2 ring-1 ring-white">
-                      <div className="flex min-w-0 items-center gap-2">
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border-[2px] border-[#070906] bg-[#C7F665]">
-                          <TokenIcon className="h-4 w-4 text-[#070906]" />
+                  {/* ===== 任务槽 2：好友助力（福利中心 .wf-slot 凹槽胶囊 + .wf-btn-white 前往钮） ===== */}
+                  <div id="task-row-share" className="mt-2.5">
+                    <StickerPanel pill innerClassName="flex items-center justify-between gap-2 pl-3 pr-2 py-2">
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[2px] border-[#080907] bg-[linear-gradient(180deg,#D3F97E_0%,#C7F665_100%)] shadow-[0_1.5px_0_rgba(0,0,0,0.12)]">
+                          <TokenIcon className="h-4 w-4 text-[#080907]" />
                         </span>
                         <div className="min-w-0">
-                          <span className="text-[12px] font-black leading-none text-[#070906]">好友助力</span>
-                          <div className="mt-1 text-[10px] font-bold leading-none text-[#54801A]">+1 抽卡币</div>
+                          <span className="text-[13px] font-black leading-none text-[#0e100c]">好友助力</span>
+                          <div className="mt-1 text-[10px] font-bold leading-none text-[#6b6f68]">邀请好友助力 · +1 抽卡币</div>
                         </div>
                       </div>
-                      {/* 黑胶囊按钮（SVG 右侧 GO TO COOK 的语言：黑底 + 白字 + 左上反光弧） */}
-                      <span className="relative shrink-0">
-                        <span className="absolute inset-0 translate-y-[2px] rounded-full bg-[#E5ECC8]" />
-                        <button
-                          onClick={() => {
-                            setTokens((prev) => prev + 1);
-                            onShowToast('分享成功！已获得 +1 抽卡币');
-                            setShowGetTokensModal(false);
-                          }}
-                          className="relative rounded-full border-[3px] border-[#070905] bg-[#070906] px-3 py-1.5 text-[11px] font-black text-white cursor-pointer transition-all duration-200 ease-out active:translate-y-[1.5px]"
-                        >
-                          <span
-                            className="pointer-events-none absolute inset-0 rounded-full"
-                            style={{
-                              backgroundImage:
-                                'radial-gradient(ellipse 55% 80% at 15% 4%, rgba(255,255,255,0.42), rgba(255,255,255,0) 62%)',
-                            }}
-                          />
-                          去分享
-                        </button>
-                      </span>
-                    </div>
+                      <StickerButton
+                        size="sm"
+                        block={false}
+                        tone="white"
+                        onClick={() => {
+                          setTokens((prev) => prev + 1);
+                          onShowToast('分享成功！已获得 +1 抽卡币');
+                          setShowGetTokensModal(false);
+                        }}
+                      >
+                        <span>去分享</span>
+                      </StickerButton>
+                    </StickerPanel>
                   </div>
 
-                  {/* ===== 底部关闭（黑胶囊 + 错位投影） ===== */}
-                  <span className="relative mt-3 block">
-                    <span className="absolute inset-0 translate-y-[2px] rounded-full bg-[#E5ECC8]" />
-                    <button
-                      onClick={() => setShowGetTokensModal(false)}
-                      className="relative w-full rounded-full border-[3px] border-[#070905] bg-[#070906] py-2.5 text-[13px] font-black text-white cursor-pointer transition-all duration-200 ease-out active:translate-y-[1.5px]"
-                    >
-                      <span
-                        className="pointer-events-none absolute inset-0 rounded-full"
-                        style={{
-                          backgroundImage:
-                            'radial-gradient(ellipse 46% 90% at 12% 2%, rgba(255,255,255,0.34), rgba(255,255,255,0) 58%)',
-                        }}
-                      />
-                      关闭
-                    </button>
-                  </span>
+                  {/* ===== 底部主 CTA（福利中心 .wf-cta-socket + .wf-cta 同款） ===== */}
+                  <div className="mt-3.5">
+                    <StickerButton tone="lime" onClick={() => setShowGetTokensModal(false)}>
+                      <TokenIcon className="h-4 w-4 text-[#080907]" />
+                      <span>立即去抽十鲜盲盒</span>
+                    </StickerButton>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -2676,9 +2467,6 @@ export const GachaPage: React.FC<GachaPageProps> = ({
             onClose={() => setShowDeliverySuccessModal(false)}
             ariaLabel="达成起送"
             title="10 款达成"
-            /* 2026-11-02 用户「这个页面的其他弹窗也按照这样样式去改」：
-               与食材图鉴对齐 —— 标题 xl(40)、徽章 lg(68×56)、图标 30、描边 4。
-               ⚠️ 徽章必须跟标题一起放大：标题 40 而图标还是 20 时，上下比例是反的。 */
             titleSize="xl"
             badge={<Truck className="h-[30px] w-[30px]" strokeWidth={2.6} />}
             badgeSize="lg"
@@ -2698,9 +2486,28 @@ export const GachaPage: React.FC<GachaPageProps> = ({
               </StickerButton>
             }
           >
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-[22px] border-[2px] border-[#070906] bg-[#ECFDC0] shadow-[1.5px_2.5px_0_rgba(7,9,6,0.16)]">
-              <Truck className="h-9 w-9 text-[#54801A]" strokeWidth={2.4} />
-            </div>
+            <StickerPanel pill innerClassName="flex items-center justify-between pl-3.5 pr-2.5 py-2.5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[2px] border-[#080907] bg-[linear-gradient(180deg,#D3F97E_0%,#C7F665_100%)] shadow-[0_1.5px_0_rgba(0,0,0,0.12)]">
+                  <Truck className="h-5 w-5 text-[#080907]" strokeWidth={2.5} />
+                </div>
+                <div className="text-left">
+                  <div className="text-[13px] font-black text-[#0e100c]">专属定制十鲜能量碗</div>
+                  <div className="mt-0.5 text-[10px] font-bold text-[#6b6f68]">冷链鲜配 · 免配送费</div>
+                </div>
+              </div>
+              <StickerButton
+                size="sm"
+                block={false}
+                tone="white"
+                onClick={() => {
+                  setShowDeliverySuccessModal(false);
+                  onNavigate('orders');
+                }}
+              >
+                <span>省心</span>
+              </StickerButton>
+            </StickerPanel>
           </StickerModal>
         )}
       </AnimatePresence>

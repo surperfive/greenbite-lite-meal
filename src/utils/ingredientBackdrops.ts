@@ -71,7 +71,7 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 2. 生椰 / 椰乳 / 椰子 / Coconut (纯色极简静物台面 + 单只切开原只生椰子，高纯净度)
   if (allText.includes('椰') || allText.includes('coconut')) {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/kale.jpg',
       bgAlt: 'Single raw fresh halved coconut on clean solid studio background',
       bgColor: '#17361e',
       topBadge1: { bold: '人气推荐', text: 'NO.1' },
@@ -85,9 +85,10 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 3. 咖啡 / 燕麦拿铁 / 拿铁 / Coffee / Oat Milk (极简暖色纯净背景 + 单支新鲜咖啡豆/极简燕麦原粒)
   if (allText.includes('燕麦') || allText.includes('咖啡') || allText.includes('拿铁') || allText.includes('冷萃')) {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/sandwich-wheat.jpg',
       bgAlt: 'Minimalist single raw coffee beans on clean solid complementary background',
       bgColor: '#2c1e14',
+      bgFilter: 'brightness(0.78) contrast(1.08) saturate(0.92)',
       topBadge1: { bold: '冷萃特调', text: 'TOP.1' },
       topBadge2: { prefix: '大师专属', main: 'OATLY咖啡大师燕麦' },
       stampTop: '冷萃',
@@ -99,7 +100,7 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 4. 南瓜 / 藜麦 / 谷物 / Pumpkin / Quinoa (极简纯色背景 + 单颗饱满有机贝贝小南瓜，留白通透)
   if (allText.includes('南瓜') || allText.includes('藜麦') || allText.includes('pumpkin')) {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1508747703725-719777637510?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/sandwich-wheat.jpg',
       bgAlt: 'Single fresh organic baby pumpkin on solid minimalist complementary backdrop',
       bgColor: '#3d250d',
       topBadge1: { bold: '慢碳饱腹', text: 'NO.1' },
@@ -131,9 +132,10 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 6. 牛肉 / 牛排 / 黑椒 / Beef (暗调极简纯色岩板背景 + 单支鲜采有机迷迭香草)
   if (allText.includes('牛') || allText.includes('beef') || allText.includes('黑椒')) {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1514944298352-7b2434a9463b?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/teriyaki-pot.jpg',
       bgAlt: 'Single fresh rosemary sprig on clean minimalist slate background',
       bgColor: '#241712',
+      bgFilter: 'blur(3px) saturate(0.88) brightness(0.96)',
       topBadge1: { bold: '燃脂增肌', text: 'NO.1' },
       topBadge2: { prefix: '原切直供', main: '澳洲谷饲精选牛肉' },
       stampTop: '原切',
@@ -145,7 +147,7 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 7. 虾 / 彩椒 / 海鲜 / Shrimp (清爽纯色纯净底色 + 单只鲜活厄瓜多尔白虾原料)
   if (allText.includes('虾') || allText.includes('shrimp') || allText.includes('海鲜') || allText.includes('彩椒')) {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/avocado.jpg',
       bgAlt: 'Single fresh raw king prawn on clean complementary studio surface',
       bgColor: '#142a33',
       topBadge1: { bold: '高钙低脂', text: 'NO.1' },
@@ -183,27 +185,9 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 9. 酸奶 / 蓝莓 / 浆果 / Yogurt / Berry (纯净极简纯色背景 + 单株高山新鲜野生蓝莓带叶原料)
   if (allText.includes('酸奶') || allText.includes('蓝莓') || allText.includes('yogurt') || allText.includes('berry')) {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1563746098251-d35aef196e83?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/avocado.jpg',
       bgAlt: 'Single fresh blueberry sprig with leaf on clean minimalist complementary background',
-      bgColor: '#161c2d',
-      /**
-       * ⚠️ 这张浆果静物是全套背景里**唯一一张天生就暗**的（实拍测：hero 上半平均亮度
-       * 54/255 = 21%，76% 的像素低于 L=60）—— 它是一张"暗调静物"，叠加上面那层
-       * 12%/8% 的压暗之后更闷。2026-10-27 用户「这个背景太暗了」。
-       *
-       * 所以给**这一张**单独提亮，而不是去调全局滤镜：
-       * 其它背景（牛油果 / 羽衣甘蓝 / 麦香 / 照烧锅）本身是中高明度，
-       * 全局 brightness 一加就过曝，只有这张需要补。
-       *
-       * 参数取 `brightness(1.42) contrast(0.92) saturate(1.14)`：
-       * · brightness 1.42 把 21% 抬到 ~31%（实测平均 L 54 → 77，暗部占比 76% → 57%）；
-       * · contrast 0.92 **不是**为了对比，而是把亮度往中灰拉、**托起暗部** ——
-       *   只加 brightness 的话暗部（大量 L<30 的浆果阴影）几乎不动，只有高光变白；
-       * · saturate 1.14 补回提亮 + 降对比后被稀释的浆果红（中位饱和度 0.66 → ~0.72）。
-       * 实测通道裁切只有 0.23%，高光没爆。
-       * ⚠️ 填了 bgFilter 会连带 `scale-106`（见接口注释），比默认 102 多 4% 裁切，可接受。
-       */
-      bgFilter: 'brightness(1.42) contrast(0.92) saturate(1.14)',
+      bgColor: '#4F7603',
       topBadge1: { bold: '高蛋白甜点', text: 'NO.1' },
       topBadge2: { prefix: '高山鲜摘', main: '野生蓝莓·纯正希腊酸奶' },
       stampTop: '纯正',
@@ -215,9 +199,9 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 10. Default Salad/Bowl (清新纯净纯色底 + 单片带露有机水培脆生菜叶，极简高级)
   if (dish.category === 'salad' || dish.category === 'bowl') {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/avocado.jpg',
       bgAlt: 'Single fresh crisp organic lettuce leaf on minimalist complementary solid background',
-      bgColor: '#1d3417',
+      bgColor: '#4F7603',
       topBadge1: { bold: '主厨推荐', text: 'TOP.1' },
       topBadge2: { prefix: '农场直采', main: '有机罗马生菜·特调轻酱' },
       stampTop: '鲜食',
@@ -229,9 +213,9 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
   // 11. General Drink Fallback
   if (dish.category === 'drink') {
     return {
-      bgImage: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=85',
+      bgImage: '/backdrops/kale.jpg',
       bgAlt: 'Single fresh raw ingredient on clean complementary studio background',
-      bgColor: '#17361e',
+      bgColor: '#85BA6C',
       topBadge1: { bold: '低卡鲜饮', text: 'NO.1' },
       topBadge2: { prefix: '现调锁鲜', main: '0卡糖轻盈配方' },
       stampTop: '鲜食',
@@ -242,9 +226,9 @@ export function getDishIngredientMeta(dish: Dish): IngredientMeta {
 
   // 12. General Fallback
   return {
-    bgImage: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&w=1200&q=85',
+    bgImage: '/backdrops/avocado.jpg',
     bgAlt: 'Single fresh raw ingredient on minimalist complementary studio background',
-    bgColor: '#203a1c',
+    bgColor: '#4F7603',
     topBadge1: { bold: '品质严选', text: 'NO.1' },
     topBadge2: { prefix: '源头直采', main: '高品质健康轻食' },
     stampTop: '鲜食',

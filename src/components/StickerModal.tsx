@@ -1,7 +1,6 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'motion/react';
-import { X } from 'lucide-react';
 import { useBackLayer } from '../utils/backStack';
 
 export interface ShellBoxRect {
@@ -14,14 +13,6 @@ export interface ShellBoxRect {
 /**
  * useShellBox —— 实测手机壳「内容区」在视口里的矩形（DeviceFrameWrapper 里
  * 打了 `data-app-stage-box` 标记的那层）。
- *
- * ⚠️ 2026-10-28 用户「弹窗已经超出页面了」：壳是 `justify-start` **顶对齐**的
- *    844px 盒子（DeviceFrameWrapper），而弹窗原来是 `fixed inset-0` 相对
- *    **整个视口**居中 —— 高个显示器（视口 ≳1100px）上卡片会伸出壳底
- *    （视口 1242 时食材图鉴卡底部出壳 ~105px）。
- *    portal 到 body 的弹窗拿不到壳做定位祖先，只能测矩形自己贴。
- *    resize / scroll 时重测（body 滚动会移动壳；壳内列表滚动不会，值不变时
- *    浅比较跳过 setState，不触发多余渲染）。
  */
 export const useShellBox = (): ShellBoxRect | null => {
   const [box, setBox] = useState<ShellBoxRect | null>(null);
@@ -30,13 +21,9 @@ export const useShellBox = (): ShellBoxRect | null => {
       const el = document.querySelector('[data-app-stage-box]');
       if (!el) return;
       const r = el.getBoundingClientRect();
-      /* ⚠️ 壳矩形要和**视口**取交集：壳本身可能比屏幕高（fitHeight 内容撑高 /
-         矮窗口把 844px 壳顶出去、body 出滚动条）。不取交集的话卡片会按「壳整体」
-         居中，两端伸出可视区 —— 2026-10-28 用户在小程序 webview 里实测"出小程序了"。
-         交集后卡片永远以「壳的可见部分」为中线下沉/上收，必在屏内。 */
       const top = Math.max(r.top, 0);
       const bottom = Math.min(r.bottom, window.innerHeight);
-      if (bottom - top < 200) return; // 退化（几乎看不见壳）时不更新，保留上一个有效值
+      if (bottom - top < 200) return;
       const next: ShellBoxRect = {
         top,
         left: r.left,
@@ -64,240 +51,344 @@ export const useShellBox = (): ShellBoxRect | null => {
   return box;
 };
 
-/**
- * StickerModal —— 「黑粗描边 + 青柠贴纸」弹窗外壳
- * ============================================================================
- * 视觉母本来自抽卡页的「获取抽卡币」弹窗（GachaPage.tsx 里那一坨），
- * 2026-10-28 按用户要求抽象成共享壳，供全站弹窗统一使用：
- *   首页 · 福利中心 / 邀请好友 / 每日抽奖
- *   健康计划 · 食材图鉴 · 起送成功 · 门店切换
- *
- * 结构（自外向内）：
- *   1. 蒙层 bg-black/62 + backdrop-blur-sm
- *   2. 外层 motion：spring 进场缩放
- *   3. 立体边层：向右下偏移 3.25 / 2.6px 的纯黑圆角块（“纸片厚度”）
- *   4. 主卡：2.75px 黑描边 + 白底 + 内白描边 + 下方绿色投影
- *   5. 左上角青柠徽章（跨边框悬浮，-4.2°）
- *   6. 右上角黑圆关闭钮
- *
- * ⚠️ 关于滚动：卡片是 `flex flex-col` + `max-h`，内容区必须
- *    `flex-1 min-h-0 overflow-y-auto` —— 少了 `min-h-0`，flex 子项的最小高度
- *    会自动撑到内容高度，`overflow-y-auto` 永远不触发（之前图鉴弹窗踩过）。
- */
-
 export const STICKER = {
-  ink: '#070906',
+  ink: '#080907',
   lime: '#C7F665',
-  limeDeep: '#B0E80B',
+  limeDeep: '#B7EF4B',
   limePale: '#ECFDC0',
   limeEdge: '#C7EE74',
-  paper: '#FDFDFD',
+  paper: '#FCFDFB',
 } as const;
 
 /* ------------------------------------------------------------------ */
 /* 青柠立体徽章                                                         */
 /* ------------------------------------------------------------------ */
-/* ⚠️ 必须挂在**主卡外面**（倾斜层里），不能放进主卡内部。
-   主卡 `overflow-hidden` 会把这枚 `-left/-top` 伸出去贴纸剪成一个小方块，
-   图标虽然靠 flex 居中，但“可见区域”不是整个贴纸，看上去就贴在左上角
-   （2026-10-28 用户「这些图标放到框内中心位置」即此症）。
-   实测（scripts/probe-badge-center.mjs）挪出来后 icon 中心与贴纸中心 dx=dy=0。 */
 export const StickerBadge: React.FC<{
   icon?: React.ReactNode;
   className?: string;
   rotate?: number;
-  /**
-   * 贴纸尺寸档位。md = 60×52（默认，全站弹窗在用）；
-   * lg = 68×56 —— 原始设计稿 210×172 按 0.325 换算就是 68×56（r22/边3），
-   * 后来为压缩弹窗被改成 60×52。2026-11-02 用户「扩大」时按设计稿还原。
-   * ⚠️ 圆角、高光内缩要跟着一起算：radius ≈ 0.316×h；高光 inset 由 borderWidth 推导（见下）。
-   */
   size?: 'md' | 'lg';
-  /** 描边宽度（px）。默认 2.75 = 与主卡描边等宽；用户要「更贴纸」时可单独加粗 */
   borderWidth?: number;
-}> = ({ icon, className = '', rotate = -4.2, size = 'md', borderWidth = 2.75 }) => {
+}> = ({ icon, className = '', rotate = -4.2, size = 'md', borderWidth = 4 }) => {
   const geo = {
     md: { box: 'h-[52px] w-[60px] rounded-[19px]', radius: 15 },
     lg: { box: 'h-[56px] w-[68px] rounded-[21.5px]', radius: 17.5 },
   }[size];
   return (
     <div
-      className={`pointer-events-none absolute -left-[9.5px] -top-[15.5px] z-20 flex items-center justify-center border-[#060804] shadow-[2px_3px_2px_rgba(0,0,0,0.18)] ${geo.box} ${className}`}
+      className={`pointer-events-none absolute -left-[9.5px] -top-[15.5px] z-30 flex items-center justify-center border-[#080907] shadow-[0_4px_10px_rgba(0,0,0,0.16)] ${geo.box} ${className}`}
       style={{
         borderWidth,
         transform: `rotate(${rotate}deg)`,
         backgroundImage:
-          'linear-gradient(148deg, #DCFF4E 0%, #C6FA19 45%, #B0E80B 85%, #8FC204 100%)',
+          'linear-gradient(148deg, #E2FF66 0%, #C7F665 55%, #B7EF4B 100%)',
       }}
     >
-      {/* 左上柔光：模拟参考图里那层高光，别用纯白（会显脏） */}
+      {/* 左上柔光高光（无底部月牙灰影） */}
       <span
         aria-hidden="true"
         className="pointer-events-none absolute"
         style={{
-          /* ⚠️ 高光必须整体落在描边**内侧**：inset 跟着 borderWidth 走（+0.25 让出 1/4 像素的贴边）。
-             写死 3 时，描边一加粗高光就会盖到黑边上，左上角泛出一圈脏亮边。 */
           inset: borderWidth + 0.25,
           borderRadius: geo.radius,
           backgroundImage:
-            'radial-gradient(ellipse 78% 62% at 26% 16%, rgba(255,255,255,0.9), rgba(242,255,170,0.4) 46%, rgba(198,250,25,0) 72%)',
+            'radial-gradient(ellipse 72% 58% at 26% 18%, rgba(255,255,255,0.88), rgba(242,255,170,0.32) 48%, rgba(199,246,101,0) 72%)',
         }}
       />
-      <span className="relative text-[#060804]">{icon}</span>
+      <span className="relative text-[#080907]">{icon}</span>
     </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* 手绘 Z 划痕（标题下的荧光笔）                                        */
+/* 福利中心同款：荧光绿多层马克笔涂鸦横条 + 白贴纸底边                    */
 /* ------------------------------------------------------------------ */
 export const StickerScribble: React.FC<{ size?: 'sm' | 'md' | 'lg'; className?: string }> = ({
   size = 'md',
   className = '',
 }) => {
-  const map = { sm: 'h-[13px] w-[132px]', md: 'h-[18px] w-[186px]', lg: 'h-[22px] w-[240px]' };
+  const heightMap = {
+    sm: 'h-[14px]',
+    md: 'h-[16px]',
+    lg: 'h-[18px]',
+  };
   return (
     <svg
-      viewBox="-3.5 -4.5 408 37"
-      className={`${map[size]} -rotate-2 ${className}`}
+      viewBox="38 86 240 30"
+      preserveAspectRatio="none"
+      className={`block w-full ${heightMap[size]} overflow-visible ${className}`}
+      fill="none"
       aria-hidden="true"
     >
+      <rect
+        x="42"
+        y="88"
+        width="234"
+        height="21"
+        rx="10.5"
+        transform="rotate(-0.8 159 98.5)"
+        fill="#C7F665"
+      />
+      <rect
+        x="38"
+        y="96"
+        width="156"
+        height="7"
+        rx="3.5"
+        transform="rotate(-1.1 116 99.5)"
+        fill="#C7F665"
+      />
+      <rect
+        x="46"
+        y="105.5"
+        width="148"
+        height="6.5"
+        rx="3.25"
+        transform="rotate(-0.9 120 108.5)"
+        fill="#C7F665"
+      />
       <path
-        d="M 5,9 L 330,4 L 72,24 L 396,19"
-        stroke="#C8FF1A"
-        strokeWidth="11"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
+        d="M220 107.5 H270 C275 107.5 276 112.5 270 113 L212 113.5 Z"
+        fill="#C7F665"
       />
     </svg>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* 贴纸风胶囊按钮                                                       */
+/* 福利中心同款：斜杠 + 渐变细分割线（//////// ──────────）               */
+/* ------------------------------------------------------------------ */
+export const StickerSlashDivider: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`flex items-center gap-2 ${className}`} aria-hidden="true">
+    <svg width="46" height="9" viewBox="0 0 64 12" fill="none" className="shrink-0">
+      <g fill="#11130F">
+        <polygon points="3,11 7,1 10.2,1 6.2,11" />
+        <polygon points="10.5,11 14.5,1 17.7,1 13.7,11" />
+        <polygon points="18,11 22,1 25.2,1 21.2,11" />
+        <polygon points="25.5,11 29.5,1 32.7,1 28.7,11" />
+        <polygon points="33,11 37,1 40.2,1 36.2,11" />
+        <polygon points="40.5,11 44.5,1 47.7,1 43.7,11" />
+        <polygon points="48,11 52,1 55.2,1 51.2,11" />
+        <polygon points="55.5,11 59.5,1 62.7,1 58.7,11" />
+      </g>
+    </svg>
+    <div
+      className="h-[1.5px] flex-1"
+      style={{
+        background: 'linear-gradient(90deg, #b8bdb3 0%, #dcdfd9 85%, transparent 100%)',
+      }}
+    />
+  </div>
+);
+
+/* ------------------------------------------------------------------ */
+/* 福利中心同款按钮：
+ *   1. 通栏主 CTA（block=true, size='md'）：
+ *      外层凹槽托盘 (.wf-cta-socket) + 青柠立体胶囊 (.wf-cta)
+ *      + 左侧标志性白色月牙高光弧 + 右侧黑底白箭头圆章 (.wf-cta-arrow)
+ *   2. 行内小胶囊按钮（block=false 或 size='sm'）：
+ *      外层凹槽托盘 (.wf-btn-socket) + 3px 黑描边立体胶囊 (.wf-btn)
+ *      支持青柠 (lime，带左侧月牙高光) 与纯白立体 (white / ink，带灰底立体边)
 /* ------------------------------------------------------------------ */
 export const StickerButton: React.FC<{
-  tone?: 'ink' | 'lime';
+  tone?: 'ink' | 'lime' | 'white';
   size?: 'sm' | 'md';
   block?: boolean;
+  type?: 'button' | 'submit';
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
   ariaLabel?: string;
-}> = ({ tone = 'lime', size = 'md', block = true, onClick, children, className = '', disabled, ariaLabel }) => {
-  const isInk = tone === 'ink';
-  const pad = size === 'sm' ? 'px-3 py-1.5 text-[11px]' : 'py-2.5 text-[13px]';
+}> = ({
+  tone = 'lime',
+  size = 'md',
+  block = true,
+  type = 'button',
+  onClick,
+  children,
+  className = '',
+  disabled,
+  ariaLabel,
+}) => {
+  const isInlineSmall = size === 'sm' || !block;
+
+  if (isInlineSmall) {
+    const isWhite = tone === 'white' || tone === 'ink';
+    return (
+      <span
+        className={`inline-flex shrink-0 rounded-full p-[2.5px] shadow-[inset_0_1.5px_2.5px_rgba(0,0,0,0.08)] ${className}`}
+        style={{
+          background: 'linear-gradient(180deg, #e5e8e1 0%, #ffffff 100%)',
+        }}
+      >
+        <button
+          type={type}
+          onClick={onClick}
+          disabled={disabled}
+          aria-label={ariaLabel}
+          className={`relative inline-flex h-[32px] min-w-[60px] items-center justify-center gap-1 rounded-full border-[2.4px] border-[#080907] px-3 text-[12px] font-black tracking-[0.3px] transition-all duration-150 ease-out outline-none ${
+            disabled
+              ? 'cursor-default text-[#5b6155]'
+              : 'cursor-pointer text-[#0b0d09] hover:scale-[1.03] hover:brightness-[1.03] active:scale-[0.94]'
+          }`}
+          style={
+            disabled
+              ? {
+                  background: 'linear-gradient(180deg, #eef2e8 0%, #dce2d5 100%)',
+                  boxShadow: 'inset 0 1.5px 3px rgba(0, 0, 0, 0.08)',
+                }
+              : isWhite
+                ? {
+                    background: 'linear-gradient(180deg, #ffffff 0%, #f8faf6 75%, #ecefe9 100%)',
+                    boxShadow:
+                      '0 1.5px 0 rgba(0, 0, 0, 0.1), inset 0 -3px 0 #dfe3dc, inset 0 1.5px 1.5px #ffffff',
+                  }
+                : {
+                    background: 'linear-gradient(180deg, #D3F97E 0%, #C7F665 68%, #B7EF4B 100%)',
+                    boxShadow:
+                      '0 1.5px 0 rgba(0, 0, 0, 0.14), inset 0 -3px 0 rgba(38, 67, 11, 0.22), inset 0 1.5px 2px rgba(255, 255, 255, 0.8)',
+                  }
+          }
+        >
+          {/* 青柠小按钮左侧白色月牙高光弧线 */}
+          {!disabled && !isWhite && (
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-[4.5px] top-[4.5px] bottom-[5.5px] w-[9px] rounded-l-full"
+              style={{
+                borderLeft: '2.2px solid rgba(255, 255, 255, 0.92)',
+                borderTop: '1.5px solid rgba(255, 255, 255, 0.92)',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.4)',
+              }}
+            />
+          )}
+          <span className="relative z-10 inline-flex items-center justify-center gap-1 whitespace-nowrap">
+            {children}
+          </span>
+        </button>
+      </span>
+    );
+  }
+
+  /* 底部通栏主 CTA（完全对齐福利中心 .wf-cta-socket + .wf-cta + .wf-cta-arrow） */
   return (
-    <span className={`relative ${block ? 'block w-full' : 'inline-block'} ${className}`}>
-      {/* 错位投影：和按钮同形，向下 2.5px，做出“纸片贴上去”的厚度 */}
-      {!disabled && (
-        <span
-          aria-hidden="true"
-          className={`absolute inset-0 translate-y-[2.5px] rounded-full ${isInk ? 'bg-[#E5ECC8]' : 'bg-[#DDF988]'}`}
-        />
-      )}
+    <div
+      className={`w-full rounded-full border-[1.5px] border-[#d8ddd3] p-[3.5px] shadow-[0_4px_10px_rgba(0,0,0,0.06),inset_0_2px_4px_rgba(0,0,0,0.08)] ${className}`}
+      style={{
+        background: 'linear-gradient(180deg, #e2e6de 0%, #ffffff 65%, #f4f6f1 100%)',
+      }}
+    >
       <button
-        type="button"
+        type={type}
         onClick={onClick}
         disabled={disabled}
         aria-label={ariaLabel}
-        className={`relative rounded-full border-[3px] font-black transition-all duration-200 ease-out ${
-          block ? 'w-full' : ''
-        } ${pad} ${
+        className={`group relative flex h-[48px] w-full items-center justify-center rounded-full border-[2.75px] border-[#080907] px-4 transition-all duration-150 ease-out outline-none ${
           disabled
-            ? 'cursor-not-allowed border-[#070906]/35 bg-[#E8E8E8] text-[#070906]/40'
-            : isInk
-              ? 'cursor-pointer border-[#070905] bg-[#070906] text-white active:translate-y-[1.5px]'
-              : 'cursor-pointer border-[#070906] bg-gradient-to-br from-[#D4FF2A] via-[#C7FD19] to-[#B8F00B] text-[#070905] active:translate-y-[1.5px]'
+            ? 'cursor-not-allowed text-[#5b6155]'
+            : 'cursor-pointer text-[#0b0d09] hover:-translate-y-[1px] hover:brightness-[1.03] active:translate-y-[1.5px] active:scale-[0.985]'
         }`}
+        style={
+          disabled
+            ? {
+                background: 'linear-gradient(180deg, #eef2e8 0%, #dce2d5 100%)',
+                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.08)',
+              }
+            : {
+                background: 'linear-gradient(90deg, #C7F665 0%, #D3F97E 50%, #C7F665 100%)',
+                boxShadow:
+                  '0 1.5px 0 #080907, inset 0 -4.5px 0 rgba(38, 67, 11, 0.22), inset 0 3px 5px rgba(255, 255, 255, 0.65)',
+              }
+        }
       >
+        {/* 主按钮左侧标志性白色月牙高光弧线 */}
         {!disabled && (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-full"
+            className="pointer-events-none absolute left-[6px] top-[5px] bottom-[7px] w-[16px] rounded-l-full"
             style={{
-              backgroundImage: isInk
-                ? 'radial-gradient(ellipse 46% 90% at 12% 2%, rgba(255,255,255,0.34), rgba(255,255,255,0) 58%)'
-                : 'radial-gradient(ellipse 58% 78% at 16% 6%, rgba(255,255,255,0.9), rgba(255,255,255,0) 64%)',
+              borderLeft: '2.8px solid rgba(255, 255, 255, 0.92)',
+              borderTop: '2px solid rgba(255, 255, 255, 0.85)',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.35)',
             }}
           />
         )}
-        <span className="relative inline-flex items-center justify-center gap-1.5">{children}</span>
+        <span className="relative z-10 inline-flex items-center justify-center gap-2 pr-4 text-[14.5px] font-black tracking-[0.3px] whitespace-nowrap">
+          {children}
+        </span>
+        {/* 右侧圆形黑底白箭头章 (.wf-cta-arrow) */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-[9px] flex h-[25px] w-[25px] items-center justify-center rounded-full bg-[#080907] transition-transform duration-200 group-hover:translate-x-[2px]"
+        >
+          <svg width="12" height="12" viewBox="0 0 18 18" fill="none">
+            <path
+              d="M3.5 9H14.5M14.5 9L9.8 4.2M14.5 9L9.8 13.8"
+              stroke="#FFFFFF"
+              strokeWidth="2.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
       </button>
-    </span>
+    </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/* 内容小节：双层倒角的浅灰卡片（参考图里“每日签到 / 好友助力”那一格）    */
+/* 福利中心同款：凹槽胶囊/立体卡片容器（对应 .wf-slot）                    */
 /* ------------------------------------------------------------------ */
 export const StickerPanel: React.FC<{
   children: React.ReactNode;
   className?: string;
   innerClassName?: string;
-}> = ({ children, className = '', innerClassName = '' }) => (
+  pill?: boolean;
+}> = ({ children, className = '', innerClassName = '', pill = false }) => (
   <div
-    className={`rounded-[17.5px] bg-gradient-to-br from-[#EEEEF0] via-[#E5E7EB] to-[#DCDEE2] p-[1.5px] ${className}`}
+    className={`relative border-[2px] border-[#e1e4dd] ${
+      pill ? 'rounded-full' : 'rounded-[22px]'
+    } ${className}`}
+    style={{
+      background: 'linear-gradient(180deg, #f3f5f0 0%, #fcfdfc 55%, #ffffff 100%)',
+      boxShadow:
+        '0 3px 0 #ebeee6, 0 5px 10px rgba(0, 0, 0, 0.04), inset 0 2.5px 4px rgba(0, 0, 0, 0.045), inset 0 -2.5px 0 #ffffff',
+    }}
   >
     <div
-      className={`rounded-[16px] bg-gradient-to-br from-[#F3F5F8] via-[#F8F9FB] to-white ring-1 ring-white ${innerClassName}`}
-    >
-      {children}
-    </div>
+      aria-hidden="true"
+      className={`pointer-events-none absolute inset-[2.5px] border-[1.5px] border-white/90 ${
+        pill ? 'rounded-full' : 'rounded-[19px]'
+      }`}
+    />
+    <div className={`relative z-10 ${innerClassName}`}>{children}</div>
   </div>
 );
 
 /* ------------------------------------------------------------------ */
-/* 主外壳                                                              */
+/* 主外壳（完全对齐福利中心 .wf-board / .wf-close / 标题涂鸦 / 斜杠分割线）*/
 /* ------------------------------------------------------------------ */
 export interface StickerModalProps {
   onClose: () => void;
-  /** 大标题（纯文本或带样式的节点） */
   title?: React.ReactNode;
-  /** 标题字号档位：26 / 34 / 46 / 40px（xl 供「食材图鉴」这类需要盖过徽章的大标题） */
   titleSize?: 'sm' | 'md' | 'lg' | 'xl';
-  /** 标题右侧图标（如皇冠） */
   titleIcon?: React.ReactNode;
-  /** 标题下方补充说明 */
   subtitle?: React.ReactNode;
-  /**
-   * 标题区（大标题 + 划线 + 副标题）的水平对齐，默认 `left`。
-   * 2026-11-03 21:33 用户「选择门店 … 往右偏居中位置」：门店弹窗的标题只有 4 个字，
-   * 左对齐时右侧空出一大片、和下面居中的门店卡列表也不呼应，所以给了 center 档。
-   * ⚠️ 只影响标题区，不动 body / footer；徽章仍钉在卡片左上角外（不跟着居中）。
-   */
   titleAlign?: 'left' | 'center';
-  /** 左上角徽章内容；传 `null` 则不显示徽章 */
   badge?: React.ReactNode | null;
-  /** 徽章尺寸档位：md 60×52（默认）/ lg 68×56（原设计稿比例） */
   badgeSize?: 'md' | 'lg';
-  /** 徽章描边宽度（px），默认 2.75（与主卡等宽） */
   badgeBorderWidth?: number;
-  /** 标题下是否画 Z 划痕 */
   scribble?: boolean;
   children: React.ReactNode;
-  /** 固定在底部的操作区（不随内容滚动） */
   footer?: React.ReactNode;
   maxWidth?: number;
-  /** 卡片倾斜角，默认 -1.6；长表单建议传 0 */
   tilt?: number;
-  /**
-   * 整体等比缩放（默认 1）。用于「这张卡相对壳子太大」的场合。
-   * ⚠️ 只缩**视觉**不缩布局盒：maxWidth 仍按原值算，缩放后居中位置不变。
-   *    挂在与 rotate 同一层（单个 transform），别写进外层 motion.div —— 会被 spring 的
-   *    animate scale 覆盖。旋转层是 `absolute` 之外唯一带 transform 的层，缩放后
-   *    黑立体边 / 徽章 / 阴影一起缩，比例不会走形。
-   */
   scale?: number;
-  /** 内容区是否滚动 */
   scroll?: boolean;
   maxHeight?: string;
   ariaLabel?: string;
-  /** 内容区额外的类名（比如让图鉴列表用 space-y-2） */
   bodyClassName?: string;
-  /* ---- 下面几个是给「图鉴弹窗」这类需要测量/滚动监听的老弹窗留的口子 ---- */
   cardId?: string;
   cardRef?: React.Ref<HTMLDivElement>;
   bodyRef?: React.Ref<HTMLDivElement>;
@@ -311,15 +402,15 @@ export const StickerModal: React.FC<StickerModalProps> = ({
   titleSize = 'md',
   titleIcon,
   subtitle,
-  titleAlign = 'left',
+  titleAlign = 'center',
   badge,
   badgeSize = 'md',
-  badgeBorderWidth = 2.75,
+  badgeBorderWidth = 3.2,
   scribble = true,
   children,
   footer,
-  maxWidth = 346,
-  tilt = -1.6,
+  maxWidth = 348,
+  tilt = -2.2,
   scale = 1,
   scroll = false,
   maxHeight = '86vh',
@@ -331,29 +422,22 @@ export const StickerModal: React.FC<StickerModalProps> = ({
   onBodyScroll,
   bodyStyle,
 }) => {
-  /* 壳内容区矩形：有值 → 居中盒贴壳（弹窗不会跑出手机壳）；null → 退回视口居中 */
   const shellBox = useShellBox();
   useBackLayer(true, onClose);
-  /* maxHeight 里再夹一层「壳内容高 − p-4×2」：vh 上限在 tall 显示器上会远超壳高
-     （86vh @1242 = 1068 > 壳 844），min() 取小的那个。px 值不受祖先 auto 高度影响。 */
   const effectiveMaxHeight = shellBox
     ? `min(${maxHeight}, ${Math.max(240, Math.round(shellBox.height - 32))}px)`
     : maxHeight;
   const titleCls = {
     sm: 'text-[26px]',
-    md: 'text-[34px]',
-    lg: 'text-[46px]',
-    /* xl（2026-11-02 用户「继续放大标题」）：26 → 40，+54%。
-       为什么新开一档而不是把 sm 改大：sm 被 7 个弹窗共用（起送成功 / 健康计划 /
-       首页三张福利卡 / 门店切换），改档会把它们一起顶大。
-       40 而不是 34：卡片还带着 scale 0.9，40 × 0.9 = 36 实际渲染，才看得出来。 */
-    xl: 'text-[40px]',
+    md: 'text-[33px]',
+    lg: 'text-[44px]',
+    xl: 'text-[38px]',
   }[titleSize];
   const hasBadge = badge !== null;
 
   return createPortal(
     <>
-      {/* 蒙层：仍 fixed inset-0 盖满整个视口（压不压底部导航的行为不变） */}
+      {/* 蒙层 */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -362,10 +446,7 @@ export const StickerModal: React.FC<StickerModalProps> = ({
         onClick={onClose}
         className="fixed inset-0 z-50 bg-black/62 backdrop-blur-sm"
       />
-      {/* 居中盒：⚠️ 不再 `inset-0` 相对视口居中 —— 那会在 tall 显示器上把卡片
-          送出顶对齐的 844px 手机壳（2026-10-28 用户「弹窗已经超出页面了」）。
-          有壳矩形就贴壳内容区；拿不到（理论上不会）才退回视口居中。
-          pointer-events-none + 卡片 auto：盒外空隙的点击落回蒙层，行为与旧版一致。 */}
+      {/* 居中盒 */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -384,131 +465,156 @@ export const StickerModal: React.FC<StickerModalProps> = ({
         }
       >
         <motion.div
-          initial={{ scale: 0.88, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 340, damping: 26 }}
+          exit={{ scale: 0.92, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 330, damping: 26 }}
           className="relative w-full pointer-events-auto"
           style={{ maxWidth }}
           role="dialog"
           aria-modal="true"
           aria-label={ariaLabel}
         >
-        <div
-          className="relative"
-          style={
-            tilt || scale !== 1
-              ? { transform: `${tilt ? `rotate(${tilt}deg)` : ''} ${scale !== 1 ? `scale(${scale})` : ''}`.trim() }
-              : undefined
-          }
-        >
-          {/* 立体边层 */}
-          <div aria-hidden="true" className="absolute inset-0 translate-x-[3.25px] translate-y-[2.6px] rounded-[20px] bg-[#060804]" />
-
-          {/* 主卡 */}
           <div
-            id={cardId}
-            ref={cardRef}
-            className="relative flex flex-col overflow-hidden rounded-[20px] border-[2.75px] border-[#060804] bg-[#FDFDFD]"
-            style={{
-              maxHeight: effectiveMaxHeight,
-              boxShadow:
-                'inset 0 0 0 1px rgba(255,255,255,0.85), 0 5px 7px rgba(74,107,0,0.22)',
-            }}
+            className="relative"
+            style={
+              tilt || scale !== 1
+                ? {
+                    transform: `${tilt ? `rotate(${tilt}deg)` : ''} ${
+                      scale !== 1 ? `scale(${scale})` : ''
+                    }`.trim(),
+                  }
+                : undefined
+            }
           >
-            {/* 关闭钮 */}
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="关闭"
-              className="absolute right-2.5 top-2.5 z-30 flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-full bg-[#070906] transition-all duration-200 ease-out active:scale-90"
+            {/* 主卡：福利中心 .wf-board 同款 28px 大圆角 + 3.5px 黑边 + 左下硬投影 + 内侧白灰立体包边 */}
+            <div
+              id={cardId}
+              ref={cardRef}
+              className="relative flex flex-col overflow-hidden rounded-[28px] border-[3.5px] border-[#080907]"
+              style={{
+                maxHeight: effectiveMaxHeight,
+                background: 'linear-gradient(180deg, #fcfdfb 0%, #f5f7f3 100%)',
+                boxShadow:
+                  '-2.5px 7px 0 #080907, -5px 16px 28px rgba(45, 68, 0, 0.22), inset 0 0 0 3.5px #ffffff, inset 0 -5px 0 3.5px #eaede6, inset 0 3px 8px rgba(0, 0, 0, 0.04)',
+              }}
             >
-              <X className="h-3.5 w-3.5 text-white" strokeWidth={3.5} />
-            </button>
+              {/* 内侧白灰立体包边保护层（防止滚动内容压住边缘内描边） */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 z-20 rounded-[24.5px]"
+                style={{
+                  boxShadow: 'inset 0 0 0 3.5px #ffffff, inset 0 -5px 0 3.5px #eaede6',
+                }}
+              />
 
-            {/* 标题区 */}
-            {(title || subtitle) && (
-              <div className={`shrink-0 px-3.5 pb-1 ${hasBadge ? 'pt-[42px]' : 'pt-5'}`}>
-                {title && (
-                  <div
-                    className={`relative z-10 flex items-center gap-2 ${
-                      titleAlign === 'center'
-                        ? 'justify-center'
-                        : hasBadge && badgeSize === 'lg'
-                          ? 'pl-7'
-                          : ''
-                    }`}
-                  >
-                    {/* ⚠️ 2026-11-03 13:05 用户「去除这个字体描边」：删掉 h3 上那段
-                        0.45px 四向 `text-shadow`（原本是拿它当「伪加粗 / 描边」用）。
-                        · 为什么删得掉：字重已经是 `font-black`(900)，到顶了；那层 0.45px
-                          纯属向外糊一圈，只会把笔画边缘撑出锯齿，不会更黑。
-                        · 锯齿在大标题上最明显：`-rotate-2` + 0.9 缩放让字形落在非整数像素上，
-                          再叠四向 0.45px 偏移，边缘就是「毛边」观感（40px 的「食材图鉴」最刺眼）。
-                        · 删掉后笔画本身一点不动，只是回到字体原本的轮廓 —— 干净、锐利。
-                        ⚠️ 别用 `-webkit-text-stroke` 替代：那是**居中**描边，会吃掉字形内部，
-                           粗黑体加 2px 后笔画反而变细（index.css `.text-stroke-white` 注释同结论）。
-                        ⚠️ 影响面：这是 StickerModal 的**共用标题**，所以健康计划 / 福利中心 /
-                           邀请新人 / 红包已开启 / 选择门店 / 10 款达成 会一起变干净。
-                           10 款达成 必须跟着改 —— 它按设计稿与「食材图鉴」对齐（都是 xl 40px），
-                           只改一个会让两个弹窗的标题粗细不一致。 */}
-                    <h3
-                      className={`${titleCls} -rotate-2 font-black leading-none tracking-[0.02em] text-[#070906]`}
+              {/* 右上角关闭钮（完全对齐福利中心 .wf-close：黑底 + 2px 白描边 + 悬停旋转） */}
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="关闭"
+                title="关闭"
+                className="absolute right-3 top-3 z-30 flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-full border-2 border-white bg-[#080907] shadow-[0_2px_5px_rgba(0,0,0,0.18)] transition-transform duration-200 ease-out hover:rotate-90 hover:scale-108 active:scale-90"
+              >
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+                  <path
+                    d="M2 2L12 12M12 2L2 12"
+                    stroke="#FFFFFF"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+
+              {/* 标题区 */}
+              {(title || subtitle) && (
+                <div className={`shrink-0 px-4 pb-1 ${hasBadge ? 'pt-[42px]' : 'pt-5'}`}>
+                  {title && (
+                    <div
+                      className={`relative z-10 flex ${
+                        titleAlign === 'center'
+                          ? 'justify-center'
+                          : hasBadge && badgeSize === 'lg'
+                            ? 'pl-12'
+                            : hasBadge
+                              ? 'pl-9'
+                              : 'pl-1'
+                      }`}
                     >
-                      {title}
-                    </h3>
-                    {titleIcon && (
-                      <span className="-my-[3px] translate-y-[6px] text-[#B0E80B]">{titleIcon}</span>
-                    )}
-                  </div>
-                )}
-                {scribble && title && (
-                  <StickerScribble
-                    size={titleSize === 'xl' || titleSize === 'lg' ? 'lg' : titleSize === 'md' ? 'md' : 'sm'}
-                    /* svg 默认是 inline，mx-auto 不生效，居中档必须补 block */
+                      <div className="inline-flex flex-col items-stretch">
+                        <div className="flex items-center gap-2">
+                          <h3
+                            className={`${titleCls} relative -skew-x-[5deg] font-black leading-none tracking-[-0.02em] text-[#090B08]`}
+                          >
+                            {title}
+                          </h3>
+                          {titleIcon && (
+                            <span className="-my-[3px] translate-y-[6px] text-[#B0E80B]">
+                              {titleIcon}
+                            </span>
+                          )}
+                        </div>
+                        {scribble && (
+                          <StickerScribble
+                            size={
+                              titleSize === 'xl' || titleSize === 'lg'
+                                ? 'lg'
+                                : titleSize === 'md'
+                                  ? 'md'
+                                  : 'sm'
+                            }
+                            className="mt-1"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  <StickerSlashDivider
                     className={`mt-1.5 ${
                       titleAlign === 'center'
-                        ? 'block mx-auto'
+                        ? 'mx-auto max-w-[220px]'
                         : hasBadge && badgeSize === 'lg'
-                          ? 'ml-2.5'
-                          : ''
+                          ? 'pl-12'
+                          : hasBadge
+                            ? 'pl-9'
+                            : 'pl-1'
                     }`}
                   />
-                )}
-                {subtitle && (
-                  <p
-                    className={`mt-2 text-[11px] font-bold leading-relaxed text-[#070906]/55 ${titleAlign === 'center' ? 'text-center' : ''}`}
-                  >
-                    {subtitle}
-                  </p>
-                )}
-              </div>
-            )}
+                  {subtitle && (
+                    <p
+                      className={`mt-1.5 text-[11px] font-bold leading-relaxed text-[#6b6f68] ${
+                        titleAlign === 'center' ? 'text-center' : ''
+                      }`}
+                    >
+                      {subtitle}
+                    </p>
+                  )}
+                </div>
+              )}
 
-            {/* 内容区 */}
-            <div
-              ref={bodyRef}
-              onScroll={onBodyScroll}
-              style={bodyStyle}
-              className={`px-3.5 pt-2 ${scroll ? 'gb-modal-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pb-1' : ''} ${bodyClassName}`}
-            >
-              {children}
+              {/* 内容区 */}
+              <div
+                ref={bodyRef}
+                onScroll={onBodyScroll}
+                style={bodyStyle}
+                className={`px-4 pt-2 ${
+                  scroll
+                    ? 'gb-modal-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pb-1'
+                    : ''
+                } ${bodyClassName}`}
+              >
+                {children}
+              </div>
+
+              {/* 底部主 CTA 操作区 */}
+              {footer && <div className="shrink-0 px-4 pb-4 pt-2.5">{footer}</div>}
             </div>
 
-            {/* 底部操作区 */}
-            {footer && <div className="shrink-0 px-3.5 pb-3.5 pt-2.5">{footer}</div>}
+            {hasBadge && (
+              <StickerBadge icon={badge} size={badgeSize} borderWidth={badgeBorderWidth} />
+            )}
           </div>
-
-          {/* ⚠️ 2026-10-28「这些图标放到框内中心位置」：
-              徽章原来放在**主卡内部**，而主卡是 `overflow-hidden`（为了裁圆角/滚动内容），
-              于是 `-left-[9.5px] -top-[15.5px]` 伸出去的那截被整块剪掉 ——
-              露出的是徽章**右下 3/4**，图标（在真·几何中心）看上去就贴在可见区的左上角。
-              修法：把徽章从卡内挪到**倾斜层**（无 overflow），让 60×52 的贴纸整块可见，
-              图标自然落回中心，同时恢复设计本意「跨边框悬浮」。
-              z-20 > 卡的 auto，不移出裁剪也会盖在卡上；pointer-events-none 不影响点击。 */}
-          {hasBadge && <StickerBadge icon={badge} size={badgeSize} borderWidth={badgeBorderWidth} />}
-        </div>
-      </motion.div>
+        </motion.div>
       </motion.div>
     </>,
     document.body

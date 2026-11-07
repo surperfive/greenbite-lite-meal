@@ -60,12 +60,12 @@ export default function App() {
 
   // User Profile
   const [user, setUser] = useState<UserProfile>({
-    name: 'Alex',
+    name: '游客用户',
     avatar: '/mascot-avatar.svg',
     phone: '13888886666',
-    isLoggedIn: true,
+    isLoggedIn: false,
     level: '黄金会员 LV.2',
-    points: 680,
+    points: 0,
     nextLevelPoints: 1000
   });
 
@@ -79,13 +79,44 @@ export default function App() {
   const [isHealthPlanOpen, setIsHealthPlanOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingCycle, setLoadingCycle] = useState(0);
-  const [loadingDuration, setLoadingDuration] = useState(1100);
+  const [loadingDuration, setLoadingDuration] = useState(380);
   // 下层在退场淡出期间也保持 inert，避免点击穿透和键盘进入底部导航。
   const [isLoadingOverlayPresent, setIsLoadingOverlayPresent] = useState(true);
   const reduceMotion = useReducedMotion();
   const finishLoading = useCallback(() => setIsLoading(false), []);
 
-  const triggerPageLoad = useCallback((minDurationMs: number = 680) => {
+  // 启动后在后台预热核心图片缓存，切换 Tab 与打开详情页时直接命中内存无需二次等待
+  React.useEffect(() => {
+    const urls = new Set<string>([
+      '/ordering_header_banner.jpg',
+      '/hero-poster-tuna.jpg',
+      '/hero-poster-latte.jpg',
+      '/hero-poster-teal.jpg',
+      '/hero-poster-sandwich.jpg',
+      '/signature-card.jpg',
+      '/invite-card.jpg',
+      '/me-order-card.jpg',
+      '/online_9f52938bdc.jpg',
+      '/Gemini_Generated_Image_mspigdmspigdmspi.png',
+      '/backdrops/avocado.jpg',
+      '/backdrops/kale.jpg',
+      '/backdrops/sandwich-wheat.jpg',
+      '/backdrops/teriyaki-pot.jpg',
+    ]);
+    DISHES.forEach((d) => {
+      if (d.image) urls.add(d.image);
+      if (d.imageCutout) urls.add(d.imageCutout);
+      if (d.imageStandard) urls.add(d.imageStandard);
+      if (d.imageLarge) urls.add(d.imageLarge);
+    });
+    urls.forEach((u) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = u;
+    });
+  }, []);
+
+  const triggerPageLoad = useCallback((minDurationMs: number = 240) => {
     setLoadingDuration(minDurationMs);
     setLoadingCycle((c) => c + 1);
     setIsLoadingOverlayPresent(true);
@@ -103,7 +134,7 @@ export default function App() {
           stack.push(activeTab);
         }
       }
-      triggerPageLoad(680);
+      triggerPageLoad(240);
       setIsProductDetailOpen(false);
       setPreviousTab(activeTab);
       setActiveTab(nextTab);
@@ -150,13 +181,13 @@ export default function App() {
       showToast('已售尽');
       return;
     }
-    triggerPageLoad(620);
+    triggerPageLoad(220);
     setSelectedDishDetail(dish);
     setIsProductDetailOpen(true);
   };
 
   const handleCloseProductDetail = () => {
-    triggerPageLoad(560);
+    triggerPageLoad(200);
     setIsProductDetailOpen(false);
     if (activeTab === 'product-detail') {
       setActiveTab(previousTab || 'home');
@@ -171,7 +202,7 @@ export default function App() {
     const popped = stack.pop();
     const fallback = activeTab === 'fav' ? 'me' : 'menu';
     const target = popped || (previousTab && previousTab !== activeTab ? previousTab : fallback);
-    triggerPageLoad(560);
+    triggerPageLoad(200);
     setIsProductDetailOpen(false);
     setActiveTab(target);
   }, [activeTab, previousTab, triggerPageLoad]);
@@ -192,13 +223,13 @@ export default function App() {
     }
     const prev = stack.pop();
     if (prev && prev !== activeTab) {
-      triggerPageLoad(560);
+      triggerPageLoad(200);
       setIsProductDetailOpen(false);
       setActiveTab(prev);
       return;
     }
     if (activeTab !== 'home') {
-      triggerPageLoad(560);
+      triggerPageLoad(200);
       setIsProductDetailOpen(false);
       setActiveTab('home');
     }
@@ -240,7 +271,12 @@ export default function App() {
       return;
     }
     const stageEl = document.getElementById('cart-fly-orb-stage');
-    if (activeTab === 'menu' && !isProductDetailOpen && stageEl && sourceRect) {
+    if (
+      (activeTab === 'menu' || activeTab === 'cart') &&
+      !isProductDetailOpen &&
+      stageEl &&
+      sourceRect
+    ) {
       const stageRect = stageEl.getBoundingClientRect();
       const startX =
         sourceRect.left - stageRect.left + sourceRect.width * 0.5;
@@ -550,6 +586,7 @@ export default function App() {
                 onSelectCoupon={setSelectedCoupon}
                 coupons={coupons}
                 onSelectDish={handleSelectDish}
+                mascotStage={mascotStage}
               />
             </div>
           )}

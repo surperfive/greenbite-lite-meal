@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Target, CheckCircle2, Info } from 'lucide-react';
 import { CheckBadge } from './CheckBadge';
-import { StickerModal, StickerButton } from './StickerModal';
+import { StickerModal, StickerButton, StickerPanel } from './StickerModal';
 
 interface HealthPlanModalProps {
   isOpen: boolean;
@@ -54,7 +54,6 @@ const DEFAULT_PLAN: HealthPlan = {
 
 const readHealthPlan = (): HealthPlan => {
   try {
-    // 优先读新 key；没有则尝试迁移旧的「口味定制」数据
     const raw =
       window.localStorage.getItem(HEALTH_PLAN_KEY) ??
       window.localStorage.getItem(LEGACY_TASTE_KEY);
@@ -83,17 +82,6 @@ const readHealthPlan = (): HealthPlan => {
   }
 };
 
-/**
- * 健康计划弹窗 —— 2026-10-17 由「我的」页的内嵌口味面板改造而来。
- * 与 LoginModal / NutritionReportModal 同层渲染（App 层），
- * 规避手机壳内 fixed 会被裁剪 / 压不过底部导航的问题。
- * （注：原同层的 StoreModal 已于 2026-10-25 改造成壳内整页 `StorePage`。）
- *
- * 2026-10-28：外壳换成贴纸风 `StickerModal`（黑粗描边 + 青柠徽章），
- * 内容区的选项卡片跟着换成「选中 = 青柠浅底 + 2px 黑边」，其余逻辑未动。
- * ⚠️ 这一屏是长表单，卡片**不倾斜**（tilt={0}），标题也不倾斜 —— 一旦倾斜，
- *    十来个可点项全跟着斜，点击热区会看着歪。
- */
 export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
   isOpen,
   onClose,
@@ -122,17 +110,15 @@ export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
     }
   };
 
-  /* 选中态统一：青柠浅底 + 2px 黑描边（贴纸风）。
-     未选中态也保留 2px 透明边，切换时不会因为边框宽度变化引起位移。 */
   const cardCls = (selected: boolean) =>
-    `flex flex-col rounded-[14px] border-[2px] px-2.5 py-2 text-left transition-all duration-200 ease-out active:scale-95 ${
+    `flex flex-col rounded-[18px] border-[2px] px-3 py-2 text-left transition-all duration-200 ease-out active:scale-95 ${
       selected
-        ? 'border-[#070906] bg-[#ECFDC0] text-[#070906] shadow-[1.5px_2px_0_rgba(7,9,6,0.12)]'
-        : 'border-[#070906]/15 bg-white text-[#070906]/70'
+        ? 'border-[#080907] bg-[linear-gradient(180deg,#D3F97E_0%,#C7F665_70%,#B7EF4B_100%)] text-[#080907] shadow-[0_2px_0_rgba(0,0,0,0.14),inset_0_-3px_0_rgba(38,67,11,0.2),inset_0_2px_2px_rgba(255,255,255,0.8)]'
+        : 'border-[#e1e4dd] bg-[linear-gradient(180deg,#f3f5f0_0%,#fcfdfc_55%,#ffffff_100%)] text-[#0e100c] shadow-[0_2.5px_0_#ebeee6,inset_0_2px_3px_rgba(0,0,0,0.04),inset_0_-2px_0_#ffffff]'
     }`;
 
-  const sectionTitle = 'text-[12px] font-black text-[#070906]';
-  const sectionHint = 'text-[10px] font-bold text-[#070906]/40';
+  const sectionTitle = 'text-[12.5px] font-black text-[#0e100c]';
+  const sectionHint = 'text-[10px] font-bold text-[#6b6f68]';
 
   return (
     <StickerModal
@@ -147,20 +133,20 @@ export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
       tilt={0}
       scroll
       maxHeight="86vh"
-      maxWidth={396}
-      bodyClassName="space-y-3.5"
+      maxWidth={388}
+      bodyClassName="space-y-3"
       footer={
         <StickerButton tone="lime" onClick={handleSave}>
-          <Target className="h-3.5 w-3.5" strokeWidth={2.9} />
+          <Target className="h-4 w-4" strokeWidth={2.8} />
           <span>保存健康计划</span>
         </StickerButton>
       }
     >
       {/* 说明条 */}
-      <p className="flex items-start gap-1.5 rounded-[14px] border border-[#C7EE74] bg-[#F4FDE0] px-2.5 py-2 text-[11px] leading-relaxed text-[#26430B]">
+      <StickerPanel innerClassName="flex items-start gap-2 px-3 py-2.5 text-[11px] font-medium leading-relaxed text-[#26430B]">
         <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#54801A]" strokeWidth={2.6} />
         <span>设定你的健康目标和口味偏好，我们会据此为你推荐合适的轻食搭配。偏好保存在本机，随时可回来调整。</span>
-      </p>
+      </StickerPanel>
 
       {/* 计划目标（单选） */}
       <div>
@@ -180,12 +166,12 @@ export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
                 className={`${cardCls(selected)} min-h-[58px] justify-center`}
               >
                 <div className="flex w-full items-center justify-between gap-1">
-                  <span className="text-[12px] font-black">{option.label}</span>
-                  {selected && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#070906]" strokeWidth={2.6} />}
+                  <span className="text-[12.5px] font-black">{option.label}</span>
+                  {selected && <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#080907]" strokeWidth={2.8} />}
                 </div>
                 <span
                   className={`mt-0.5 text-[10px] ${
-                    selected ? 'font-bold text-[#54801A]' : 'text-[#070906]/40'
+                    selected ? 'font-bold text-[#26430B]' : 'font-medium text-[#6b6f68]'
                   }`}
                 >
                   {option.detail}
@@ -213,10 +199,10 @@ export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
                 onClick={() => setPlan((current) => ({ ...current, intensity: option.id }))}
                 className={`${cardCls(selected)} min-h-[54px] items-center justify-center text-center`}
               >
-                <span className="text-[11px] font-black">{option.label}</span>
+                <span className="text-[11.5px] font-black">{option.label}</span>
                 <span
-                  className={`mt-0.5 text-[9px] ${
-                    selected ? 'font-bold text-[#54801A]' : 'text-[#070906]/40'
+                  className={`mt-0.5 text-[9.5px] ${
+                    selected ? 'font-bold text-[#26430B]' : 'font-medium text-[#6b6f68]'
                   }`}
                 >
                   {option.detail}
@@ -227,10 +213,15 @@ export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
         </div>
       </div>
 
-      {/* 辣度 */}
+      {/* 辣度（福利中心凹槽托盘 + 立体胶囊按钮语言） */}
       <div>
         <h4 className={`${sectionTitle} mb-1.5`}>辣度偏好</h4>
-        <div className="flex gap-1 rounded-full border-[1.5px] border-[#070906]/12 bg-[#F3F5F8] p-1">
+        <div
+          className="flex gap-1.5 rounded-full border-[2px] border-[#e1e4dd] p-1.5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)]"
+          style={{
+            background: 'linear-gradient(180deg, #e5e8e1 0%, #f8faf6 100%)',
+          }}
+        >
           {SPICE_OPTIONS.map((option) => {
             const selected = plan.spice === option.id;
             return (
@@ -239,10 +230,10 @@ export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
                 type="button"
                 aria-pressed={selected}
                 onClick={() => setPlan((current) => ({ ...current, spice: option.id }))}
-                className={`min-w-0 flex-1 rounded-full border-[2px] px-1.5 py-[7px] text-[10px] font-black transition-all duration-200 ease-out active:scale-95 ${
+                className={`relative min-w-0 flex-1 rounded-full border-[2.2px] px-1.5 py-[6px] text-[11px] font-black transition-all duration-150 ease-out active:scale-95 ${
                   selected
-                    ? 'border-[#070906] bg-[#C7F665] text-[#070906]'
-                    : 'border-transparent text-[#070906]/55'
+                    ? 'border-[#080907] bg-[linear-gradient(180deg,#D3F97E_0%,#C7F665_68%,#B7EF4B_100%)] text-[#0b0d09] shadow-[0_1.5px_0_rgba(0,0,0,0.14),inset_0_-2.5px_0_rgba(38,67,11,0.22),inset_0_1.5px_2px_rgba(255,255,255,0.8)]'
+                    : 'border-transparent text-[#6b6f68] hover:text-[#0e100c]'
                 }`}
               >
                 <span className="pill-label">{option.label}</span>
@@ -267,19 +258,19 @@ export const HealthPlanModal: React.FC<HealthPlanModalProps> = ({
                 type="button"
                 aria-pressed={selected}
                 onClick={() => toggleExcludedIngredient(ingredient)}
-                className={`flex min-h-[34px] items-center justify-between gap-1 rounded-full border-[2px] px-2.5 transition-all duration-200 ease-out active:scale-95 ${
+                className={`flex min-h-[36px] items-center justify-between gap-1 rounded-full border-[2px] px-3 transition-all duration-150 ease-out active:scale-95 ${
                   selected
-                    ? 'border-[#070906] bg-[#ECFDC0] text-[#070906]'
-                    : 'border-[#070906]/15 bg-white text-[#070906]/70'
+                    ? 'border-[#080907] bg-[linear-gradient(180deg,#D3F97E_0%,#C7F665_68%,#B7EF4B_100%)] text-[#080907] shadow-[0_1.5px_0_rgba(0,0,0,0.12),inset_0_-2.5px_0_rgba(38,67,11,0.2)]'
+                    : 'border-[#e1e4dd] bg-[linear-gradient(180deg,#ffffff_0%,#f8faf6_75%,#ecefe9_100%)] text-[#0e100c] shadow-[0_1.5px_0_rgba(0,0,0,0.06),inset_0_-2.5px_0_#dfe3dc]'
                 }`}
               >
-                <span className="pill-label truncate text-[10px] font-bold">{ingredient}</span>
+                <span className="pill-label truncate text-[10.5px] font-black">{ingredient}</span>
                 <CheckBadge selected={selected} className="h-3.5 w-3.5 shrink-0" />
               </button>
             );
           })}
         </div>
-        <p className="mt-1.5 text-[9px] leading-relaxed text-[#070906]/45">
+        <p className="mt-1.5 text-[9.5px] font-medium leading-relaxed text-[#6b6f68]">
           过敏食材请在下单时额外备注，以便门店确认。
         </p>
       </div>

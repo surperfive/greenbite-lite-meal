@@ -13,6 +13,9 @@ interface FloatingCartProps {
   onOpenCheckout: () => void;
   onSelectDish?: (dish: Dish) => void;
   mascotStage?: ToteMascotStage;
+  defaultExpanded?: boolean;
+  ctaLabel?: string;
+  overrideTotal?: number;
 }
 
 /**
@@ -398,9 +401,12 @@ export const FloatingCart: React.FC<FloatingCartProps> = ({
   onClearCart,
   onOpenCheckout,
   onSelectDish,
-  mascotStage = 'idle'
+  mascotStage = 'idle',
+  defaultExpanded = true,
+  ctaLabel = '去结算',
+  overrideTotal
 }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   // Track selected item IDs in cart (all checked by default)
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
 
@@ -465,6 +471,8 @@ export const FloatingCart: React.FC<FloatingCartProps> = ({
     }
     return acc;
   }, 0);
+
+  const displayTotal = overrideTotal !== undefined && allSelected ? overrideTotal : subtotal;
 
   if (totalCount === 0) return null;
 
@@ -695,7 +703,7 @@ export const FloatingCart: React.FC<FloatingCartProps> = ({
                       <div className="relative z-10 flex items-baseline text-[#FC5294] leading-none tabular-nums">
                         <span className="text-[14px] font-black mr-0.5 leading-none">¥</span>
                         <span className="text-[22px] font-black leading-none tracking-tighter">
-                          {subtotal.toFixed(1)}
+                          {displayTotal.toFixed(1)}
                         </span>
                       </div>
                     </div>
@@ -716,7 +724,7 @@ export const FloatingCart: React.FC<FloatingCartProps> = ({
                   </div>
                 </div>
 
-                {/* Right: Mini-Program Unified Primary Capsule Button ("去结算") */}
+                {/* Right: Mini-Program Unified Primary Capsule Button ("去结算" / "提交订单") */}
                 <div className="relative flex-shrink-0 ml-1.5">
                   <button
                     type="button"
@@ -726,7 +734,7 @@ export const FloatingCart: React.FC<FloatingCartProps> = ({
                     }}
                     className="h-[38px] px-4 rounded-full bg-[#C7F665] hover:bg-[#B7EF4B] active:scale-95 text-black font-black text-[14px] tracking-tight flex items-center gap-1.5 transition-all duration-200 ease-out cursor-pointer shadow-sm hover:shadow-md"
                   >
-                    <span className="pill-label leading-none">去结算</span>
+                    <span className="pill-label leading-none">{ctaLabel}</span>
                     <span className="w-4.5 h-4.5 rounded-full bg-black flex items-center justify-center flex-shrink-0">
                       <ArrowRight className="w-2.5 h-2.5 text-[#C7F665] stroke-[3]" />
                     </span>

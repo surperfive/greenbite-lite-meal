@@ -1,6 +1,8 @@
 import React from 'react';
 import { CartItem, Coupon, OrderMode, Dish, Store } from '../types';
 import { DishImage } from './DishImage';
+import { FloatingCart } from './FloatingCart';
+import { ToteMascotStage } from './CartFlyOrbLayer';
 import { DISHES } from '../data/mockData';
 import {
   ShoppingBag,
@@ -8,7 +10,6 @@ import {
   Plus,
   Minus,
   Trash2,
-  ArrowRight,
   ShieldCheck,
   ChevronRight,
   ChevronLeft,
@@ -21,7 +22,7 @@ interface CartPageProps {
   mode: OrderMode;
   store?: Store;
   onOpenStore?: () => void;
-  onAddToCart: (dish: CartItem['dish']) => void;
+  onAddToCart: (dish: CartItem['dish'], qty?: number, sourceRect?: DOMRect | null) => void;
   onRemoveFromCart: (dish: CartItem['dish']) => void;
   onClearCart: () => void;
   onOpenCheckout: () => void;
@@ -31,6 +32,7 @@ interface CartPageProps {
   onSelectCoupon: (coupon: Coupon | null) => void;
   coupons: Coupon[];
   onSelectDish?: (dish: Dish) => void;
+  mascotStage?: ToteMascotStage;
 }
 
 /** 25.6 → 25.6 / 26 → 26（不显示无意义的 .0） */
@@ -56,6 +58,7 @@ export const CartPage: React.FC<CartPageProps> = ({
   selectedCoupon,
   coupons,
   onSelectDish,
+  mascotStage = 'idle',
 }) => {
   const subtotal = cartItems.reduce((acc, item) => acc + item.dish.dealPrice * item.quantity, 0);
   const originalTotal = cartItems.reduce((acc, item) => acc + item.dish.originalPrice * item.quantity, 0);
@@ -95,7 +98,7 @@ export const CartPage: React.FC<CartPageProps> = ({
   }
 
   return (
-    <div className="space-y-2.5 px-3 pb-36 pt-11">
+    <div className="space-y-2.5 px-3 pb-40 pt-11">
       {/* ===== 标题行 =====
           ⚠️ 顶部留白 `pt-11`（44px）：高于全局「··· | ⊙」胶囊底边（top-2.5 + 26 = 36px），
              标题行整体下移至胶囊下方留出充足呼吸空间，不再贴顶拥挤。 */}
@@ -207,21 +210,24 @@ export const CartPage: React.FC<CartPageProps> = ({
                   <button
                     type="button"
                     onClick={() => onRemoveFromCart(dish)}
-                    className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-transform duration-200 ease-out active:scale-95"
+                    className="flex h-[22px] w-[22px] items-center justify-center rounded-full border border-slate-200/80 bg-slate-100 text-slate-800 transition-transform duration-200 ease-out hover:bg-slate-200 active:scale-95"
                     aria-label="减少一份"
                   >
-                    <Minus className="h-3 w-3" strokeWidth={3} />
+                    <Minus className="h-3 w-3" strokeWidth={2.6} />
                   </button>
                   <span className="w-4 text-center text-[12px] font-black tabular-nums text-slate-900">
                     {quantity}
                   </span>
                   <button
                     type="button"
-                    onClick={() => onAddToCart(dish)}
-                    className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-[#070906] text-[#C7F665] transition-transform duration-200 ease-out active:scale-95"
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      onAddToCart(dish, 1, rect);
+                    }}
+                    className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-[#C7F665] text-black shadow-2xs transition-transform duration-200 ease-out hover:bg-[#B7EF4B] active:scale-95"
                     aria-label="增加一份"
                   >
-                    <Plus className="h-3 w-3" strokeWidth={3} />
+                    <Plus className="h-3 w-3" strokeWidth={2.8} />
                   </button>
                 </div>
               </div>
@@ -272,7 +278,10 @@ export const CartPage: React.FC<CartPageProps> = ({
                   </span>
                   <button
                     type="button"
-                    onClick={() => onAddToCart(dish)}
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      onAddToCart(dish, 1, rect);
+                    }}
                     className="flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[#C7F665] text-[#070906] shadow-xs transition-transform duration-200 ease-out active:scale-90"
                     aria-label={`换购 ${dish.name}`}
                   >
@@ -343,31 +352,19 @@ export const CartPage: React.FC<CartPageProps> = ({
         </div>
       </div>
 
-      {/* ===== 底部结算条（实付 + 已优惠 + 提交订单） ===== */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-[72px] z-30 mx-auto max-w-lg px-3">
-        <div className="pointer-events-auto flex items-center justify-between rounded-2xl bg-[#070906] p-2 pl-4 shadow-xl">
-          <div className="min-w-0">
-            <div className="flex items-baseline gap-1">
-              <span className="text-[11px] font-bold text-white/55">实付</span>
-              <span className="text-[21px] font-black leading-none tracking-tight text-[#C7F665]">
-                ¥{fmt(finalTotal)}
-              </span>
-            </div>
-            {savedTotal > 0 && (
-              <div className="mt-[3px] text-[10px] font-bold leading-none text-white/40">
-                已优惠 ¥{fmt(savedTotal)}
-              </div>
-            )}
-          </div>
-          <button
-            onClick={onOpenCheckout}
-            className="flex shrink-0 items-center gap-1.5 rounded-full bg-[#C7F665] px-6 py-2.5 text-[14px] font-black text-[#070906] shadow-xs transition-transform duration-200 ease-out active:scale-95"
-          >
-            <span className="pill-label">提交订单</span>
-            <ArrowRight className="h-4 w-4" strokeWidth={3} />
-          </button>
-        </div>
-      </div>
+      {/* ===== 底部购物车结算条（与点餐页 FloatingCart 外观及交互完全一致） ===== */}
+      <FloatingCart
+        cartItems={cartItems}
+        onAddToCart={onAddToCart}
+        onRemoveFromCart={onRemoveFromCart}
+        onClearCart={onClearCart}
+        onOpenCheckout={onOpenCheckout}
+        onSelectDish={onSelectDish}
+        mascotStage={mascotStage}
+        defaultExpanded={false}
+        ctaLabel="提交订单"
+        overrideTotal={finalTotal}
+      />
     </div>
   );
 };

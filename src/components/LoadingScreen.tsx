@@ -43,7 +43,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
     }
     finishTimer.current = setTimeout(() => {
       if (mounted.current) onFinishRef.current?.();
-    }, reduceMotion ? 30 : 90);
+    }, reduceMotion ? 20 : 35);
   }, [reduceMotion]);
 
   useEffect(() => {
@@ -54,8 +54,8 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
     rootRef.current?.focus({ preventScroll: true });
 
-    const minDuration = Number.isFinite(duration) ? Math.max(320, duration) : 750;
-    const maxSafetyTimeout = Math.max(15000, minDuration + 12000);
+    const minDuration = Number.isFinite(duration) ? Math.max(180, duration) : 320;
+    const maxSafetyTimeout = Math.max(2400, minDuration + 2000);
     const startTime = performance.now();
 
     let assetsAllReady = false;
@@ -281,16 +281,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       attributeFilter: ['src']
     });
 
-    // Allow 2 animation frames + 90ms for React child trees & effects to mount all media elements
+    // Allow 1 animation frame + 20ms for React child trees & effects to mount all media elements
     const settleTimer = setTimeout(() => {
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          registerMediaNodes();
-          domSettled = true;
-          recomputeAssetStatus();
-        });
+        registerMediaNodes();
+        domSettled = true;
+        recomputeAssetStatus();
       });
-    }, 90);
+    }, 20);
 
     // 3. Smooth 60fps Wave Progress Controller synchronized with real asset readiness
     let visualProgress = 0;
@@ -309,16 +307,16 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       if (assetsAllReady && timeRatio >= 1) {
         targetProgress = 1;
       } else if (assetsAllReady) {
-        targetProgress = timeRatio * 0.96;
+        targetProgress = timeRatio * 0.97;
       } else {
         const blended = timeRatio * 0.35 + assetLoadedRatio * 0.53;
         targetProgress = Math.min(0.88, blended);
       }
 
       // Smoothly interpolate visualProgress toward targetProgress
-      const speed = targetProgress >= 1 ? 0.24 : 0.14;
+      const speed = targetProgress >= 1 ? 0.38 : 0.22;
       visualProgress += (targetProgress - visualProgress) * speed;
-      if (targetProgress >= 1 && visualProgress > 0.985) {
+      if (targetProgress >= 1 && visualProgress > 0.97) {
         visualProgress = 1;
       }
 
@@ -329,9 +327,9 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       }
 
       if (visualProgress >= 1 && assetsAllReady && timeRatio >= 1) {
-        // Wait 2 extra paint frames after all images have decoded so the underlying layer is 100% rasterized
+        // Wait 1 extra paint frame after all images have decoded so the underlying layer is rasterized
         paintFramesAfterReady += 1;
-        if (paintFramesAfterReady >= 2) {
+        if (paintFramesAfterReady >= 1) {
           finish();
           return;
         }
