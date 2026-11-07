@@ -99,3 +99,16 @@ export function useBackLayer(active: boolean, onBack: () => void) {
     };
   }, [active]);
 }
+
+/**
+ * 主动触发栈顶层的返回动作（供右上角小程序胶囊「⊙」按钮调用）。
+ * 若当前有打开的弹窗、商品详情页或二级页面，则关闭最顶层并返回 true；
+ * 若栈为空，返回 false，由外层继续回退 Tab 浏览历史。
+ */
+export function triggerTopBackLayer(): boolean {
+  if (layers.length === 0) return false;
+  const top = layers[layers.length - 1];
+  top.onBack();
+  return true;
+}
+

@@ -95,11 +95,11 @@ export const CartPage: React.FC<CartPageProps> = ({
   }
 
   return (
-    <div className="space-y-2.5 px-3 pb-36 pt-1">
+    <div className="space-y-2.5 px-3 pb-36 pt-11">
       {/* ===== 标题行 =====
-          ⚠️ `pr-[86px]` 是给全局「··· | ⊙」胶囊让位：它固定 right-3 top-2.5、73.4×26，
-             正好压住这里的「清空」按钮（原来被整颗盖住）。86 = 73.4 + 12 + 呼吸。 */}
-      <div className="flex items-center justify-between pl-0.5 pr-[86px]">
+          ⚠️ 顶部留白 `pt-11`（44px）：高于全局「··· | ⊙」胶囊底边（top-2.5 + 26 = 36px），
+             标题行整体下移至胶囊下方留出充足呼吸空间，不再贴顶拥挤。 */}
+      <div className="flex items-center justify-between px-0.5">
         <div className="flex items-center gap-2">
           <button
             type="button"

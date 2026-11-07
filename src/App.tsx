@@ -25,7 +25,7 @@ import {
   FlyingOrbItem,
   ToteMascotStage
 } from './components/CartFlyOrbLayer';
-import { useBackLayer } from './utils/backStack';
+import { useBackLayer, triggerTopBackLayer } from './utils/backStack';
 
 import {
   Dish,
@@ -92,9 +92,17 @@ export default function App() {
     setIsLoading(true);
   }, []);
 
+  const tabHistoryRef = React.useRef<string[]>([]);
+
   const handleNavigateTab = useCallback(
     (nextTab: string) => {
       if (nextTab === activeTab && !isProductDetailOpen) return;
+      if (nextTab !== activeTab) {
+        const stack = tabHistoryRef.current;
+        if (stack[stack.length - 1] !== activeTab) {
+          stack.push(activeTab);
+        }
+      }
       triggerPageLoad(680);
       setIsProductDetailOpen(false);
       setPreviousTab(activeTab);
@@ -156,14 +164,45 @@ export default function App() {
   };
 
   const handleBackFromSubpage = useCallback(() => {
+    const stack = tabHistoryRef.current;
+    while (stack.length > 0 && stack[stack.length - 1] === activeTab) {
+      stack.pop();
+    }
+    const popped = stack.pop();
     const fallback = activeTab === 'fav' ? 'me' : 'menu';
-    const target = previousTab && previousTab !== activeTab ? previousTab : fallback;
-    handleNavigateTab(target);
-  }, [activeTab, previousTab, handleNavigateTab]);
+    const target = popped || (previousTab && previousTab !== activeTab ? previousTab : fallback);
+    triggerPageLoad(560);
+    setIsProductDetailOpen(false);
+    setActiveTab(target);
+  }, [activeTab, previousTab, triggerPageLoad]);
 
   // 接入全局 LIFO 返回栈（顺序：二级页在下，详情页在上，弹窗通过各自组件挂载在最顶）
   useBackLayer(activeTab === 'cart' || activeTab === 'fav', handleBackFromSubpage);
   useBackLayer(isProductDetailOpen, handleCloseProductDetail);
+
+  const handleCapsuleBack = useCallback(() => {
+    // 1. 优先关闭最上层的弹窗、商品详情页或二级页（Cart/Fav）
+    if (triggerTopBackLayer()) {
+      return;
+    }
+    // 2. 否则按页面浏览历史栈回退至上一页
+    const stack = tabHistoryRef.current;
+    while (stack.length > 0 && stack[stack.length - 1] === activeTab) {
+      stack.pop();
+    }
+    const prev = stack.pop();
+    if (prev && prev !== activeTab) {
+      triggerPageLoad(560);
+      setIsProductDetailOpen(false);
+      setActiveTab(prev);
+      return;
+    }
+    if (activeTab !== 'home') {
+      triggerPageLoad(560);
+      setIsProductDetailOpen(false);
+      setActiveTab('home');
+    }
+  }, [activeTab, triggerPageLoad]);
 
   const commitDishToCart = useCallback((dish: Dish, qty: number = 1) => {
     if (!DISHES.some((d) => d.id === dish.id)) {
@@ -412,8 +451,8 @@ export default function App() {
 
       <div
         id="app-page-stage"
-        className={`flex-1 w-full min-h-0 flex flex-col relative overflow-hidden transition-opacity duration-150 ${
-          isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        className={`flex-1 w-full min-h-0 flex flex-col relative overflow-hidden ${
+          isLoadingOverlayPresent ? 'pointer-events-none' : ''
         }`}
         inert={isLoadingOverlayPresent ? true : undefined}
         aria-busy={isLoadingOverlayPresent}
@@ -430,7 +469,7 @@ export default function App() {
           ⚠️ 各页面右上角若有自带元素（抽卡页信息钮 / 首页轮播指示器 / 订单页搜索钮），
              需要各自让位 —— 见各页面里的说明，不要靠挪这枚胶囊解决。 */}
       <div id="mp-capsule" className="pointer-events-none absolute right-3 top-2.5 z-[55]">
-        <MiniProgramCapsule />
+        <MiniProgramCapsule onBack={handleCapsuleBack} />
       </div>
 
       {/* 2026-10-28 用户「订单页面去掉」这张门店/配送方式条 —— 已整行移除。

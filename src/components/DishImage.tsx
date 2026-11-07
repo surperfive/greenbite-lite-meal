@@ -764,8 +764,8 @@ export const DishImage: React.FC<DishImageProps> = ({
           setHasError(true);
           setIsLoading(false);
         }}
-        className={`${className} filter brightness-[1.03] contrast-[1.04] saturate-[1.08] transition-all duration-300 ${
-          isLoading ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+        className={`${className} filter brightness-[1.03] contrast-[1.04] saturate-[1.08] ${
+          isLoading ? 'opacity-0' : 'opacity-100'
         }`}
       />
 

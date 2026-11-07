@@ -359,6 +359,29 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                再塞东西回来，胶囊会由全局那一层叠在同一个位置上。 */}
       </div>
 
+      {/* Save Toast Notification (Floating at top of page)
+          ⚠️ 置于页面顶部居中悬浮：轻透半透明雾面（48%~38% 渐变黑 + backdrop-blur + 内高光亮边）
+             + 快速消散动效（900ms 停留 + 0.22s 模糊上浮淡出），且不再撑动下方白卡布局。 */}
+      <div className="absolute top-11 inset-x-0 z-50 flex justify-center px-6 pointer-events-none">
+        <AnimatePresence>
+          {savedTasteToast && (
+            <motion.div
+              key={isFav ? 'fav-on' : 'fav-off'}
+              initial={{ opacity: 0, y: -8, scale: 0.96, filter: 'blur(2px)' }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -6, scale: 0.96, filter: 'blur(3px)' }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className="py-2 px-4 bg-gradient-to-r from-slate-900/48 via-slate-800/42 to-slate-900/38 backdrop-blur-md border border-white/30 text-white text-xs font-bold rounded-full inline-flex items-center justify-center gap-1.5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.38),0_6px_16px_rgba(15,23,42,0.12)]"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]" />
+              <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]">
+                {isFav ? '已收藏当前商品！' : '已取消收藏'}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* ========================================================================= */}
       {/* 2. FIXED TOP HERO BANNER (始终保持原位，滚动时轻微压缩高度使白卡微上移) */}
       {/* ========================================================================= */}
@@ -654,26 +677,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               </span>
             </button>
           </div>
-
-          {/* Save Toast Notification
-              ⚠️ 轻透半透明雾面（45%~35% 渐变黑 + backdrop-blur + 内高光亮边）+ 快速消散动效（900ms 停留 + 0.22s 模糊淡出） */}
-          <AnimatePresence>
-            {savedTasteToast && (
-              <motion.div
-                key={isFav ? 'fav-on' : 'fav-off'}
-                initial={{ opacity: 0, y: -4, scale: 0.98, filter: 'blur(2px)' }}
-                animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, y: -4, scale: 0.98, filter: 'blur(3px)' }}
-                transition={{ duration: 0.22, ease: 'easeOut' }}
-                className="mt-2.5 py-1.5 px-3 bg-gradient-to-r from-slate-900/48 via-slate-800/42 to-slate-900/35 backdrop-blur-md border border-white/30 text-white text-[11px] font-bold rounded-lg flex items-center gap-1.5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.38),0_4px_12px_rgba(15,23,42,0.08)]"
-              >
-                <Sparkles className="w-3 h-3 text-amber-300 drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]" />
-                <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]">
-                  {isFav ? '已收藏当前商品！' : '已取消收藏'}
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
 
         {/* B. SCROLLABLE SPECIFICATIONS (分量规格及以下 - 加大上下与组件间距) */}

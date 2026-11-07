@@ -55,13 +55,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
     rootRef.current?.focus({ preventScroll: true });
 
     const minDuration = Number.isFinite(duration) ? Math.max(320, duration) : 750;
-    const maxSafetyTimeout = Math.max(3600, minDuration + 2500);
+    const maxSafetyTimeout = Math.max(15000, minDuration + 12000);
     const startTime = performance.now();
 
     let assetsAllReady = false;
     let assetLoadedRatio = 0;
     let fontsReady = false;
     let domSettled = false;
+    let paintFramesAfterReady = 0;
 
     // 1. Track Web Fonts
     if (document.fonts && document.fonts.ready) {
@@ -76,20 +77,24 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       fontsReady = true;
     }
 
-    // 2. Track all <img loading="lazy" decoding="async"> and <video> elements inside target page container
+    // 2. Track all <img>, CSS background-image URLs, and <video> elements inside target page container
     const trackedImages = new Map<HTMLImageElement, boolean>();
+    const trackedBgUrls = new Map<string, boolean>();
     const trackedVideos = new Map<HTMLVideoElement, boolean>();
     const cleanups: Array<() => void> = [];
 
     const recomputeAssetStatus = () => {
-      const total = trackedImages.size + trackedVideos.size;
+      const total = trackedImages.size + trackedBgUrls.size + trackedVideos.size;
       if (total === 0) {
-        assetLoadedRatio = 1;
+        assetLoadedRatio = domSettled ? 1 : 0;
         assetsAllReady = domSettled && fontsReady;
         return;
       }
       let done = 0;
       trackedImages.forEach((isDone) => {
+        if (isDone) done++;
+      });
+      trackedBgUrls.forEach((isDone) => {
         if (isDone) done++;
       });
       trackedVideos.forEach((isDone) => {
@@ -99,49 +104,138 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       assetsAllReady = domSettled && fontsReady && done >= total;
     };
 
-    const markImageDone = (img: HTMLImageElement) => {
+    const decodeAndMarkImageDone = (img: HTMLImageElement) => {
       if (trackedImages.get(img) === true) return;
+      const finalize = () => {
+        trackedImages.set(img, true);
+        recomputeAssetStatus();
+      };
       if (typeof img.decode === 'function') {
         img
           .decode()
           .catch(() => {})
-          .finally(() => {
-            trackedImages.set(img, true);
-            recomputeAssetStatus();
-          });
+          .finally(finalize);
       } else {
+        finalize();
+      }
+    };
+
+    const trackSingleImage = (img: HTMLImageElement) => {
+      if (trackedImages.has(img)) return;
+      trackedImages.set(img, false);
+
+      // Force eager loading & high priority so below-the-fold or scrollable images fetch immediately
+      if (img.getAttribute('loading') === 'lazy' || img.loading === 'lazy') {
+        img.removeAttribute('loading');
+        img.loading = 'eager';
+      }
+      try {
+        img.fetchPriority = 'high';
+      } catch {
+        // Ignore if read-only in older browsers
+      }
+
+      const src = img.currentSrc || img.getAttribute('src') || '';
+      if (!src) {
         trackedImages.set(img, true);
         recomputeAssetStatus();
+        return;
       }
+
+      // If already complete with valid dimensions (or broken with complete=true after fetch), decode & mark done
+      if (img.complete && img.naturalWidth > 0) {
+        decodeAndMarkImageDone(img);
+        return;
+      }
+
+      // Also warm via an active in-memory Image object in case the DOM node is inside a scroll container
+      const preloader = new Image();
+      preloader.decoding = 'async';
+
+      let settled = false;
+      const onSettled = () => {
+        if (settled) return;
+        settled = true;
+        img.removeEventListener('load', onSettled);
+        img.removeEventListener('error', onSettled);
+        preloader.onload = null;
+        preloader.onerror = null;
+        decodeAndMarkImageDone(img);
+      };
+
+      img.addEventListener('load', onSettled, { once: true });
+      img.addEventListener('error', onSettled, { once: true });
+      preloader.onload = () => {
+        if (img.complete) onSettled();
+      };
+      preloader.onerror = () => {
+        onSettled();
+      };
+      preloader.src = src;
+
+      // Re-check in case it completed synchronously upon setting src
+      if (img.complete && img.naturalWidth > 0) {
+        onSettled();
+      }
+
+      cleanups.push(() => {
+        img.removeEventListener('load', onSettled);
+        img.removeEventListener('error', onSettled);
+        preloader.onload = null;
+        preloader.onerror = null;
+      });
+    };
+
+    const trackBackgroundUrl = (url: string) => {
+      if (!url || url.startsWith('data:') || trackedBgUrls.has(url)) return;
+      trackedBgUrls.set(url, false);
+      const bgImg = new Image();
+      bgImg.decoding = 'async';
+      const done = () => {
+        if (typeof bgImg.decode === 'function') {
+          bgImg
+            .decode()
+            .catch(() => {})
+            .finally(() => {
+              trackedBgUrls.set(url, true);
+              recomputeAssetStatus();
+            });
+        } else {
+          trackedBgUrls.set(url, true);
+          recomputeAssetStatus();
+        }
+      };
+      bgImg.onload = done;
+      bgImg.onerror = () => {
+        trackedBgUrls.set(url, true);
+        recomputeAssetStatus();
+      };
+      bgImg.src = url;
+      if (bgImg.complete && bgImg.naturalWidth > 0) {
+        done();
+      }
+      cleanups.push(() => {
+        bgImg.onload = null;
+        bgImg.onerror = null;
+      });
     };
 
     const registerMediaNodes = () => {
       const stage = document.querySelector(targetSelector) || document.body;
 
-      // Scan all <img loading="lazy" decoding="async"> nodes in the target page
+      // Scan all <img> nodes in the target page
       const imgs = Array.from(stage.querySelectorAll('img'));
       for (const img of imgs) {
-        if (trackedImages.has(img)) continue;
-        // Force eager loading so hidden/below-fold images load immediately while loader is active
-        if (img.loading === 'lazy') {
-          img.loading = 'eager';
-        }
-        if (img.complete) {
-          trackedImages.set(img, false);
-          markImageDone(img);
-        } else {
-          trackedImages.set(img, false);
-          const onImgDone = () => {
-            img.removeEventListener('load', onImgDone);
-            img.removeEventListener('error', onImgDone);
-            markImageDone(img);
-          };
-          img.addEventListener('load', onImgDone, { once: true });
-          img.addEventListener('error', onImgDone, { once: true });
-          cleanups.push(() => {
-            img.removeEventListener('load', onImgDone);
-            img.removeEventListener('error', onImgDone);
-          });
+        trackSingleImage(img);
+      }
+
+      // Scan inline style background-image URLs
+      const bgEls = Array.from(stage.querySelectorAll<HTMLElement>('[style*="url("]'));
+      for (const el of bgEls) {
+        const bg = el.style.backgroundImage || '';
+        const matches = bg.matchAll(/url\(['"]?([^'")]+)['"]?\)/g);
+        for (const m of matches) {
+          if (m[1]) trackBackgroundUrl(m[1]);
         }
       }
 
@@ -174,23 +268,29 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       recomputeAssetStatus();
     };
 
-    // Initial scan + MutationObserver for newly mounted child elements
+    // Initial scan + MutationObserver for newly mounted child elements or src changes
     registerMediaNodes();
     const stageEl = document.querySelector(targetSelector) || document.body;
     const observer = new MutationObserver(() => {
       registerMediaNodes();
     });
-    observer.observe(stageEl, { childList: true, subtree: true });
+    observer.observe(stageEl, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['src']
+    });
 
-    // Allow 2 animation frames + 60ms for React child trees to mount all media elements
+    // Allow 2 animation frames + 90ms for React child trees & effects to mount all media elements
     const settleTimer = setTimeout(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          domSettled = true;
           registerMediaNodes();
+          domSettled = true;
+          recomputeAssetStatus();
         });
       });
-    }, 60);
+    }, 90);
 
     // 3. Smooth 60fps Wave Progress Controller synchronized with real asset readiness
     let visualProgress = 0;
@@ -211,7 +311,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       } else if (assetsAllReady) {
         targetProgress = timeRatio * 0.96;
       } else {
-        const blended = timeRatio * 0.45 + assetLoadedRatio * 0.43;
+        const blended = timeRatio * 0.35 + assetLoadedRatio * 0.53;
         targetProgress = Math.min(0.88, blended);
       }
 
@@ -228,9 +328,18 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
         waveAdvanceRef.current.style.transform = `translateX(${translateX.toFixed(2)}px)`;
       }
 
-      if ((visualProgress >= 1 && assetsAllReady && timeRatio >= 1) || elapsed >= maxSafetyTimeout) {
+      if (visualProgress >= 1 && assetsAllReady && timeRatio >= 1) {
+        // Wait 2 extra paint frames after all images have decoded so the underlying layer is 100% rasterized
+        paintFramesAfterReady += 1;
+        if (paintFramesAfterReady >= 2) {
+          finish();
+          return;
+        }
+      } else if (elapsed >= maxSafetyTimeout) {
         finish();
         return;
+      } else {
+        paintFramesAfterReady = 0;
       }
 
       rafId = requestAnimationFrame(tick);

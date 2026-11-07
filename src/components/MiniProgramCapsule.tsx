@@ -18,14 +18,33 @@ import { CircleDot } from 'lucide-react';
  * ⚠️ 颜色跟的是详情页顶栏那套「黑底 + 青柠字形」，和抽卡页的黑胶囊语言一致；
  *    不要换成白底，白底在首页的奶油色 banner 上会糊成一片。
  */
-export const MiniProgramCapsule: React.FC<{ className?: string }> = ({ className = '' }) => (
+export interface MiniProgramCapsuleProps {
+  className?: string;
+  onBack?: () => void;
+}
+
+export const MiniProgramCapsule: React.FC<MiniProgramCapsuleProps> = ({
+  className = '',
+  onBack,
+}) => (
   <div
     className={`flex items-center rounded-full border border-white/15 bg-black/70 px-2.5 py-1 text-[#C7F665] shadow-md backdrop-blur-md ${className}`}
-    aria-hidden="true"
   >
-    <span className="px-0.5 text-[13px] font-black leading-none tracking-wider">···</span>
-    <span className="mx-1.5 h-3 w-px bg-[#C7F665]/30" />
-    <CircleDot className="mx-0.5 h-4 w-4" />
+    <span
+      className="px-0.5 text-[13px] font-black leading-none tracking-wider select-none"
+      aria-hidden="true"
+    >
+      ···
+    </span>
+    <span className="mx-1.5 h-3 w-px bg-[#C7F665]/30" aria-hidden="true" />
+    <button
+      type="button"
+      onClick={onBack}
+      aria-label="返回上一页"
+      className="gb-hit pointer-events-auto -my-1 -mr-1.5 py-1 pr-1.5 pl-0.5 rounded-r-full flex items-center justify-center cursor-pointer transition-transform duration-150 active:scale-90 hover:opacity-85"
+    >
+      <CircleDot className="h-4 w-4" />
+    </button>
   </div>
 );
 

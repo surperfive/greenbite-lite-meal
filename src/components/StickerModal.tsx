@@ -431,7 +431,13 @@ export const StickerModal: React.FC<StickerModalProps> = ({
               <div className={`shrink-0 px-3.5 pb-1 ${hasBadge ? 'pt-[42px]' : 'pt-5'}`}>
                 {title && (
                   <div
-                    className={`relative z-10 flex items-center gap-2 ${titleAlign === 'center' ? 'justify-center' : ''}`}
+                    className={`relative z-10 flex items-center gap-2 ${
+                      titleAlign === 'center'
+                        ? 'justify-center'
+                        : hasBadge && badgeSize === 'lg'
+                          ? 'pl-7'
+                          : ''
+                    }`}
                   >
                     {/* ⚠️ 2026-11-03 13:05 用户「去除这个字体描边」：删掉 h3 上那段
                         0.45px 四向 `text-shadow`（原本是拿它当「伪加粗 / 描边」用）。
@@ -460,7 +466,13 @@ export const StickerModal: React.FC<StickerModalProps> = ({
                   <StickerScribble
                     size={titleSize === 'xl' || titleSize === 'lg' ? 'lg' : titleSize === 'md' ? 'md' : 'sm'}
                     /* svg 默认是 inline，mx-auto 不生效，居中档必须补 block */
-                    className={`mt-1.5 ${titleAlign === 'center' ? 'block mx-auto' : ''}`}
+                    className={`mt-1.5 ${
+                      titleAlign === 'center'
+                        ? 'block mx-auto'
+                        : hasBadge && badgeSize === 'lg'
+                          ? 'ml-2.5'
+                          : ''
+                    }`}
                   />
                 )}
                 {subtitle && (
